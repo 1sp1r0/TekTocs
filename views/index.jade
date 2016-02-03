@@ -1,4 +1,7 @@
 extends ./layout.jade
 block content
     .container(style='padding-top: 75px;')      
-        
+    script(src="/socket.io/socket.io.js")
+    script.
+        var socket = io();
+     

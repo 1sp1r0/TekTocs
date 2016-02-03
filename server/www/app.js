@@ -10,6 +10,7 @@
     import webpackDevMiddleware from 'webpack-dev-middleware';
     import webpackHotMiddleware from 'webpack-hot-middleware';
     import session from 'express-session';
+    import * as socketserver from './socket';
     
     const FACEBOOK_APP_ID = "dummy";
     const FACEBOOK_APP_SECRET = "dummy";
@@ -91,6 +92,8 @@
     
     
     
-    app.listen(port, function() {
+    let server= app.listen(port, function() {
         console.log('Tektocs is running on http://localhost:' + port);
     });
+   
+    socketserver.registerListeners(server);
