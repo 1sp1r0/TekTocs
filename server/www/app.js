@@ -7,7 +7,7 @@
     import passport from 'passport';
     import * as facebook from 'passport-facebook';
     import session from 'express-session';
-   // import * as socketserver from './socket';
+    import * as socketserver from './socket';
     
     const FACEBOOK_APP_ID = "dummy";
     const FACEBOOK_APP_SECRET = "dummy";
@@ -96,4 +96,4 @@
         console.log('Tektocs is running on http://localhost:' + port);
     });
    
-    //socketserver.registerListeners(server);
+    socketserver.registerListeners(server);
