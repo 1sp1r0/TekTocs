@@ -32,18 +32,6 @@ var _passportFacebook = require('passport-facebook');
 
 var facebook = _interopRequireWildcard(_passportFacebook);
 
-var _webpack = require('webpack');
-
-var _webpack2 = _interopRequireDefault(_webpack);
-
-var _webpackDevMiddleware = require('webpack-dev-middleware');
-
-var _webpackDevMiddleware2 = _interopRequireDefault(_webpackDevMiddleware);
-
-var _webpackHotMiddleware = require('webpack-hot-middleware');
-
-var _webpackHotMiddleware2 = _interopRequireDefault(_webpackHotMiddleware);
-
 var _expressSession = require('express-session');
 
 var _expressSession2 = _interopRequireDefault(_expressSession);
@@ -107,12 +95,15 @@ app.use(function (err, req, res, next) {
 });
 
 if (process.env.NODE_ENV === 'development') {
-    var compiler = (0, _webpack2.default)(require('../../webpack.dev.config'));
-    app.use((0, _webpackDevMiddleware2.default)(compiler, {
+    var webpack = require('webpack');
+    var webpackDevMiddleware = require('webpack-dev-middleware');
+    var webpackHotMiddleware = require('webpack-hot-middleware');
+    var compiler = webpack(require('../../webpack.dev.config'));
+    app.use(webpackDevMiddleware(compiler, {
         noInfo: true, publicPath: require('../../webpack.dev.config').output.publicPath
     }));
 
-    app.use((0, _webpackHotMiddleware2.default)(compiler, {
+    app.use(webpackHotMiddleware(compiler, {
         log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000
     }));
 }

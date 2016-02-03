@@ -6,9 +6,6 @@
     import helmet from 'helmet';
     import passport from 'passport';
     import * as facebook from 'passport-facebook';
-    import webpack  from 'webpack';
-    import webpackDevMiddleware from 'webpack-dev-middleware';
-    import webpackHotMiddleware from 'webpack-hot-middleware';
     import session from 'express-session';
    // import * as socketserver from './socket';
     
@@ -69,6 +66,9 @@
      });
     
     if(process.env.NODE_ENV==='development'){
+        let webpack = require('webpack');
+        let webpackDevMiddleware = require('webpack-dev-middleware');
+        let webpackHotMiddleware = require('webpack-hot-middleware');
             let compiler = webpack(require('../../webpack.dev.config'));
             app.use(webpackDevMiddleware(compiler, {
               noInfo: true, publicPath: require('../../webpack.dev.config').output.publicPath
