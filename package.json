@@ -3,8 +3,46 @@
   "version": "0.0.1",
   "description": "tektocs",
   "scripts": {
+    "worker": "babel-node ./server/worker/bot.js",
+    "start": "NODE_ENV=development nodemon server/www/app.js --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "babel-polyfill": "^6.3.14",
+    "body-parser": "^1.14.2",
+    "cookie-parser": "^1.4.1",
+    "csurf": "^1.8.3",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "helmet": "^1.1.0",
+    "jade": "^1.11.0",
+    "jquery": "^2.2.0",
+    "parse": "^1.6.14",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.0.0",
+    "passport-twitter": "^1.0.3",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "request": "^2.67.0",
+    "slack-client": "^1.5.1",
+    "socket.io": "^1.4.5",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.4.5",
+    "babel-core": "^6.4.5",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-register": "^6.4.3",
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4",
+    "nodemon": "^1.8.1",
+    "sinon": "^1.17.2",
+    "webpack": "^1.12.12",
+    "webpack-dev-middleware": "^1.5.1",
+    "webpack-hot-middleware": "^2.6.4"
+  }
 }
