@@ -36,11 +36,13 @@ var _expressSession = require('express-session');
 
 var _expressSession2 = _interopRequireDefault(_expressSession);
 
+var _socket = require('./socket');
+
+var socketserver = _interopRequireWildcard(_socket);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import * as socketserver from './socket';
 
 var FACEBOOK_APP_ID = "dummy";
 var FACEBOOK_APP_SECRET = "dummy";
@@ -124,4 +126,4 @@ var server = app.listen(port, function () {
     console.log('Tektocs is running on http://localhost:' + port);
 });
 
-//socketserver.registerListeners(server);
+socketserver.registerListeners(server);
