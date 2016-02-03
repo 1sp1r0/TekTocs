@@ -1,1 +1,2 @@
-web: node server/www/app.js --exec babel-node
+worker: node dist/worker/bot.js
+web: node dist/www/app.js

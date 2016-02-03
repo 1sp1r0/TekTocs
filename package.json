@@ -4,7 +4,11 @@
   "description": "tektocs",
   "scripts": {
     "worker": "babel-node ./server/worker/bot.js",
-    "start": "NODE_ENV=development nodemon server/www/app.js --exec babel-node",
+    "start": "NODE_ENV=development nodemon server/www/app.js --exec babel-node && npm run worker",
+    "build": "npm run build-babel && npm run build-webpack",
+    "build-babel": "babel server -d dist",
+    "build-webpack": "webpack",
+    "serve": "node dist/worker/bot.js && node dist/www/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

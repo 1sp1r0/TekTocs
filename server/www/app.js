@@ -68,17 +68,17 @@
         res.send('Form data has been tampered with.')
      });
     
-   /* if(process.env.NODE_ENV==='development'){
-            let compiler = webpack(require('../webpack.dev.config'));
+    if(process.env.NODE_ENV==='development'){
+            let compiler = webpack(require('../../webpack.dev.config'));
             app.use(webpackDevMiddleware(compiler, {
-              noInfo: true, publicPath: require('../webpack.dev.config').output.publicPath
+              noInfo: true, publicPath: require('../../webpack.dev.config').output.publicPath
             }));
 
           app.use(webpackHotMiddleware(compiler, {
             log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000
           }));
          
-    }*/
+    }
      
     //route middleware to ensure user is authenticated 
     function ensureAuthenticated(req, res, next) {
