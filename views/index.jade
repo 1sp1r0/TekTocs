@@ -1,8 +1,12 @@
 extends ./layout.jade
 block content
     .container(style='padding-top: 75px;')      
+        ul#messages
     script(src="/socket.io/socket.io.js")
     script.
         var socket = io();
+         socket.on('chat message', function(msg){
+            $('#messages').append($('<li>').text(msg));
+         });
     script(src='/js/build/bundle.js')    
      

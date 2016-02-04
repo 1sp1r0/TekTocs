@@ -4,6 +4,10 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
+var _http = require('http');
+
+var _http2 = _interopRequireDefault(_http);
+
 var _bodyParser = require('body-parser');
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
@@ -36,13 +40,27 @@ var _expressSession = require('express-session');
 
 var _expressSession2 = _interopRequireDefault(_expressSession);
 
-var _socket = require('./socket');
+var _socket = require('socket.io');
 
-var socketserver = _interopRequireWildcard(_socket);
+var _socket2 = _interopRequireDefault(_socket);
+
+var _bot = require('../worker/bot');
+
+var _bot2 = _interopRequireDefault(_bot);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var port = process.env.PORT || 8080;
+//import registerListeners from './socket.js'
+
+var app = (0, _express2.default)();
+var httpServer = _http2.default.Server(app);
+var io = (0, _socket2.default)(httpServer);
+//registerListeners(io);
+var slackbot = new _bot2.default(io);
+slackbot.registerlisteners();
 
 var FACEBOOK_APP_ID = "dummy";
 var FACEBOOK_APP_SECRET = "dummy";
@@ -69,8 +87,6 @@ _passport2.default.use(new FacebookStrategy({
     //});
 }));
 
-var port = process.env.PORT || 8080;
-var app = (0, _express2.default)();
 app.set('views', 'views');
 app.set('view engine', 'jade');
 app.use((0, _helmet2.default)());
@@ -122,8 +138,16 @@ app.get('/', function (req, res) {
     _mapping2.default['/'][req.method.toLowerCase()](req, res);
 });
 
-var server = app.listen(port, function () {
-    console.log('Tektocs is running on http://localhost:' + port);
+httpServer.listen(port, function () {
+    console.log('Tektocs is running on http://' + httpServer.address().address + ":" + port);
+    console.log(httpServer.address());
 });
 
-socketserver.registerListeners(server);
+process.on('exit', function (code) {
+    console.log(io.connected);
+    if (io.connected) {
+        io.disconnect();
+    }
+    console.log(io.connected);
+    console.log('About to exit with code:', code);
+});

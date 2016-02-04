@@ -9,13 +9,18 @@
     import * as facebook from 'passport-facebook';
     import session from 'express-session';
     import socketioserver from 'socket.io';
-    import registerListeners from './socket.js'
+    //import registerListeners from './socket.js'
+    import Slackbot from '../worker/bot'
     
     const port = process.env.PORT || 8080;
     const app =  express();
     const httpServer=http.Server(app);
     const io=socketioserver(httpServer);
-    registerListeners(io);
+    //registerListeners(io);
+    let slackbot= new Slackbot(io);
+    slackbot.registerlisteners();
+    
+    
     
     const FACEBOOK_APP_ID = "dummy";
     const FACEBOOK_APP_SECRET = "dummy";
@@ -99,8 +104,9 @@
     
     
     
-    httpServer.listen(port, function() {
-        console.log('Tektocs is running on http://localhost:' + port);
+   httpServer.listen(port, function() {
+        console.log('Tektocs is running on http://' + httpServer.address().address + ":" + port);
+        console.log(httpServer.address());
     });
    
     process.on('exit', (code) => {
