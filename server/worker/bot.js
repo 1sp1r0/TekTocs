@@ -19,7 +19,7 @@ export default class Slackbot{
    registerlisteners(){
     let self=this;
     self.socketioServer.on('connection', function(socket){
-            winston.log('info','user connected.');
+            
             socket.on('disconnect', function(){
                 
             });
