@@ -4,7 +4,7 @@
   "description": "tektocs",
   "scripts": {
     "worker": "babel-node ./server/worker/bot.js",
-    "start": "NODE_ENV=development nodemon server/www/app.js --exec babel-node && npm run worker",
+    "start": "NODE_ENV=development nodemon server/www/app.js --exec babel-node",
     "build": "npm run build-babel && npm run build-webpack",
     "build-babel": "babel server -d dist",
     "build-webpack": "webpack",
@@ -27,11 +27,13 @@
     "passport": "^0.3.2",
     "passport-facebook": "^2.0.0",
     "passport-twitter": "^1.0.3",
+    "pm2": "^1.0.0",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "request": "^2.67.0",
     "slack-client": "^1.5.1",
     "socket.io": "^1.4.5",
+    "socket.io-client": "^1.4.5",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

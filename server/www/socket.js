@@ -1,12 +1,16 @@
-  import  Server from 'socket.io';
-  const socket= new Server();
   
-  function registerListeners(httpserver){
-     let io =socket.listen(httpserver);
-      
+ export default function registerListeners(io){
+ 
         io.on('connection', function(socket){
-            console.log('a user connected');
+            console.log('another user connected');
+            socket.on('disconnect', function(){
+                console.log('user disconnected');
+            });
+            socket.on('chat message', function(msg){
+                console.log('message: ' + msg);
+            });
         });
+        
+        
   }
 
-export {registerListeners};

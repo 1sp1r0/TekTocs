@@ -1,4 +1,5 @@
     import express from 'express';
+    import http from 'http';
     import bodyParser from 'body-parser';
     import cookieParser from 'cookie-parser';
     import csrf from 'csurf';
@@ -7,7 +8,14 @@
     import passport from 'passport';
     import * as facebook from 'passport-facebook';
     import session from 'express-session';
-    import * as socketserver from './socket';
+    import socketioserver from 'socket.io';
+    import registerListeners from './socket.js'
+    
+    const port = process.env.PORT || 8080;
+    const app =  express();
+    const httpServer=http.Server(app);
+    const io=socketioserver(httpServer);
+    registerListeners(io);
     
     const FACEBOOK_APP_ID = "dummy";
     const FACEBOOK_APP_SECRET = "dummy";
@@ -36,8 +44,7 @@
         }
     ));
 
-    const port = process.env.PORT || 8080;
-    const app =  express();
+    
     app.set('views', 'views'); 
     app.set('view engine', 'jade'); 
     app.use(helmet());
@@ -92,8 +99,15 @@
     
     
     
-    let server= app.listen(port, function() {
+    httpServer.listen(port, function() {
         console.log('Tektocs is running on http://localhost:' + port);
     });
    
-    socketserver.registerListeners(server);
+    process.on('exit', (code) => {
+     console.log(io.connected);
+     if(io.connected){
+         io.disconnect();
+     }
+     console.log(io.connected);
+     console.log('About to exit with code:', code);
+ });
