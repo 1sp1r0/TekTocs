@@ -23,7 +23,11 @@ function slackoauth(req, res) {
     var querystring = _url2.default.parse(req.url, true).query;
 
     if (querystring.code) {
+
         (0, _request2.default)('https://slack.com/api/oauth.access?client_id=2605154976.20361890802&client_secret=5467921f878c4f13496d11b41623a221&code=' + querystring.code, function (error, response, body) {
+
+            res.send(body);
+            return;
             if (error) {
                 console.log(error);
             } else {
