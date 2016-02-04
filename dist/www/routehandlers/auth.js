@@ -18,17 +18,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function slackoauth(req, res) {
     if (!req.body.error) {
         if (req.body.code) {
-            (0, _request2.default)({ url: 'https://slack.com/api/oauth.access' }, function (error, response, body) {
+            (0, _request2.default)('https://slack.com/api/oauth.access', function (error, response, body) {
                 if (error) {
                     console.log(error);
                 } else {
                     try {
-
-                        res.send(body);
-                        res.send(JSON.parse(body));
-                        res.send(JSON.stringify(body));
-                        res.send(body.access_token);
-                        res.send(JSON.parse(body).access_token);
+                        _logger2.default.log('info', body);
+                        //res.send(body);
+                        //res.send(JSON.parse(body));
+                        //res.send(JSON.stringify(body));
+                        //res.send(body.access_token);
+                        //res.send(JSON.parse(body).access_token);
                     } catch (err) {
                         _logger2.default.log('error', err);
                     }
