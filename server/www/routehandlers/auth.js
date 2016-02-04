@@ -1,10 +1,12 @@
 import request from 'request'
 import winston from '../../logger'
+import url from 'url'
 
 function slackoauth (req,res){
-    if(!req.body.error){
-        if(req.body.code){
-            request('https://slack.com/api/oauth.access',function(error, response, body){
+    let querystring = url.parse(req.url,true).query;
+  
+        if(querystring.code){
+            request('https://slack.com/api/oauth.access?client_id=2605154976.20361890802&client_secret=5467921f878c4f13496d11b41623a221&code='+ querystring.code,function(error, response, body){
                         if(error) {
                             console.log(error);
                         } else {
@@ -23,9 +25,7 @@ function slackoauth (req,res){
                         });
         }
         
-    }else{
-        winston.log('error',req.body.error);
-    }
+    
 }
 
 export {slackoauth};
