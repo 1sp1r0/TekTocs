@@ -45,7 +45,7 @@ var Slackbot = function () {
         value: function registerlisteners() {
             var self = this;
             self.socketioServer.on('connection', function (socket) {
-                _logger2.default.log('info', 'user connected.');
+
                 socket.on('disconnect', function () {});
                 //listener for SlackMessage event emitted by handler of slack.on('message')
                 socket.on('SlackMessage', function (msg) {
