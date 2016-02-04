@@ -1,32 +1,34 @@
 import config from '../config.js'
 import Slack from 'slack-client'
-
 import socketclient from 'socket.io-client';
-//const io=socketclient('http://localhost:8080');
+
 export default class Slackbot{
     constructor(io){
+        //this is the server-side socket client which emits SlackMessage events when there is a
+        //message from Slack. 
         this.clientio=socketclient(process.env.SOCKETIO_ADDRESS);
-        this.io=io;
+        //this is the socketio server bound to the same port as expressjs. Browser clients as well as the 
+        //server-side client, this.clientio, connect to this socket.
+        this.socketioServer=io;
         this.slack = new Slack(config.slackBotUserToken, true, true);
         this.slack.login();
     }
 
    registerlisteners(){
     let self=this;
-    self.io.on('connection', function(socket){
-           
-            console.log('another user connected');
-            console.log(socket.address);
+    self.socketioServer.on('connection', function(socket){
             socket.on('disconnect', function(){
-                console.log('user disconnected');
+                
             });
-            socket.on('chat message', function(msg){
-                console.log('message: ' + msg);
-                self.io.emit('chat message',msg);
+            //listener for SlackMessage event emitted by handler of slack.on('message')
+            socket.on('SlackMessage', function(msg){ 
+                //emit message to connected browser clients
+                self.socketioServer.emit('SlackMessage',msg);
             });
         });
     this.slack.on('message', function(message) {
-        self.clientio.emit('chat message',message.text);
+        //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
+        self.clientio.emit('SlackMessage',message.text);
     });
   }
   
