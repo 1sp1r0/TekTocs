@@ -1,6 +1,8 @@
 import config from '../config.js'
 import Slack from 'slack-client'
-import socketclient from 'socket.io-client';
+import socketclient from 'socket.io-client'
+import winston from '../logger'
+
 
 export default class Slackbot{
     constructor(io){
@@ -17,6 +19,7 @@ export default class Slackbot{
    registerlisteners(){
     let self=this;
     self.socketioServer.on('connection', function(socket){
+            winston.log('info','user connected.');
             socket.on('disconnect', function(){
                 
             });

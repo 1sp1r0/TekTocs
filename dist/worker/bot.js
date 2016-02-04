@@ -18,18 +18,24 @@ var _socket = require('socket.io-client');
 
 var _socket2 = _interopRequireDefault(_socket);
 
+var _logger = require('../logger');
+
+var _logger2 = _interopRequireDefault(_logger);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-//const io=socketclient('http://localhost:8080');
 
 var Slackbot = function () {
     function Slackbot(io) {
         _classCallCheck(this, Slackbot);
 
+        //this is the server-side socket client which emits SlackMessage events when there is a
+        //message from Slack.
         this.clientio = (0, _socket2.default)(process.env.SOCKETIO_ADDRESS);
-        this.io = io;
+        //this is the socketio server bound to the same port as expressjs. Browser clients as well as the
+        //server-side client, this.clientio, connect to this socket.
+        this.socketioServer = io;
         this.slack = new _slackClient2.default(_config2.default.slackBotUserToken, true, true);
         this.slack.login();
     }
@@ -38,20 +44,18 @@ var Slackbot = function () {
         key: 'registerlisteners',
         value: function registerlisteners() {
             var self = this;
-            self.io.on('connection', function (socket) {
-
-                console.log('another user connected');
-                console.log(socket.address);
-                socket.on('disconnect', function () {
-                    console.log('user disconnected');
-                });
-                socket.on('chat message', function (msg) {
-                    console.log('message: ' + msg);
-                    self.io.emit('chat message', msg);
+            self.socketioServer.on('connection', function (socket) {
+                _logger2.default.log('info', 'user connected.');
+                socket.on('disconnect', function () {});
+                //listener for SlackMessage event emitted by handler of slack.on('message')
+                socket.on('SlackMessage', function (msg) {
+                    //emit message to connected browser clients
+                    self.socketioServer.emit('SlackMessage', msg);
                 });
             });
             this.slack.on('message', function (message) {
-                self.clientio.emit('chat message', message.text);
+                //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
+                self.clientio.emit('SlackMessage', message.text);
             });
         }
     }]);
