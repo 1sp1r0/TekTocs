@@ -12,7 +12,7 @@ pm2.connect(function() {
     max_memory_restart : maxMemory + 'M',   // Auto restart if process taking more than XXmo
     env: {                            // If needed declare some environment variables
       "NODE_ENV": "production",
-      "SOCKETIO_ADDRESS": "http://localhost:5000"
+      "SOCKETIO_ADDRESS": "https://tektocs.herokuapp.com"
       
     },
   }, function(err) {
