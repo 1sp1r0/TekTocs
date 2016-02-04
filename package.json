@@ -4,7 +4,7 @@
   "description": "tektocs",
   "scripts": {
     "worker": "babel-node ./server/worker/bot.js",
-    "start": "NODE_ENV=development nodemon server/www/app.js --exec babel-node",
+    "start": "NODE_ENV=development SOCKETIO_ADDRESS=http://localhost:8080 nodemon server/www/app.js --exec babel-node",
     "build": "npm run build-babel && npm run build-webpack",
     "build-babel": "babel server -d dist",
     "build-webpack": "webpack",

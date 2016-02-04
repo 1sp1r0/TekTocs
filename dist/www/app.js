@@ -138,6 +138,10 @@ app.get('/', function (req, res) {
     _mapping2.default['/'][req.method.toLowerCase()](req, res);
 });
 
+app.get('/slackoauth', function (req, res) {
+    _mapping2.default['/slackoauth'][req.method.toLowerCase()](req, res);
+});
+
 httpServer.listen(port, function () {
     console.log('Tektocs is running on http://' + httpServer.address().address + ":" + port);
     console.log(httpServer.address());

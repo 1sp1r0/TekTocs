@@ -102,6 +102,10 @@
        handlerMappings['/'][req.method.toLowerCase()](req,res);
     } );
     
+     app.get('/slackoauth', function(req,res){
+       handlerMappings['/slackoauth'][req.method.toLowerCase()](req,res);
+    } );
+    
     
     
    httpServer.listen(port, function() {
