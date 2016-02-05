@@ -29,11 +29,12 @@ function oauth(req, res) {
 
         (0, _request2.default)('https://slack.com/api/oauth.access?client_id=2605154976.20361890802&client_secret=5467921f878c4f13496d11b41623a221&code=' + querystring.code, function (error, response, body) {
             if (!error) {
-                if (body.ok) {
-                    var slackTeam = new _exports.SlackTeam(body);
-                    slackTeam.update({ access_token: body.access_token }, body, { upsert: true }, function (err, raw) {
+                var result = JSON.parse(body);
+                if (result.ok) {
+                    var slackTeam = new _exports.SlackTeam(result);
+                    slackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
                         if (err) {
-                            _logger2.default.log('error', raw);
+                            _logger2.default.log('error', { err: err, raw: raw });
                         }
                     });
 
@@ -42,7 +43,7 @@ function oauth(req, res) {
                     //{"ok":true,"access_token":"xoxp-2605154976-2605154980-20366174116-297e0ed68c","scope":"identify,commands,bot","team_name":"obvuis","team_id":"T02HT4JUQ","bot":{"bot_user_id":"U0LAYGPLP","bot_access_token":"xoxb-20372567703-nlvqb9JKINFwJ3nobkWouH3i"}}
                     //{"ok":true,"access_token":"xoxp-2605154976-2605154980-20366174116-297e0ed68c","scope":"identify,commands,bot","team_name":"obvuis","team_id":"T02HT4JUQ","bot":{"bot_user_id":"U0LAYGPLP","bot_access_token":"xoxb-20372567703-nlvqb9JKINFwJ3nobkWouH3i"}}
                 } else {
-                        _logger2.default.log('error', 'body.error');
+                        _logger2.default.log('error', result.error);
                     }
             } else {
                 _logger2.default.log('error', error);
