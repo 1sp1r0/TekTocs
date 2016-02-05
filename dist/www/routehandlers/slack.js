@@ -46,4 +46,5 @@ function oauth(req, res) {
 
 function command(req, res) {
     _logger2.default.log('info', req.body);
+    res.send('got it');
 }
