@@ -12,9 +12,10 @@ export function oauth(req, res) {
         co(function *() {
             try {
                 let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
-                let result = JSON.parse(body);
-                res.send(result);
+                
+                res.send(body);
                 return;
+                let result = JSON.parse(body);
                 if (result.ok) {
                     yield saveSlackAuthToken(result);
                     res.sendStatus(200);
