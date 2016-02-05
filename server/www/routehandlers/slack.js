@@ -34,7 +34,7 @@ try{
     }
 }
 catch(err){
-    res.status(200).send(err);
+    res.send(err);
 }
 }
 
