@@ -11,7 +11,14 @@ function stub(x){
    });
    
 }
-
+function* promiseTest(){
+    
+    let x = yield stub(3);
+    let y= yield stub(6);
+    let z= yield stub(8);
+    console.log(x+y+z);
+   
+}
 export function oauth(req, res) {
 try{
     let querystring = url.parse(req.url, true).query;
@@ -20,7 +27,7 @@ try{
         let generatorRunner= new GeneratorRunner();
         generatorRunner.runPromiseGenerator(function* () {
             let x = yield stub(3);
-            res.send(x);
+            //res.send(x);
             return;
             try {
                 let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
