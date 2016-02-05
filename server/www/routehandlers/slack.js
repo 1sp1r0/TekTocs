@@ -6,7 +6,7 @@ import SlackTeam from '../../models/slackteam.js'
 
 
 export function oauth(req, res) {
-
+try{
     let querystring = url.parse(req.url, true).query;
     if (querystring.code) {
         co(function *() {
@@ -32,7 +32,10 @@ export function oauth(req, res) {
             res.send(err);
         });
     }
-
+}
+catch(err){
+    res.status(200).send(err);
+}
 }
 
 export function command(req, res) {
