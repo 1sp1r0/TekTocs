@@ -5,6 +5,7 @@ import SlackTeam from '../../models/slackteam.js'
 
 
 export function oauth (req,res){
+    try{
     let querystring = url.parse(req.url,true).query;
       if(querystring.code){
             request('https://slack.com/api/oauth.access?client_id=' + 
@@ -13,6 +14,9 @@ export function oauth (req,res){
                     '&code='+ querystring.code
                    ).then(getSlackAuthToken,requestErrorHandler);
         }
+    }catch (error){
+        winston.log('error', error);
+    }  
 }
 
 export function command (req,res){
