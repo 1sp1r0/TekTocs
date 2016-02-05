@@ -5,13 +5,23 @@ import GeneratorRunner from '../../generatorRunner'
 import url from 'url'
 import SlackTeam from '../../models/slackteam.js'
 
+function stub(x){
+   return new Promise((resolve,reject)=>{
+       setTimeout(()=>{resolve(x*10);},0);
+   });
+   
+}
 
 export function oauth(req, res) {
 try{
     let querystring = url.parse(req.url, true).query;
     if (querystring.code) {
+        
         let generatorRunner= new GeneratorRunner();
         generatorRunner.runPromiseGenerator(function* () {
+            let x = yield stub(3);
+            res.send(x);
+            return;
             try {
                 let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
                 

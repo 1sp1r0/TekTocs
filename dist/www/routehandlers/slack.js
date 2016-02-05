@@ -32,54 +32,68 @@ var _slackteam2 = _interopRequireDefault(_slackteam);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function stub(x) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            resolve(x * 10);
+        }, 0);
+    });
+}
+
 function oauth(req, res) {
     try {
         (function () {
             var querystring = _url2.default.parse(req.url, true).query;
             if (querystring.code) {
+
                 var generatorRunner = new _generatorRunner2.default();
                 generatorRunner.runPromiseGenerator(regeneratorRuntime.mark(function _callee() {
-                    var body, result;
+                    var x, body, result;
                     return regeneratorRuntime.wrap(function _callee$(_context) {
                         while (1) {
                             switch (_context.prev = _context.next) {
                                 case 0:
-                                    _context.prev = 0;
-                                    _context.next = 3;
-                                    return (0, _requestPromise2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
+                                    _context.next = 2;
+                                    return stub(3);
 
-                                case 3:
+                                case 2:
+                                    x = _context.sent;
+
+                                    res.send(x);
+                                    return _context.abrupt('return');
+
+                                case 8:
                                     body = _context.sent;
 
                                     res.status(200).send('body');
                                     return _context.abrupt('return');
 
-                                case 10:
+                                case 15:
                                     res.sendStatus(200);
-                                    _context.next = 15;
+                                    _context.next = 20;
                                     break;
 
-                                case 13:
+                                case 18:
                                     _logger2.default.log('error', result.error);
                                     res.send(result.error);
 
-                                case 15:
-                                    _context.next = 21;
+                                case 20:
+                                    _context.next = 26;
                                     break;
 
-                                case 17:
-                                    _context.prev = 17;
-                                    _context.t0 = _context['catch'](0);
+                                case 22:
+                                    _context.prev = 22;
+                                    _context.t0 = _context['catch'](5);
 
                                     _logger2.default.log('error', _context.t0);
                                     res.send(_context.t0);
 
-                                case 21:
+                                case 26:
                                 case 'end':
                                     return _context.stop();
                             }
                         }
-                    }, _callee, this, [[0, 17]]);
+                    }, _callee, this, [[5, 22]]);
                 }));
                 /*.catch((err) => {
                     winston.log('error', err);
