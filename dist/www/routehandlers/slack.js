@@ -39,8 +39,7 @@ function oauth(req, res) {
         var querystring = _url2.default.parse(req.url, true).query;
         if (querystring.code) {
             (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-                var _body, result;
-
+                var body, result;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -50,7 +49,7 @@ function oauth(req, res) {
                                 return (0, _requestPromise2.default)('http://www.yahoo.com');
 
                             case 3:
-                                _body = _context.sent;
+                                body = _context.sent;
 
                                 res.status(200).send('body');
                                 return _context.abrupt('return');
@@ -85,7 +84,6 @@ function oauth(req, res) {
                 _logger2.default.log('error', err);
                 //res.send(err);
             });
-            res.status(200).send(body);
         }
     } catch (err) {
         res.send(err.message);

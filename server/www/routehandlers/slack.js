@@ -32,7 +32,7 @@ try{
             winston.log('error', err);
             //res.send(err);
         });
-        res.status(200).send(body);
+        
     }
 }
 catch(err){
