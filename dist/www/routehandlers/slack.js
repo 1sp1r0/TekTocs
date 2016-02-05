@@ -37,7 +37,7 @@ function oauth(req, res) {
 
                     if (result.ok) {
 
-                        var slackTeam = new _slackteam2.default({ access_token: result.access_token });
+                        var slackTeam = new _slackteam2.default(result);
                         res.send(result);
                         return;
                         slackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
