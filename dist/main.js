@@ -14,7 +14,8 @@ pm2.connect(function() {
       "NODE_ENV": "production",
       "SOCKETIO_ADDRESS": "https://tektocs.herokuapp.com",
       "SLASH_COMMAND_VERIFICATION_TOKEN": "fjWWmrZt2kqSCrpkFYrVE5iU",
-      "OBVUIS_SLACK_BOT_USER_TOKEN":'xoxb-20372567703-nlvqb9JKINFwJ3nobkWouH3i'
+      "OBVUIS_SLACK_BOT_USER_TOKEN":'xoxb-20372567703-nlvqb9JKINFwJ3nobkWouH3i',
+      "MONGOLAB_URI" : 'mongodb://heroku_pxgrqk35:u45fmu7pharj20eiemaet23mj7@ds059205.mongolab.com:59205/heroku_pxgrqk35'
     },
   }, function(err) {
     if (err) return console.error('Error while launching applications', err.stack || err);

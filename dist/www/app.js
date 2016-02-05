@@ -48,13 +48,17 @@ var _bot = require('../worker/bot');
 
 var _bot2 = _interopRequireDefault(_bot);
 
+var _db = require('../models/db');
+
+var _db2 = _interopRequireDefault(_db);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var port = process.env.PORT || 8080;
 //import registerListeners from './socket.js'
 
+var port = process.env.PORT || 8080;
 var app = (0, _express2.default)();
 var httpServer = _http2.default.Server(app);
 var io = (0, _socket2.default)(httpServer);
@@ -146,16 +150,18 @@ app.post('/slack/command', function (req, res) {
     _mapping2.default['/slack/command'][req.method.toLowerCase()](req, res);
 });
 
+//connect to database
+_db2.default.connect();
+
 httpServer.listen(port, function () {
     console.log('Tektocs is running on http://' + httpServer.address().address + ":" + port);
-    console.log(httpServer.address());
 });
 
 process.on('exit', function (code) {
-    console.log(io.connected);
+
     if (io.connected) {
         io.disconnect();
     }
-    console.log(io.connected);
+
     console.log('About to exit with code:', code);
 });

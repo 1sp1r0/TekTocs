@@ -33,7 +33,7 @@ var Slackbot = function () {
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer = io;
         this.slack = new _slackClient2.default(process.env.OBVUIS_SLACK_BOT_USER_TOKEN, true, true);
-        this.slack.login();
+        //this.slack.login();
     }
 
     _createClass(Slackbot, [{

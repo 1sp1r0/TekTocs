@@ -11,6 +11,7 @@
     import socketioserver from 'socket.io';
     //import registerListeners from './socket.js'
     import Slackbot from '../worker/bot'
+    import DbConnection from '../models/db'
     
     const port = process.env.PORT || 8080;
     const app =  express();
@@ -110,18 +111,19 @@
        handlerMappings['/slack/command'][req.method.toLowerCase()](req,res);
     } );
     
-    
+    //connect to database
+    DbConnection.connect();
     
    httpServer.listen(port, function() {
         console.log('Tektocs is running on http://' + httpServer.address().address + ":" + port);
-        console.log(httpServer.address());
+        
     });
    
     process.on('exit', (code) => {
-     console.log(io.connected);
+     
      if(io.connected){
          io.disconnect();
      }
-     console.log(io.connected);
+     
      console.log('About to exit with code:', code);
  });

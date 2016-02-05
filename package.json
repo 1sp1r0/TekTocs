@@ -4,7 +4,7 @@
   "description": "tektocs",
   "scripts": {
     "worker": "babel-node ./server/worker/bot.js",
-    "start": "NODE_ENV=development SOCKETIO_ADDRESS=http://localhost:8080 nodemon server/www/app.js --exec babel-node",
+    "start": "NODE_ENV=development SOCKETIO_ADDRESS=http://localhost:8080 MONGOLAB_URI=mongodb://heroku_pxgrqk35:u45fmu7pharj20eiemaet23mj7@ds059205.mongolab.com:59205/heroku_pxgrqk35 nodemon server/www/app.js --exec babel-node",
     "build": "npm run build-babel && npm run build-webpack",
     "build-babel": "babel server -d dist",
     "build-webpack": "webpack",
@@ -23,6 +23,7 @@
     "helmet": "^1.1.0",
     "jade": "^1.11.0",
     "jquery": "^2.2.0",
+    "mongoose": "^4.4.1",
     "parse": "^1.6.14",
     "passport": "^0.3.2",
     "passport-facebook": "^2.0.0",
