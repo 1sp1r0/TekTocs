@@ -10,6 +10,10 @@ var _requestPromise = require('request-promise');
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
+var _co = require('co');
+
+var _co2 = _interopRequireDefault(_co);
+
 var _logger = require('../../logger');
 
 var _logger2 = _interopRequireDefault(_logger);
@@ -25,15 +29,61 @@ var _slackteam2 = _interopRequireDefault(_slackteam);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function oauth(req, res) {
-    try {
-        var querystring = _url2.default.parse(req.url, true).query;
-        if (querystring.code) {
-            (0, _requestPromise2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code).then(getSlackAuthToken, requestErrorHandler).finally(function () {
-                res.sendStatus(200);
-            });
-        }
-    } catch (error) {
-        _logger2.default.log('error', error);
+
+    var querystring = _url2.default.parse(req.url, true).query;
+    if (querystring.code) {
+        (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+            var body, result;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            _context.prev = 0;
+                            _context.next = 3;
+                            return (0, _requestPromise2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
+
+                        case 3:
+                            body = _context.sent;
+                            result = JSON.parse(body);
+
+                            if (!result.ok) {
+                                _context.next = 11;
+                                break;
+                            }
+
+                            _context.next = 8;
+                            return saveSlackAuthToken(result);
+
+                        case 8:
+                            res.sendStatus(200);
+                            _context.next = 13;
+                            break;
+
+                        case 11:
+                            _logger2.default.log('error', result.error);
+                            res.sendStatus(500);
+
+                        case 13:
+                            _context.next = 19;
+                            break;
+
+                        case 15:
+                            _context.prev = 15;
+                            _context.t0 = _context['catch'](0);
+
+                            _logger2.default.log('error', _context.t0);
+                            res.sendStatus(500);
+
+                        case 19:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, this, [[0, 15]]);
+        })).catch(function (err) {
+            _logger2.default.log('error', err);
+            res.sendStatus(500);
+        });
     }
 }
 
@@ -43,27 +93,20 @@ function command(req, res) {
     } else {
         _logger2.default.log('warn', 'unauthorized slash command access');
     }
-
-    //res.sendStatus(200);
 }
 
-function requestErrorHandler(error) {
-    _logger2.default.log('error', error);
-}
-
-function getSlackAuthToken(body) {
-    try {
-        var result = JSON.parse(body);
-        if (result.ok) {
+function saveSlackAuthToken(result) {
+    return new Promise(function (resolve, reject) {
+        try {
             _slackteam2.default.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
                 if (err) {
-                    _logger2.default.log('error', { err: err, raw: raw });
+                    reject(err);
+                } else {
+                    resolve(raw);
                 }
             });
-        } else {
-            _logger2.default.log('error', result.error);
+        } catch (err) {
+            reject(err);
         }
-    } catch (err) {
-        _logger2.default.log('error', err);
-    }
+    });
 }

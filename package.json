@@ -16,6 +16,7 @@
   "dependencies": {
     "babel-polyfill": "^6.3.14",
     "body-parser": "^1.14.2",
+    "co": "^4.6.0",
     "cookie-parser": "^1.4.1",
     "csurf": "^1.8.3",
     "express": "^4.13.4",
