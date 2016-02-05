@@ -78,7 +78,7 @@ function oauth(req, res) {
                                     _context.prev = 15;
                                     _context.t0 = _context['catch'](0);
 
-                                    _logger2.default.log('error', _context.t0);
+                                    _logger2.default.log('error', _context.t0.message);
                                     res.sendStatus(500);
 
                                 case 19:
@@ -88,7 +88,7 @@ function oauth(req, res) {
                         }
                     }, _callee, this, [[0, 15]]);
                 })).catch(function (err) {
-                    _logger2.default.log('error', err.message);
+                    _logger2.default.log('error', err.stack);
                     res.sendStatus(500);
                 });
             }
