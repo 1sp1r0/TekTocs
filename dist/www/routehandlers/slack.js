@@ -28,12 +28,12 @@ function oauth(req, res) {
     try {
         var querystring = _url2.default.parse(req.url, true).query;
         if (querystring.code) {
-            (0, _requestPromise2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code).then(getSlackAuthToken, requestErrorHandler);
+            (0, _requestPromise2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code).then(getSlackAuthToken, requestErrorHandler).finally(function () {
+                res.sendStatus(200);
+            });
         }
     } catch (error) {
         _logger2.default.log('error', error);
-    } finally {
-        res.sendStatus(200);
     }
 }
 

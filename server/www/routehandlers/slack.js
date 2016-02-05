@@ -12,14 +12,15 @@ export function oauth (req,res){
                      process.env.SLACK_CLIENT_ID + 
                     '&client_secret=' + process.env.SLACK_CLIENT_SECRET +  
                     '&code='+ querystring.code
-                   ).then(getSlackAuthToken,requestErrorHandler);
+                   ).then(getSlackAuthToken,requestErrorHandler)
+                   .finally(function () {
+                       res.sendStatus(200);
+	               });
         }
     }catch (error){
         winston.log('error', error);
     }  
-    finally{
-        res.sendStatus(200);
-    }
+    
 }
 
 export function command (req,res){
