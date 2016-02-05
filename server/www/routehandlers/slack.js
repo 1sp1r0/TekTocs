@@ -1,7 +1,7 @@
 import request from 'request'
 import winston from '../../logger'
 import url from 'url'
-import {SlackTeam} from '../../models/exports.js'
+import SlackTeam from '../../models/slackteam.js'
 
 
 export function oauth (req,res){

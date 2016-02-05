@@ -18,7 +18,9 @@ var _url = require('url');
 
 var _url2 = _interopRequireDefault(_url);
 
-var _exports = require('../../models/exports.js');
+var _slackteam = require('../../models/slackteam.js');
+
+var _slackteam2 = _interopRequireDefault(_slackteam);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35,7 +37,7 @@ function oauth(req, res) {
 
                     if (result.ok) {
 
-                        var slackTeam = new _exports.SlackTeam({ access_token: result.access_token });
+                        var slackTeam = new _slackteam2.default({ access_token: result.access_token });
                         res.send(result);
                         return;
                         slackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
