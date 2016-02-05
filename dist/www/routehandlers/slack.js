@@ -38,7 +38,7 @@ function oauth(req, res) {
     try {
         var querystring = _url2.default.parse(req.url, true).query;
         if (querystring.code) {
-            var body = (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+            (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
                 var _body, result;
 
                 return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -51,34 +51,36 @@ function oauth(req, res) {
 
                             case 3:
                                 _body = _context.sent;
-                                return _context.abrupt('return', _body);
 
-                            case 9:
+                                res.status(200).send('body');
+                                return _context.abrupt('return');
+
+                            case 10:
                                 res.sendStatus(200);
-                                _context.next = 14;
+                                _context.next = 15;
                                 break;
 
-                            case 12:
+                            case 13:
                                 _logger2.default.log('error', result.error);
                                 res.send(result.error);
 
-                            case 14:
-                                _context.next = 19;
+                            case 15:
+                                _context.next = 20;
                                 break;
 
-                            case 16:
-                                _context.prev = 16;
+                            case 17:
+                                _context.prev = 17;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0);
                                 //res.send(err);
 
-                            case 19:
+                            case 20:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 16]]);
+                }, _callee, this, [[0, 17]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err);
                 //res.send(err);
