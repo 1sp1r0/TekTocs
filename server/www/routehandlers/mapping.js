@@ -1,10 +1,10 @@
 import * as homeRouteHandlers from './home'
-import * as authRouteHandlers from './auth'
+import * as slackRouteHandlers from './slack'
 
 
 let routeHandlerMappings={};
 
 routeHandlerMappings["/"]={get:homeRouteHandlers.index};
-routeHandlerMappings["/slackoauth"]={get:authRouteHandlers.slackoauth};
-
+routeHandlerMappings["/slack/oauth"]={get:slackRouteHandlers.oauth};
+routeHandlerMappings["/slack/command"]={post:slackRouteHandlers.command};
 export default routeHandlerMappings;

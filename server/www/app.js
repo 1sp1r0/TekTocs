@@ -102,8 +102,12 @@
        handlerMappings['/'][req.method.toLowerCase()](req,res);
     } );
     
-     app.get('/slackoauth', function(req,res){
-       handlerMappings['/slackoauth'][req.method.toLowerCase()](req,res);
+     app.get('/slack/oauth', function(req,res){
+       handlerMappings['/slack/oauth'][req.method.toLowerCase()](req,res);
+    } );
+    
+    app.post('/slack/command', function(req,res){
+       handlerMappings['/slack/command'][req.method.toLowerCase()](req,res);
     } );
     
     

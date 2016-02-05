@@ -138,8 +138,12 @@ app.get('/', function (req, res) {
     _mapping2.default['/'][req.method.toLowerCase()](req, res);
 });
 
-app.get('/slackoauth', function (req, res) {
-    _mapping2.default['/slackoauth'][req.method.toLowerCase()](req, res);
+app.get('/slack/oauth', function (req, res) {
+    _mapping2.default['/slack/oauth'][req.method.toLowerCase()](req, res);
+});
+
+app.post('/slack/command', function (req, res) {
+    _mapping2.default['/slack/command'][req.method.toLowerCase()](req, res);
 });
 
 httpServer.listen(port, function () {
