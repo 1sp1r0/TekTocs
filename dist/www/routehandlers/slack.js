@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.oauth = oauth;
 exports.command = command;
 
-var _request = require('request');
+var _requestPromise = require('request-promise');
 
-var _request2 = _interopRequireDefault(_request);
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
 var _logger = require('../../logger');
 
@@ -26,38 +26,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function oauth(req, res) {
     var querystring = _url2.default.parse(req.url, true).query;
-
     if (querystring.code) {
-
-        (0, _request2.default)('https://slack.com/api/oauth.access?client_id=2605154976.20361890802&client_secret=5467921f878c4f13496d11b41623a221&code=' + querystring.code, function (error, response, body) {
-            try {
-                if (!error) {
-
-                    var result = JSON.parse(body);
-
-                    if (result.ok) {
-                        var slackTeam = new _slackteam2.default(result);
-                        _slackteam2.default.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
-                            if (err) {
-                                _logger2.default.log('error', { err: err, raw: raw });
-                            }
-                        });
-
-                        //{"ok":true,"access_token":"xoxp-2605154976-2605154980-20366174116-297e0ed68c","scope":"identify,commands,bot","team_name":"obvuis","team_id":"T02HT4JUQ","bot":{"bot_user_id":"U0LAYGPLP","bot_access_token":"xoxb-20372567703-nlvqb9JKINFwJ3nobkWouH3i"}}
-                        //{"ok":true,"access_token":"xoxp-18411796983-18412515072-20372759077-03533db7d4","scope":"identify,commands,bot","team_name":"#interiordesigners","team_id":"T0JC3PEUX","bot":{"bot_user_id":"U0LAW84EQ","bot_access_token":"xoxb-20370276500-oiYPAV9nGQA3ic4AKrlJanlS"}}
-                        //{"ok":true,"access_token":"xoxp-2605154976-2605154980-20366174116-297e0ed68c","scope":"identify,commands,bot","team_name":"obvuis","team_id":"T02HT4JUQ","bot":{"bot_user_id":"U0LAYGPLP","bot_access_token":"xoxb-20372567703-nlvqb9JKINFwJ3nobkWouH3i"}}
-                        //{"ok":true,"access_token":"xoxp-2605154976-2605154980-20366174116-297e0ed68c","scope":"identify,commands,bot","team_name":"obvuis","team_id":"T02HT4JUQ","bot":{"bot_user_id":"U0LAYGPLP","bot_access_token":"xoxb-20372567703-nlvqb9JKINFwJ3nobkWouH3i"}}
-                    } else {
-                            _logger2.default.log('error', result.error);
-                        }
-                } else {
-                    _logger2.default.log('error', error);
-                }
-                res.send(body);
-            } catch (err) {
-                _logger2.default.log('error', err);
-            }
-        });
+        (0, _requestPromise2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code).then(getSlackAuthToken, requestErrorHandler);
     }
 }
 
@@ -69,4 +39,25 @@ function command(req, res) {
     }
 
     //res.sendStatus(200);
+}
+
+function requestErrorHandler(error) {
+    _logger2.default.log('error', error);
+}
+
+function getSlackAuthToken(body) {
+    try {
+        var result = JSON.parse(body);
+        if (result.ok) {
+            _slackteam2.default.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
+                if (err) {
+                    _logger2.default.log('error', { err: err, raw: raw });
+                }
+            });
+        } else {
+            _logger2.default.log('error', result.error);
+        }
+    } catch (err) {
+        _logger2.default.log('error', err);
+    }
 }
