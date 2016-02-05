@@ -4,7 +4,7 @@ import winston from '../../logger'
 import GeneratorRunner from '../../generatorRunner'
 import url from 'url'
 import SlackTeam from '../../models/slackteam.js'
-
+import "babel-polyfill"
 
 export function oauth(req, res) {
 try{
