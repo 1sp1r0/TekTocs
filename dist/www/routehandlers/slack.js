@@ -45,7 +45,11 @@ function oauth(req, res) {
 }
 
 function command(req, res) {
+    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
+        res.status(200).send('Hello ' + req.body.user_name, 200);
+    } else {
+        _logger2.default.log('warn', 'unauthorized slash command access');
+    }
 
-    res.status(200).send('Hello ' + req.body.user_name, 200);
     //res.sendStatus(200);
 }

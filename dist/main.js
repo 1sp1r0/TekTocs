@@ -12,8 +12,9 @@ pm2.connect(function() {
     max_memory_restart : maxMemory + 'M',   // Auto restart if process taking more than XXmo
     env: {                            // If needed declare some environment variables
       "NODE_ENV": "production",
-      "SOCKETIO_ADDRESS": "https://tektocs.herokuapp.com"
-      
+      "SOCKETIO_ADDRESS": "https://tektocs.herokuapp.com",
+      "SLASH_COMMAND_VERIFICATION_TOKEN": "fjWWmrZt2kqSCrpkFYrVE5iU",
+      "OBVUIS_SLACK_BOT_USER_TOKEN":'xoxb-20372567703-nlvqb9JKINFwJ3nobkWouH3i'
     },
   }, function(err) {
     if (err) return console.error('Error while launching applications', err.stack || err);

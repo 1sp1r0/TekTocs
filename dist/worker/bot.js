@@ -6,10 +6,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _config = require('../config.js');
-
-var _config2 = _interopRequireDefault(_config);
-
 var _slackClient = require('slack-client');
 
 var _slackClient2 = _interopRequireDefault(_slackClient);
@@ -36,7 +32,7 @@ var Slackbot = function () {
         //this is the socketio server bound to the same port as expressjs. Browser clients as well as the
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer = io;
-        this.slack = new _slackClient2.default(_config2.default.slackBotUserToken, true, true);
+        this.slack = new _slackClient2.default(process.env.OBVUIS_SLACK_BOT_USER_TOKEN, true, true);
         this.slack.login();
     }
 
