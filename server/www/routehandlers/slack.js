@@ -9,9 +9,9 @@ export function oauth(req, res) {
 try{
     let querystring = url.parse(req.url, true).query;
     if (querystring.code) {
-        co(function *() {
+        co(function* () {
             try {
-                let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
+                /*let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
                 
                 res.status(200).send('body');
                 return;
@@ -22,7 +22,7 @@ try{
                 } else {
                     winston.log('error', result.error);
                     res.send(result.error);
-                }
+                }*/
             } catch (err) {
                 winston.log('error', err);
                 res.send(err);
