@@ -84,7 +84,7 @@ function oauth(req, res) {
             res.status(200).send(body);
         }
     } catch (err) {
-        res.send('err');
+        res.send(err.message);
     }
 }
 
