@@ -59,7 +59,7 @@ function oauth(req, res) {
                                     }
 
                                     _context.next = 8;
-                                    return saveSlackAuthToken1(result);
+                                    return saveSlackAuthToken(result);
 
                                 case 8:
                                     res.sendStatus(200);
@@ -114,7 +114,8 @@ function saveSlackAuthToken(result) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(raw);
+                    //resolve(raw);
+                    reject('simulated error');
                 }
             });
         } catch (err) {

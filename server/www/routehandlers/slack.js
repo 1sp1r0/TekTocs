@@ -15,7 +15,7 @@ export function oauth(req, res) {
                     let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
                     let result = JSON.parse(body);
                     if (result.ok) {
-                        yield saveSlackAuthToken1(result);
+                        yield saveSlackAuthToken(result);
                         res.sendStatus(200);
                     } else {
                         winston.log('error', result.error);
@@ -54,7 +54,8 @@ function saveSlackAuthToken(result) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(raw);
+                    //resolve(raw);
+                    reject('simulated error');
                 }
             });
         }
