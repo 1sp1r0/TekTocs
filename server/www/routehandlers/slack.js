@@ -33,5 +33,5 @@ export function oauth (req,res){
 
 export function command (req,res){
    // winston.log('info',req.body);
-    res.send('got it');
+    res.sendStatus(200);
 }
