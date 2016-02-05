@@ -94,7 +94,7 @@ app.use(_express2.default.static('public'));
 app.use(_bodyParser2.default.json());
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use((0, _cookieParser2.default)());
-app.use((0, _csurf2.default)({ cookie: true }));
+//app.use(csrf({ cookie: true }));
 app.set('trust proxy', 1); // trust first proxy
 app.use((0, _expressSession2.default)({
     secret: 't3kt0cs1sn01',

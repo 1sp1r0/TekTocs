@@ -57,7 +57,7 @@
     app.use(bodyParser.json());                        
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cookieParser());
-    app.use(csrf({ cookie: true }));
+    //app.use(csrf({ cookie: true }));
     app.set('trust proxy', 1) // trust first proxy
     app.use( session({
         secret : 't3kt0cs1sn01',
