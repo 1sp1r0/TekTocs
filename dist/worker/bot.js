@@ -54,6 +54,7 @@ var Slackbot = function () {
                 });
             });
             this.slack.on('message', function (message) {
+                console.log(message);
                 //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
                 self.clientio.emit('SlackMessage', message.text);
             });
