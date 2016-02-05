@@ -32,8 +32,6 @@ function oauth(req, res) {
 
     var querystring = _url2.default.parse(req.url, true).query;
     if (querystring.code) {
-        res.send(querystring.code);
-        return;
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
             var body, result;
             return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -58,7 +56,7 @@ function oauth(req, res) {
 
                         case 13:
                             _logger2.default.log('error', result.error);
-                            res.sendStatus(500);
+                            res.send(result.error);
 
                         case 15:
                             _context.next = 21;
@@ -69,7 +67,7 @@ function oauth(req, res) {
                             _context.t0 = _context['catch'](0);
 
                             _logger2.default.log('error', _context.t0);
-                            res.sendStatus(500);
+                            res.send(_context.t0);
 
                         case 21:
                         case 'end':
@@ -79,7 +77,7 @@ function oauth(req, res) {
             }, _callee, this, [[0, 17]]);
         })).catch(function (err) {
             _logger2.default.log('error', err);
-            res.sendStatus(500);
+            res.send(err);
         });
     }
 }
