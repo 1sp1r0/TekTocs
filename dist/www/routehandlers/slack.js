@@ -44,9 +44,8 @@ function oauth(req, res) {
 
                         case 3:
                             body = _context.sent;
-                            result = JSON.parse(body);
 
-                            res.send(result);
+                            res.send(body);
                             return _context.abrupt('return');
 
                         case 10:
