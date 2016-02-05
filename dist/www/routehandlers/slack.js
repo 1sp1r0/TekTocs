@@ -46,40 +46,35 @@ function oauth(req, res) {
                             body = _context.sent;
                             result = JSON.parse(body);
 
-                            if (!result.ok) {
-                                _context.next = 11;
-                                break;
-                            }
+                            res.send(result);
+                            return _context.abrupt('return');
 
-                            _context.next = 8;
-                            return saveSlackAuthToken(result);
-
-                        case 8:
+                        case 10:
                             res.sendStatus(200);
-                            _context.next = 13;
+                            _context.next = 15;
                             break;
 
-                        case 11:
+                        case 13:
                             _logger2.default.log('error', result.error);
                             res.sendStatus(500);
 
-                        case 13:
-                            _context.next = 19;
+                        case 15:
+                            _context.next = 21;
                             break;
 
-                        case 15:
-                            _context.prev = 15;
+                        case 17:
+                            _context.prev = 17;
                             _context.t0 = _context['catch'](0);
 
                             _logger2.default.log('error', _context.t0);
                             res.sendStatus(500);
 
-                        case 19:
+                        case 21:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 15]]);
+            }, _callee, this, [[0, 17]]);
         })).catch(function (err) {
             _logger2.default.log('error', err);
             res.sendStatus(500);
