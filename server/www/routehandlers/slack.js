@@ -1,6 +1,7 @@
-import request from 'request'
+import request from 'request-promise'
 import co from 'co'
 import winston from '../../logger'
+import GeneratorRunner from '../../generatorRunner'
 import url from 'url'
 import SlackTeam from '../../models/slackteam.js'
 
@@ -9,7 +10,8 @@ export function oauth(req, res) {
 try{
     let querystring = url.parse(req.url, true).query;
     if (querystring.code) {
-        co(function* () {
+        let generatorRunner= new GeneratorRunner();
+        generatorRunner.runPromiseGenerator(function* () {
             try {
                 let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
                 
@@ -27,10 +29,11 @@ try{
                 winston.log('error', err);
                 res.send(err);
             }
-        }).catch((err) => {
+        });
+        /*.catch((err) => {
             winston.log('error', err);
             res.send(err);
-        });
+        });*/
     }
 }
 catch(err){

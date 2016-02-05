@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.oauth = oauth;
 exports.command = command;
 
-var _request = require('request');
+var _requestPromise = require('request-promise');
 
-var _request2 = _interopRequireDefault(_request);
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
 
 var _co = require('co');
 
@@ -17,6 +17,10 @@ var _co2 = _interopRequireDefault(_co);
 var _logger = require('../../logger');
 
 var _logger2 = _interopRequireDefault(_logger);
+
+var _generatorRunner = require('../../generatorRunner');
+
+var _generatorRunner2 = _interopRequireDefault(_generatorRunner);
 
 var _url = require('url');
 
@@ -33,7 +37,8 @@ function oauth(req, res) {
         (function () {
             var querystring = _url2.default.parse(req.url, true).query;
             if (querystring.code) {
-                (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+                var generatorRunner = new _generatorRunner2.default();
+                generatorRunner.runPromiseGenerator(regeneratorRuntime.mark(function _callee() {
                     var body, result;
                     return regeneratorRuntime.wrap(function _callee$(_context) {
                         while (1) {
@@ -41,7 +46,7 @@ function oauth(req, res) {
                                 case 0:
                                     _context.prev = 0;
                                     _context.next = 3;
-                                    return (0, _request2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
+                                    return (0, _requestPromise2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
 
                                 case 3:
                                     body = _context.sent;
@@ -75,10 +80,11 @@ function oauth(req, res) {
                             }
                         }
                     }, _callee, this, [[0, 17]]);
-                })).catch(function (err) {
-                    _logger2.default.log('error', err);
+                }));
+                /*.catch((err) => {
+                    winston.log('error', err);
                     res.send(err);
-                });
+                });*/
             }
         })();
     } catch (err) {
