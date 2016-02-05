@@ -32,6 +32,8 @@ function oauth(req, res) {
 
     var querystring = _url2.default.parse(req.url, true).query;
     if (querystring.code) {
+        res.send(querystring.code);
+        return;
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
             var body, result;
             return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -39,43 +41,42 @@ function oauth(req, res) {
                     switch (_context.prev = _context.next) {
                         case 0:
                             _context.prev = 0;
+                            _context.next = 3;
+                            return (0, _requestPromise2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
 
-                            res.send(querystring.code);
-                            return _context.abrupt('return');
-
-                        case 5:
+                        case 3:
                             body = _context.sent;
                             result = JSON.parse(body);
 
                             res.send(result);
                             return _context.abrupt('return');
 
-                        case 12:
+                        case 10:
                             res.sendStatus(200);
-                            _context.next = 17;
+                            _context.next = 15;
                             break;
 
-                        case 15:
+                        case 13:
                             _logger2.default.log('error', result.error);
                             res.sendStatus(500);
 
-                        case 17:
-                            _context.next = 23;
+                        case 15:
+                            _context.next = 21;
                             break;
 
-                        case 19:
-                            _context.prev = 19;
+                        case 17:
+                            _context.prev = 17;
                             _context.t0 = _context['catch'](0);
 
                             _logger2.default.log('error', _context.t0);
                             res.sendStatus(500);
 
-                        case 23:
+                        case 21:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 19]]);
+            }, _callee, this, [[0, 17]]);
         })).catch(function (err) {
             _logger2.default.log('error', err);
             res.sendStatus(500);
