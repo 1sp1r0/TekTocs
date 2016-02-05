@@ -45,7 +45,7 @@ function oauth(req, res) {
 }
 
 function command(req, res) {
-    // winston.log('info',req.body);
-    res.status(200).send('Got it', 200);
+
+    res.status(200).send('Hello ' + req.body.user_name, 200);
     //res.sendStatus(200);
 }
