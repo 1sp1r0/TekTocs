@@ -26,7 +26,7 @@ export function oauth(req, res) {
                     res.sendStatus(500);
                 }
             }).catch((err) => {
-                winston.log('error', err);
+                winston.log('error', err.message);
                 res.sendStatus(500);
             });
 

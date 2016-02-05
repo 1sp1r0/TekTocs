@@ -88,7 +88,7 @@ function oauth(req, res) {
                         }
                     }, _callee, this, [[0, 15]]);
                 })).catch(function (err) {
-                    _logger2.default.log('error', err);
+                    _logger2.default.log('error', err.message);
                     res.sendStatus(500);
                 });
             }
