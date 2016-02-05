@@ -12,9 +12,8 @@ try{
     if (querystring.code) {
        co(function* () {
             try {
-                //let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
-                let body=yield request('http://www.yahoo.com');
-                res.status(200).send('body');
+                let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
+                res.status(200).send(body);
                 return ;
                 let result = JSON.parse(body);
                 if (result.ok) {
