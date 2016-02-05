@@ -11,7 +11,9 @@ export function oauth (req,res){
            
             request('https://slack.com/api/oauth.access?client_id=2605154976.20361890802&client_secret=5467921f878c4f13496d11b41623a221&code='+ querystring.code,
             function(error, response, body){
+                try{
                 if(!error){
+                    
                     let result=JSON.parse(body);
                     if(result.ok){
                         let slackTeam=new SlackTeam(result);
@@ -32,7 +34,10 @@ export function oauth (req,res){
                     winston.log('error',error);
                 }
                 res.send(body);
-                return;
+                }
+                catch(err){
+                    winston.log('error', err);
+                }
                         
             });
         }
