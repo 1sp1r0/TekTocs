@@ -5,35 +5,17 @@ import GeneratorRunner from '../../generatorRunner'
 import url from 'url'
 import SlackTeam from '../../models/slackteam.js'
 
-function stub(x){
-   return new Promise((resolve,reject)=>{
-       setTimeout(()=>{resolve(x*10);},0);
-   });
-   
-}
-function* promiseTest(){
-    
-    let x = yield stub(3);
-    let y= yield stub(6);
-    let z= yield stub(8);
-    console.log(x+y+z);
-   
-}
+
 export function oauth(req, res) {
 try{
     let querystring = url.parse(req.url, true).query;
     if (querystring.code) {
-        
-        let generatorRunner= new GeneratorRunner();
-        generatorRunner.runPromiseGenerator(function* () {
-            let x = yield stub(3);
-            //res.send(x);
-            return;
+       let body= co(function* () {
             try {
-                let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
-                
-                res.status(200).send('body');
-                return;
+                //let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
+                let body=yield request('http://www.yahoo.com');
+                //res.status(200).send('body');
+                return body;
                 let result = JSON.parse(body);
                 if (result.ok) {
                     yield saveSlackAuthToken(result);
@@ -46,11 +28,11 @@ try{
                 winston.log('error', err);
                 res.send(err);
             }
-        });
-        /*.catch((err) => {
+        }).catch((err) => {
             winston.log('error', err);
-            res.send(err);
-        });*/
+            //res.send(err);
+        });
+        res.status(200).send(body);
     }
 }
 catch(err){

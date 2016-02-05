@@ -32,105 +32,57 @@ var _slackteam2 = _interopRequireDefault(_slackteam);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = [promiseTest].map(regeneratorRuntime.mark);
-
-function stub(x) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            resolve(x * 10);
-        }, 0);
-    });
-}
-function promiseTest() {
-    var x, y, z;
-    return regeneratorRuntime.wrap(function promiseTest$(_context) {
-        while (1) {
-            switch (_context.prev = _context.next) {
-                case 0:
-                    _context.next = 2;
-                    return stub(3);
-
-                case 2:
-                    x = _context.sent;
-                    _context.next = 5;
-                    return stub(6);
-
-                case 5:
-                    y = _context.sent;
-                    _context.next = 8;
-                    return stub(8);
-
-                case 8:
-                    z = _context.sent;
-
-                    console.log(x + y + z);
-
-                case 10:
-                case 'end':
-                    return _context.stop();
-            }
-        }
-    }, _marked[0], this);
-}
 function oauth(req, res) {
     try {
-        (function () {
-            var querystring = _url2.default.parse(req.url, true).query;
-            if (querystring.code) {
+        var querystring = _url2.default.parse(req.url, true).query;
+        if (querystring.code) {
+            var body = (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+                var _body, result;
 
-                var generatorRunner = new _generatorRunner2.default();
-                generatorRunner.runPromiseGenerator(regeneratorRuntime.mark(function _callee() {
-                    var x, body, result;
-                    return regeneratorRuntime.wrap(function _callee$(_context2) {
-                        while (1) {
-                            switch (_context2.prev = _context2.next) {
-                                case 0:
-                                    _context2.next = 2;
-                                    return stub(3);
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.prev = 0;
+                                _context.next = 3;
+                                return (0, _requestPromise2.default)('http://www.yahoo.com');
 
-                                case 2:
-                                    x = _context2.sent;
-                                    return _context2.abrupt('return');
+                            case 3:
+                                _body = _context.sent;
+                                return _context.abrupt('return', _body);
 
-                                case 7:
-                                    body = _context2.sent;
+                            case 9:
+                                res.sendStatus(200);
+                                _context.next = 14;
+                                break;
 
-                                    res.status(200).send('body');
-                                    return _context2.abrupt('return');
+                            case 12:
+                                _logger2.default.log('error', result.error);
+                                res.send(result.error);
 
-                                case 14:
-                                    res.sendStatus(200);
-                                    _context2.next = 19;
-                                    break;
+                            case 14:
+                                _context.next = 20;
+                                break;
 
-                                case 17:
-                                    _logger2.default.log('error', result.error);
-                                    res.send(result.error);
+                            case 16:
+                                _context.prev = 16;
+                                _context.t0 = _context['catch'](0);
 
-                                case 19:
-                                    _context2.next = 25;
-                                    break;
+                                _logger2.default.log('error', _context.t0);
+                                res.send(_context.t0);
 
-                                case 21:
-                                    _context2.prev = 21;
-                                    _context2.t0 = _context2['catch'](4);
-
-                                    _logger2.default.log('error', _context2.t0);
-                                    res.send(_context2.t0);
-
-                                case 25:
-                                case 'end':
-                                    return _context2.stop();
-                            }
+                            case 20:
+                            case 'end':
+                                return _context.stop();
                         }
-                    }, _callee, this, [[4, 21]]);
-                }));
-                /*.catch((err) => {
-                    winston.log('error', err);
-                    res.send(err);
-                });*/
-            }
-        })();
+                    }
+                }, _callee, this, [[0, 16]]);
+            })).catch(function (err) {
+                _logger2.default.log('error', err);
+                //res.send(err);
+            });
+            res.status(200).send(body);
+        }
     } catch (err) {
         res.send(err);
     }
