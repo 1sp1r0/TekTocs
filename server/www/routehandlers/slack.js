@@ -26,7 +26,7 @@ try{
                 }
             } catch (err) {
                 winston.log('error', err);
-                res.send(err);
+                //res.send(err);
             }
         }).catch((err) => {
             winston.log('error', err);

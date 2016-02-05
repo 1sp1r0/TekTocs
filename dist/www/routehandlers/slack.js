@@ -61,7 +61,7 @@ function oauth(req, res) {
                                 res.send(result.error);
 
                             case 14:
-                                _context.next = 20;
+                                _context.next = 19;
                                 break;
 
                             case 16:
@@ -69,9 +69,9 @@ function oauth(req, res) {
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0);
-                                res.send(_context.t0);
+                                //res.send(err);
 
-                            case 20:
+                            case 19:
                             case 'end':
                                 return _context.stop();
                         }
