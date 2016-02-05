@@ -7,36 +7,35 @@ import SlackTeam from '../../models/slackteam.js'
 import "babel-polyfill"
 
 export function oauth(req, res) {
-try{
-    let querystring = url.parse(req.url, true).query;
-    if (querystring.code) {
-       co(function* () {
-            try {
-                let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
-                res.status(200).send(body);
-                return ;
-                let result = JSON.parse(body);
-                if (result.ok) {
-                    yield saveSlackAuthToken(result);
-                    res.sendStatus(200);
-                } else {
-                    winston.log('error', result.error);
-                    res.send(result.error);
+    try {
+        let querystring = url.parse(req.url, true).query;
+        if (querystring.code) {
+            co(function* () {
+                try {
+                    let body = yield request('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code);
+                    let result = JSON.parse(body);
+                    if (result.ok) {
+                        yield saveSlackAuthToken(result);
+                        res.sendStatus(200);
+                    } else {
+                        winston.log('error', result.error);
+                        res.sendStatus(500);
+                    }
+                } catch (err) {
+                    winston.log('error', err.message);
+                    res.sendStatus(500);
                 }
-            } catch (err) {
+            }).catch((err) => {
                 winston.log('error', err);
-                //res.send(err);
-            }
-        }).catch((err) => {
-            winston.log('error', err);
-            //res.send(err);
-        });
-        
+                res.sendStatus(500);
+            });
+
+        }
     }
-}
-catch(err){
-    res.send(err.message);
-}
+    catch (err) {
+        res.send(err.message);
+        res.sendStatus(500);
+    }
 }
 
 export function command(req, res) {
