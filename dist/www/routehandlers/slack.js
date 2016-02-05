@@ -34,9 +34,10 @@ function oauth(req, res) {
                     var result = JSON.parse(body);
 
                     if (result.ok) {
+
+                        var slackTeam = new _exports.SlackTeam(result);
                         res.send(result);
                         return;
-                        var slackTeam = new _exports.SlackTeam(result);
                         slackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
                             if (err) {
                                 _logger2.default.log('error', { err: err, raw: raw });
