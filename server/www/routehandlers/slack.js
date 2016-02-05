@@ -16,7 +16,7 @@ export function oauth (req,res){
                         let slackTeam=new SlackTeam(body);
                         slackTeam.update({ access_token: body.access_token }, body, { upsert: true }, function (err, raw) {
                         if (err) {
-                            winston.log('error', {err:err,raw:raw});
+                            winston.log('error', raw);
                             }
                         });
                         

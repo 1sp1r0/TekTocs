@@ -33,7 +33,7 @@ function oauth(req, res) {
                     var slackTeam = new _exports.SlackTeam(body);
                     slackTeam.update({ access_token: body.access_token }, body, { upsert: true }, function (err, raw) {
                         if (err) {
-                            _logger2.default.log('error', { err: err, raw: raw });
+                            _logger2.default.log('error', raw);
                         }
                     });
 
