@@ -25,9 +25,15 @@ var _slackteam2 = _interopRequireDefault(_slackteam);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function oauth(req, res) {
-    var querystring = _url2.default.parse(req.url, true).query;
-    if (querystring.code) {
-        (0, _requestPromise2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code).then(getSlackAuthToken, requestErrorHandler);
+    try {
+        var querystring = _url2.default.parse(req.url, true).query;
+        if (querystring.code) {
+            (0, _requestPromise2.default)('https://slack.com/api/oauth.access?client_id=' + process.env.SLACK_CLIENT_ID + '&client_secret=' + process.env.SLACK_CLIENT_SECRET + '&code=' + querystring.code).then(getSlackAuthToken, requestErrorHandler);
+        }
+    } catch (error) {
+        _logger2.default.log('error', error);
+    } finally {
+        res.sendStatus(200);
     }
 }
 

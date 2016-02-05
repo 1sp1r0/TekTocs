@@ -17,6 +17,9 @@ export function oauth (req,res){
     }catch (error){
         winston.log('error', error);
     }  
+    finally{
+        res.sendStatus(200);
+    }
 }
 
 export function command (req,res){
@@ -32,6 +35,7 @@ export function command (req,res){
 
 function requestErrorHandler(error){
     winston.log('error', error);
+    
 }
 
 function getSlackAuthToken(body) {
