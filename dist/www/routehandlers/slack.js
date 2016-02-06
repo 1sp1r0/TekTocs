@@ -113,9 +113,9 @@ function command(req, res) {
                             _result = JSON.parse(_body);
 
                             if (_result.ok) {
-                                res.status(200).send('Hello ' + req.body.user_id, 200);
+                                res.status(200).send('Hello ' + _body, 200);
                             } else {
-                                res.status(200).send('Error ' + req.body.user_id, 200);
+                                res.status(200).send('Error ' + _body, 200);
                             }
                             _context2.next = 12;
                             break;
