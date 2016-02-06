@@ -5,6 +5,7 @@ import url from 'url'
 import SlackTeam from '../../models/slackteam.js'
 import "babel-polyfill"
 
+
 export function oauth(req, res) {
     try {
         let querystring = url.parse(req.url, true).query;
@@ -45,6 +46,7 @@ export function command(req, res) {
                 let result = JSON.parse(body);
                 if(result.ok){
                     res.status(200).send('Hello ' + body, 200);
+                    
                 }else{
                     res.status(200).send('Error ' + body, 200);
                 }
