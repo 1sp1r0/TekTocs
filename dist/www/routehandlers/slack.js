@@ -50,39 +50,40 @@ function oauth(req, res) {
                                     result = JSON.parse(body);
 
                                     if (!result.ok) {
-                                        _context.next = 11;
+                                        _context.next = 12;
                                         break;
                                     }
 
-                                    _context.next = 8;
+                                    result._id = result.access_token;
+                                    _context.next = 9;
                                     return saveSlackAuthToken(result);
 
-                                case 8:
+                                case 9:
                                     res.sendStatus(200);
-                                    _context.next = 13;
+                                    _context.next = 14;
                                     break;
 
-                                case 11:
+                                case 12:
                                     _logger2.default.log('error', result.error);
                                     res.sendStatus(500);
 
-                                case 13:
-                                    _context.next = 19;
+                                case 14:
+                                    _context.next = 20;
                                     break;
 
-                                case 15:
-                                    _context.prev = 15;
+                                case 16:
+                                    _context.prev = 16;
                                     _context.t0 = _context['catch'](0);
 
                                     _logger2.default.log('error', _context.t0);
                                     res.sendStatus(500);
 
-                                case 19:
+                                case 20:
                                 case 'end':
                                     return _context.stop();
                             }
                         }
-                    }, _callee, this, [[0, 15]]);
+                    }, _callee, this, [[0, 16]]);
                 })).catch(function (err) {
                     _logger2.default.log('error', err.stack);
                     res.sendStatus(500);
@@ -106,7 +107,7 @@ function command(req, res) {
 function saveSlackAuthToken(result) {
     return new Promise(function (resolve, reject) {
         try {
-            _slackteam2.default.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
+            _slackteam2.default.update({ _id: result.access_token }, result, { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);
                 } else {

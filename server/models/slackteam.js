@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import winston from '../logger'
+
 
 let slackTeamSchema = mongoose.Schema({
     ok:Boolean,
