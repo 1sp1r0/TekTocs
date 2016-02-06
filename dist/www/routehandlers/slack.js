@@ -97,12 +97,50 @@ function oauth(req, res) {
 
 function command(req, res) {
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
-        //request('https://slack.com/api/im.open?token=' + process.env.OBVUIS_SLACK_BOT_USER_TOKEN + '&user=' + req.body.user_id,
+        (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
+            var _body, _result;
+
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            _context2.prev = 0;
+                            _context2.next = 3;
+                            return (0, _requestPromise2.default)('https://slack.com/api/im.open?token=' + process.env.OBVUIS_SLACK_BOT_USER_TOKEN + '&user=' + req.body.user_id);
+
+                        case 3:
+                            _body = _context2.sent;
+                            _result = JSON.parse(_body);
+
+                            if (_result.ok) {
+                                res.status(200).send('Hello ' + req.body.user_id, 200);
+                            } else {
+                                res.status(200).send('Error ' + req.body.user_id, 200);
+                            }
+                            _context2.next = 12;
+                            break;
+
+                        case 8:
+                            _context2.prev = 8;
+                            _context2.t0 = _context2['catch'](0);
+
+                            _logger2.default.log('error', _context2.t0);
+                            res.sendStatus(500);
+
+                        case 12:
+                        case 'end':
+                            return _context2.stop();
+                    }
+                }
+            }, _callee2, this, [[0, 8]]);
+        })).catch(function (err) {
+            _logger2.default.log('error', err.stack);
+            res.sendStatus(500);
+        });;
         //function(req,res,body){});
-        res.status(200).send('Hello ' + req.body.user_id, 200);
     } else {
-        _logger2.default.log('warn', 'unauthorized slash command access');
-    }
+            _logger2.default.log('warn', 'unauthorized slash command access');
+        }
 }
 
 function saveSlackAuthToken(result) {
