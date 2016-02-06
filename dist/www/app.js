@@ -20,9 +20,9 @@ var _csurf = require('csurf');
 
 var _csurf2 = _interopRequireDefault(_csurf);
 
-var _mapping = require('./routehandlers/mapping');
+var _routehandlermappings = require('./routehandlermappings');
 
-var _mapping2 = _interopRequireDefault(_mapping);
+var _routehandlermappings2 = _interopRequireDefault(_routehandlermappings);
 
 var _helmet = require('helmet');
 
@@ -139,15 +139,15 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.get('/', function (req, res) {
-    _mapping2.default['/'][req.method.toLowerCase()](req, res);
+    _routehandlermappings2.default['/'][req.method.toLowerCase()](req, res);
 });
 
 app.get('/slack/oauth', function (req, res) {
-    _mapping2.default['/slack/oauth'][req.method.toLowerCase()](req, res);
+    _routehandlermappings2.default['/slack/oauth'][req.method.toLowerCase()](req, res);
 });
 
 app.post('/slack/command', function (req, res) {
-    _mapping2.default['/slack/command'][req.method.toLowerCase()](req, res);
+    _routehandlermappings2.default['/slack/command'][req.method.toLowerCase()](req, res);
 });
 
 //connect to database

@@ -3,7 +3,7 @@
     import bodyParser from 'body-parser';
     import cookieParser from 'cookie-parser';
     import csrf from 'csurf';
-    import handlerMappings  from  './routehandlers/mapping';
+    import handlerMappings  from  './routehandlermappings';
     import helmet from 'helmet';
     import passport from 'passport';
     import * as facebook from 'passport-facebook';
