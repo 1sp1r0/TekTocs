@@ -113,7 +113,7 @@ function command(req, res) {
                             _result = JSON.parse(_body);
 
                             if (_result.ok) {
-                                res.status(200).send('Hello ' + _body, 200);
+                                res.status(200).send('Hello ' + _result.channel.id, 200);
                             } else {
                                 res.status(200).send('Error ' + _body, 200);
                             }

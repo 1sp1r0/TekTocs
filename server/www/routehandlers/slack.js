@@ -45,7 +45,7 @@ export function command(req, res) {
                 let body = yield request('https://slack.com/api/im.open?token=' + process.env.OBVUIS_SLACK_BOT_USER_TOKEN + '&user=' + req.body.user_id);
                 let result = JSON.parse(body);
                 if(result.ok){
-                    res.status(200).send('Hello ' + body, 200);
+                    res.status(200).send('Hello ' + result.channel.id, 200);
                     
                 }else{
                     res.status(200).send('Error ' + body, 200);
