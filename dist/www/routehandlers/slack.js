@@ -18,10 +18,6 @@ var _logger = require('../../logger');
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var _generatorRunner = require('../../generatorRunner');
-
-var _generatorRunner2 = _interopRequireDefault(_generatorRunner);
-
 var _url = require('url');
 
 var _url2 = _interopRequireDefault(_url);
