@@ -54,8 +54,7 @@ function saveSlackAuthToken(result) {
                 if (err) {
                     reject(err);
                 } else {
-                    //resolve(raw);
-                    reject('simulated error');
+                    resolve(raw);
                 }
             });
         }
