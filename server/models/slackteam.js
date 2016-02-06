@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 let slackTeamSchema = mongoose.Schema({
     ok:Boolean,
-    access_token: String,
+    access_token: { type: [String], index: true },
     scope:String,
     team_name:String,
     team_id:String,
