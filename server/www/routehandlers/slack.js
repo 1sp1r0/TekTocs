@@ -22,7 +22,7 @@ export function oauth(req, res) {
                         res.sendStatus(500);
                     }
                 } catch (err) {
-                    winston.log('error', err);
+                    winston.log('error', err.stack);
                     res.sendStatus(500);
                 }
             }).catch((err) => {
