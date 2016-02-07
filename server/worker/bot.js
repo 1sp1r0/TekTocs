@@ -13,8 +13,8 @@ export default class Slackbot{
         //this is the socketio server bound to the same port as expressjs. Browser clients as well as the 
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer=io;
-        this.slack={};
-        
+        this.slack=new Slack('', true, true);
+        this.registerSlackListeners();
         //this.slack = new Slack(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
         //this.slack.login();
         

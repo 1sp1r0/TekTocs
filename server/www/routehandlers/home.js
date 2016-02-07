@@ -1,6 +1,6 @@
 
 function index (req,res){
-    //console.log(req.app.slackbot);
+    console.log(req.app.slackbot.slack);
     res.render('index',{});
 }
 
