@@ -14,15 +14,22 @@ export function start(req, res) {
 }
 
 export function startLive(req, res) {
-    res.status(200).send(req.body.token);
-    return;
+    
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
         co(function* () {
             try {
-                let result = JSON.parse(req.body);
-                let slashCommand = new Models.SlashCommand(result);
-                let saveResult = yield slashCommand.save();
-                res.status(200).send('Hello ' + result.channel_id, 200);
+                let slashCommand = new Models.SlashCommand({team_id:req.body.team_id,
+                    team_domain: req.body.team_domain,
+                    channel_id:req.body.channel_id,
+                    channel_name:req.body.channel_name,
+                    user_id:req.body.user_id,
+                    user_name:req.body.user_name,
+                    command:req.body.command,
+                    text:req.body.text,
+                    response_url:req.body.response_url,
+                    pending:true});
+                yield slashCommand.save();
+                res.status(200).send('Hello ' + req.body.channel_id, 200);
             }
             catch (err) {
                 winston.log('error', err);
