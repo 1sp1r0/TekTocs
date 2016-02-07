@@ -41,52 +41,56 @@ function start(req, res) {
 }
 
 function startLive(req, res) {
+    try {
+        if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
+            (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+                var slashCommand;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.prev = 0;
+                                slashCommand = new Models.SlashCommand({ team_id: req.body.team_id,
+                                    team_domain: req.body.team_domain,
+                                    channel_id: req.body.channel_id,
+                                    channel_name: req.body.channel_name,
+                                    user_id: req.body.user_id,
+                                    user_name: req.body.user_name,
+                                    command: req.body.command,
+                                    text: req.body.text,
+                                    response_url: req.body.response_url,
+                                    pending: true });
+                                _context.next = 4;
+                                return slashCommand.save();
 
-    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
-        (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-            var slashCommand;
-            return regeneratorRuntime.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            _context.prev = 0;
-                            slashCommand = new Models.SlashCommand({ team_id: req.body.team_id,
-                                team_domain: req.body.team_domain,
-                                channel_id: req.body.channel_id,
-                                channel_name: req.body.channel_name,
-                                user_id: req.body.user_id,
-                                user_name: req.body.user_name,
-                                command: req.body.command,
-                                text: req.body.text,
-                                response_url: req.body.response_url,
-                                pending: true });
-                            _context.next = 4;
-                            return slashCommand.save();
+                            case 4:
+                                res.status(200).send('Hello ' + req.body.channel_id, 200);
+                                _context.next = 11;
+                                break;
 
-                        case 4:
-                            res.status(200).send('Hello ' + req.body.channel_id, 200);
-                            _context.next = 11;
-                            break;
+                            case 7:
+                                _context.prev = 7;
+                                _context.t0 = _context['catch'](0);
 
-                        case 7:
-                            _context.prev = 7;
-                            _context.t0 = _context['catch'](0);
+                                _logger2.default.log('error', _context.t0);
+                                res.sendStatus(500);
 
-                            _logger2.default.log('error', _context.t0);
-                            res.sendStatus(500);
-
-                        case 11:
-                        case 'end':
-                            return _context.stop();
+                            case 11:
+                            case 'end':
+                                return _context.stop();
+                        }
                     }
-                }
-            }, _callee, this, [[0, 7]]);
-        })).catch(function (err) {
-            _logger2.default.log('error', err.stack);
-            res.sendStatus(500);
-        });;
-    } else {
-        _logger2.default.log('warn', 'unauthorized slash command access');
+                }, _callee, this, [[0, 7]]);
+            })).catch(function (err) {
+                _logger2.default.log('error', err.stack);
+                res.sendStatus(500);
+            });;
+        } else {
+            _logger2.default.log('warn', 'unauthorized slash command access');
+        }
+    } catch (err) {
+        _logger2.default.log('error', err.message);
+        res.sendStatus(500);
     }
 }
 

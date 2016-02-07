@@ -92,7 +92,7 @@ function oauth(req, res) {
             }
         })();
     } catch (err) {
-        res.send(err.message);
+        _logger2.default.log('error', err.message);
         res.sendStatus(500);
     }
 }

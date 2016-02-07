@@ -33,7 +33,7 @@ export function oauth(req, res) {
         }
     }
     catch (err) {
-        res.send(err.message);
+        winston.log('error',err.message);
         res.sendStatus(500);
     }
 }

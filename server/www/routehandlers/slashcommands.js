@@ -14,7 +14,7 @@ export function start(req, res) {
 }
 
 export function startLive(req, res) {
-    
+    try{
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
         co(function* () {
             try {
@@ -42,6 +42,10 @@ export function startLive(req, res) {
 
     } else {
         winston.log('warn', 'unauthorized slash command access');
+    }
+}catch (err) {
+        winston.log('error',err.message);
+        res.sendStatus(500);
     }
 }
 
