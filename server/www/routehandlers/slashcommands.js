@@ -42,7 +42,7 @@ export function startLive(req, res) {
                 res.status(200).send('Hello ' + req.body.channel_id, 200);
             }
             catch (err) {
-                winston.log('error', err);
+                winston.log('error', err.stack);
                 res.sendStatus(500);
             }
         }).catch((err) => {

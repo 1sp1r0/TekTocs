@@ -90,7 +90,7 @@ function startLive(req, res) {
                                 _context.prev = 11;
                                 _context.t0 = _context['catch'](0);
 
-                                _logger2.default.log('error', _context.t0);
+                                _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
                             case 15:
