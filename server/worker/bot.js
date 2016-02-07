@@ -4,6 +4,14 @@ import winston from '../logger'
 
 
 export default class Slackbot{
+    
+    get slack(){
+        return this._slack;
+    }
+    
+    set slack(value){
+        this._slack=value;
+    }
     constructor(io){
         //this is the server-side socket client which emits SlackMessage events when there is a
         //message from Slack. 
@@ -11,8 +19,8 @@ export default class Slackbot{
         //this is the socketio server bound to the same port as expressjs. Browser clients as well as the 
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer=io;
-        this.slack = new Slack(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
-        this.slack.login();
+        //this.slack = new Slack(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
+        //this.slack.login();
         console.log('logged in');
         
     }

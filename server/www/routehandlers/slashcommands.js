@@ -4,6 +4,7 @@ import winston from '../../logger'
 import url from 'url'
 import * as Models from '../../models/'
 import "babel-polyfill"
+import Slack from 'slack-client'
 
 export function start(req, res) {
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
@@ -29,6 +30,11 @@ export function startLive(req, res) {
                     response_url:req.body.response_url,
                     pending:true});
                 yield slashCommand.save();
+                let slackTeam=yield Models.SlackTeam.findOne({team_id:slashCommand.team_id});
+                if(slackTeam){
+                    req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
+                    req.app.slackbot.slack.login();
+                }
                 res.status(200).send('Hello ' + req.body.channel_id, 200);
             }
             catch (err) {

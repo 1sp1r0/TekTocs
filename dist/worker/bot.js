@@ -23,6 +23,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Slackbot = function () {
+    _createClass(Slackbot, [{
+        key: 'slack',
+        get: function get() {
+            return this._slack;
+        },
+        set: function set(value) {
+            this._slack = value;
+        }
+    }]);
+
     function Slackbot(io) {
         _classCallCheck(this, Slackbot);
 
@@ -32,8 +42,8 @@ var Slackbot = function () {
         //this is the socketio server bound to the same port as expressjs. Browser clients as well as the
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer = io;
-        this.slack = new _slackClient2.default(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
-        this.slack.login();
+        //this.slack = new Slack(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
+        //this.slack.login();
         console.log('logged in');
     }
 

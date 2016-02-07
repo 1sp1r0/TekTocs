@@ -28,6 +28,10 @@ var Models = _interopRequireWildcard(_models);
 
 require('babel-polyfill');
 
+var _slackClient = require('slack-client');
+
+var _slackClient2 = _interopRequireDefault(_slackClient);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -44,7 +48,7 @@ function startLive(req, res) {
     try {
         if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
             (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-                var slashCommand;
+                var slashCommand, slackTeam;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -64,23 +68,33 @@ function startLive(req, res) {
                                 return slashCommand.save();
 
                             case 4:
+                                _context.next = 6;
+                                return Models.SlackTeam.findOne({ team_id: slashCommand.team_id });
+
+                            case 6:
+                                slackTeam = _context.sent;
+
+                                if (slackTeam) {
+                                    req.app.slackbot.slack = new _slackClient2.default(slackTeam.bot.bot_access_token, true, true);
+                                    req.app.slackbot.slack.login();
+                                }
                                 res.status(200).send('Hello ' + req.body.channel_id, 200);
-                                _context.next = 11;
+                                _context.next = 15;
                                 break;
 
-                            case 7:
-                                _context.prev = 7;
+                            case 11:
+                                _context.prev = 11;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0);
                                 res.sendStatus(500);
 
-                            case 11:
+                            case 15:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 7]]);
+                }, _callee, this, [[0, 11]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
