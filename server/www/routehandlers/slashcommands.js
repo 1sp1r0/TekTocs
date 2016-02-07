@@ -13,29 +13,24 @@ export function start(req, res) {
     }
 }
 
-export function startLive(req,res){
-   if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
+export function startLive(req, res) {
+    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
         co(function* () {
-            try{
+            try {
                 let result = JSON.parse(req.body);
-                if(result.ok){
-                    let slashCommand= new Models.SlashCommand(result);
-                    let saveResult=yield slashCommand.save();
-                    res.status(200).send('Hello ' + result.channel.id, 200);
-                    
-                }else{
-                    res.status(200).send('Error ' + body, 200);
-                }
+                let slashCommand = new Models.SlashCommand(result);
+                let saveResult = yield slashCommand.save();
+                res.status(200).send('Hello ' + result.channel_id, 200);
             }
             catch (err) {
-                    winston.log('error', err);
-                    res.sendStatus(500);
-                }
-        }).catch((err) => {
-                winston.log('error', err.stack);
+                winston.log('error', err);
                 res.sendStatus(500);
-            });;
-        
+            }
+        }).catch((err) => {
+            winston.log('error', err.stack);
+            res.sendStatus(500);
+        });;
+
     } else {
         winston.log('warn', 'unauthorized slash command access');
     }

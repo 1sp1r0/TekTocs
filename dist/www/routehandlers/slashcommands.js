@@ -50,44 +50,30 @@ function startLive(req, res) {
                         case 0:
                             _context.prev = 0;
                             result = JSON.parse(req.body);
-
-                            if (!result.ok) {
-                                _context.next = 10;
-                                break;
-                            }
-
                             slashCommand = new Models.SlashCommand(result);
-                            _context.next = 6;
+                            _context.next = 5;
                             return slashCommand.save();
 
-                        case 6:
+                        case 5:
                             saveResult = _context.sent;
 
-                            res.status(200).send('Hello ' + result.channel.id, 200);
-
-                            _context.next = 11;
+                            res.status(200).send('Hello ' + result.channel_id, 200);
+                            _context.next = 13;
                             break;
 
-                        case 10:
-                            res.status(200).send('Error ' + body, 200);
-
-                        case 11:
-                            _context.next = 17;
-                            break;
-
-                        case 13:
-                            _context.prev = 13;
+                        case 9:
+                            _context.prev = 9;
                             _context.t0 = _context['catch'](0);
 
                             _logger2.default.log('error', _context.t0);
                             res.sendStatus(500);
 
-                        case 17:
+                        case 13:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 13]]);
+            }, _callee, this, [[0, 9]]);
         })).catch(function (err) {
             _logger2.default.log('error', err.stack);
             res.sendStatus(500);
