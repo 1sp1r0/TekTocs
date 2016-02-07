@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.SlackTeam = undefined;
 
 var _mongoose = require('mongoose');
 
@@ -22,4 +23,4 @@ var slackTeamSchema = _mongoose2.default.Schema({
 
 var SlackTeam = _mongoose2.default.model('SlackTeam', slackTeamSchema);
 
-exports.default = SlackTeam;
+exports.SlackTeam = SlackTeam;

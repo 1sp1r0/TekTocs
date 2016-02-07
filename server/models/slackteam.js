@@ -13,4 +13,4 @@ let slackTeamSchema = mongoose.Schema({
 
 let SlackTeam = mongoose.model('SlackTeam', slackTeamSchema);
 
-export default SlackTeam;
+export  {SlackTeam};
