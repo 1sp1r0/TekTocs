@@ -106,7 +106,7 @@ function command(req, res) {
                         case 0:
                             _context2.prev = 0;
                             _context2.next = 3;
-                            return (0, _requestPromise2.default)('https://slack.com/api/im.open?token=' + process.env.OBVUIS_SLACK_BOT_USER_TOKEN + '&user=' + req.body.user_id);
+                            return (0, _requestPromise2.default)('https://slack.com/api/im.open?token=' + process.env.SLACK_BOT_ACCESS_TOKEN + '&user=' + req.body.user_id);
 
                         case 3:
                             _body = _context2.sent;

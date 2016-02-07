@@ -4,7 +4,7 @@
   "description": "tektocs",
   "scripts": {
     "worker": "babel-node ./server/worker/bot.js",
-    "start": "NODE_ENV=development OBVUIS_SLACK_BOT_USER_TOKEN='xoxb-17952512917-xCZUmeEjTLLjR3DtXqAkLv2v' SOCKETIO_ADDRESS=http://localhost:8080 MONGOLAB_URI=mongodb://heroku_pxgrqk35:u45fmu7pharj20eiemaet23mj7@ds059205.mongolab.com:59205/heroku_pxgrqk35 nodemon server/www/app.js --exec babel-node",
+    "start": "NODE_ENV=development SLACK_TEAM_ACCESS_TOKEN='xoxp-2605154976-2605154980-20366174116-297e0ed68c' SLACK_BOT_ACCESS_TOKEN='xoxb-20370276500-oiYPAV9nGQA3ic4AKrlJanlS' SOCKETIO_ADDRESS=http://localhost:8080 MONGOLAB_URI=mongodb://heroku_pxgrqk35:u45fmu7pharj20eiemaet23mj7@ds059205.mongolab.com:59205/heroku_pxgrqk35 nodemon server/www/app.js --exec babel-node",
     "build": "npm run build-babel && npm run build-webpack",
     "build-babel": "babel server -d dist",
     "build-webpack": "webpack",
