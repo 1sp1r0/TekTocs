@@ -158,9 +158,6 @@ app.post('/slack/command', function (req, res) {
 app.post('/slack/commands/startlive', function (req, res) {
     _routehandlermappings2.default['/slack/commands/startlive'][req.method.toLowerCase()](req, res);
 });
-app.get('/slack/commands/startlive', function (req, res) {
-    _routehandlermappings2.default['/slack/commands/startlive'][req.method.toLowerCase()](req, res);
-});
 
 //connect to database
 _db2.default.connect();

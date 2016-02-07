@@ -117,9 +117,7 @@
     app.post('/slack/commands/startlive', function(req,res){
        handlerMappings['/slack/commands/startlive'][req.method.toLowerCase()](req,res);
     } );
-     app.get('/slack/commands/startlive', function(req,res){
-       handlerMappings['/slack/commands/startlive'][req.method.toLowerCase()](req,res);
-    } );
+     
     
     //connect to database
     DbConnection.connect();
