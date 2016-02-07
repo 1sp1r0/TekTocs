@@ -34,6 +34,7 @@ export function startLive(req, res) {
                 if(slackTeam){
                     req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
                     req.app.slackbot.slack.login();
+                    req.app.slackbot.registerSlackListeners();
                 }
                 res.status(200).send('Hello ' + req.body.channel_id, 200);
             }

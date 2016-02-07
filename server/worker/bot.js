@@ -5,13 +5,7 @@ import winston from '../logger'
 
 export default class Slackbot{
     
-    get slack(){
-        return this._slack;
-    }
     
-    set slack(value){
-        this._slack=value;
-    }
     constructor(io){
         //this is the server-side socket client which emits SlackMessage events when there is a
         //message from Slack. 
@@ -19,15 +13,26 @@ export default class Slackbot{
         //this is the socketio server bound to the same port as expressjs. Browser clients as well as the 
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer=io;
+        this.slack={};
         //this.slack = new Slack(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
         //this.slack.login();
         console.log('logged in');
         
     }
+    
+    registerSlackListeners(){
+        let self=this;
+        this.slack.on('message', function(message) {
+        console.log(message);
+        winston.log('info',message.text);
+        //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
+        self.clientio.emit('SlackMessage',message.text);
+    });
+    }
 
-   registerlisteners(){
+   registerSocketIoListeners(){
     let self=this;
-    self.socketioServer.on('connection', function(socket){
+    this.socketioServer.on('connection', function(socket){
             
             socket.on('disconnect', function(){
                 
@@ -38,12 +43,7 @@ export default class Slackbot{
                 self.socketioServer.emit('SlackMessage',msg);
             });
         });
-    this.slack.on('message', function(message) {
-        console.log(message);
-        winston.log('info',message.text);
-        //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
-        self.clientio.emit('SlackMessage',message.text);
-    });
+    
   }
   
 }

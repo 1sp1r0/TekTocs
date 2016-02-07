@@ -109,7 +109,7 @@ app.use(_passport2.default.session());
 //initilaize slack bot
 app.use(function (req, res, next) {
     var slackbot = new _bot2.default(io);
-    slackbot.registerlisteners();
+    slackbot.registerSocketIoListeners();
     app.slackbot = slackbot;
     next();
 });

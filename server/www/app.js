@@ -68,7 +68,7 @@
   //initilaize slack bot
   app.use(function (req, res, next) {
     let slackbot= new Slackbot(io);
-    slackbot.registerlisteners();
+    slackbot.registerSocketIoListeners();
     app.slackbot=slackbot;
     next();
   });
