@@ -17,11 +17,6 @@
     const app =  express();
     const httpServer=http.Server(app);
     const io=socketioserver(httpServer);
-    //registerListeners(io);
-    let slackbot= new Slackbot(io);
-    slackbot.registerlisteners();
-    
-    
     
     const FACEBOOK_APP_ID = "dummy";
     const FACEBOOK_APP_SECRET = "dummy";
@@ -69,6 +64,14 @@
   // persistent login sessions .
   app.use(passport.initialize());
   app.use(passport.session());
+  
+  //initilaize slack bot
+  app.use(function (req, res, next) {
+    let slackbot= new Slackbot(io);
+    slackbot.registerlisteners();
+    app.slackbot=slackbot;
+    next();
+  });
     
     
     app.use(function (err, req, res, next) {

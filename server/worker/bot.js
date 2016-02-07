@@ -14,6 +14,7 @@ export default class Slackbot{
         this.slack = new Slack(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
         this.slack.login();
         console.log('logged in');
+        
     }
 
    registerlisteners(){

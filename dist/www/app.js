@@ -62,9 +62,6 @@ var port = process.env.PORT || 8080;
 var app = (0, _express2.default)();
 var httpServer = _http2.default.Server(app);
 var io = (0, _socket2.default)(httpServer);
-//registerListeners(io);
-var slackbot = new _bot2.default(io);
-slackbot.registerlisteners();
 
 var FACEBOOK_APP_ID = "dummy";
 var FACEBOOK_APP_SECRET = "dummy";
@@ -108,6 +105,14 @@ app.use((0, _expressSession2.default)({
 // persistent login sessions .
 app.use(_passport2.default.initialize());
 app.use(_passport2.default.session());
+
+//initilaize slack bot
+app.use(function (req, res, next) {
+    var slackbot = new _bot2.default(io);
+    slackbot.registerlisteners();
+    app.slackbot = slackbot;
+    next();
+});
 
 app.use(function (err, req, res, next) {
     //csrf error handler

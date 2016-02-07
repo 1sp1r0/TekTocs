@@ -22,11 +22,13 @@ var _url = require('url');
 
 var _url2 = _interopRequireDefault(_url);
 
-var _slackteam = require('../../models/slackteam.js');
+var _models = require('../../models/');
 
-var _slackteam2 = _interopRequireDefault(_slackteam);
+var Models = _interopRequireWildcard(_models);
 
 require('babel-polyfill');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -146,7 +148,7 @@ function command(req, res) {
 function saveSlackAuthToken(result) {
     return new Promise(function (resolve, reject) {
         try {
-            _slackteam2.default.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
+            Models.SlackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);
                 } else {

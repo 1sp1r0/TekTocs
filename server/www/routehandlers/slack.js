@@ -2,7 +2,7 @@ import request from 'request-promise'
 import co from 'co'
 import winston from '../../logger'
 import url from 'url'
-import SlackTeam from '../../models/slackteam.js'
+import * as Models from '../../models/'
 import "babel-polyfill"
 
 
@@ -70,7 +70,7 @@ export function command(req, res) {
 function saveSlackAuthToken(result) {
     return new Promise((resolve, reject) => {
         try {
-            SlackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
+            Models.SlackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);
                 } else {
