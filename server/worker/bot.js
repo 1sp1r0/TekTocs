@@ -14,9 +14,10 @@ export default class Slackbot{
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer=io;
         this.slack={};
+        
         //this.slack = new Slack(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
         //this.slack.login();
-        console.log('logged in');
+        
         
     }
     

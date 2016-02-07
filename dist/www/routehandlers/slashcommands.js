@@ -75,6 +75,9 @@ function startLive(req, res) {
                                 slackTeam = _context.sent;
 
                                 if (slackTeam) {
+                                    if (req.app.slackbot.slack) {
+                                        req.app.slackbot.slack.disconnect();
+                                    }
                                     req.app.slackbot.slack = new _slackClient2.default(slackTeam.bot.bot_access_token, true, true);
                                     req.app.slackbot.slack.login();
                                     req.app.slackbot.registerSlackListeners();
