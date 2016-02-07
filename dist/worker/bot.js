@@ -32,7 +32,7 @@ var Slackbot = function () {
         //this is the socketio server bound to the same port as expressjs. Browser clients as well as the
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer = io;
-        this.slack = new _slackClient2.default('xoxp-2605154976-2605154980-20366174116-297e0ed68c', true, true);
+        this.slack = new _slackClient2.default('xoxp-18411796983-18412515072-20372759077-03533db7d4', true, true);
         this.slack.login();
     }
 
