@@ -14,6 +14,8 @@ export function start(req, res) {
 }
 
 export function startLive(req, res) {
+    res.status(200).send(req.body.token);
+    return;
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
         co(function* () {
             try {

@@ -41,6 +41,8 @@ function start(req, res) {
 }
 
 function startLive(req, res) {
+    res.status(200).send(req.body.token);
+    return;
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
             var result, slashCommand, saveResult;
