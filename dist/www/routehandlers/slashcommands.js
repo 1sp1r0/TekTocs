@@ -80,10 +80,10 @@ function startLive(req, res) {
                                         _logger2.default.log('info', req.app.slackbot.slack);
                                         // req.app.slackbot.slack.disconnect();
                                     }
-                                    //req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, false, false);
-                                    //req.app.slackbot.slack.login();
-                                    //req.app.slackbot.removeSlackListeners();
-                                    //req.app.slackbot.registerSlackListeners();
+                                    req.app.slackbot.slack = new _slackClient2.default(slackTeam.bot.bot_access_token, true, true);
+                                    req.app.slackbot.slack.login();
+                                    req.app.slackbot.removeSlackListeners();
+                                    req.app.slackbot.registerSlackListeners();
                                 }
                                 res.status(200).send('Hello ' + req.body.channel_id, 200);
                                 _context.next = 15;

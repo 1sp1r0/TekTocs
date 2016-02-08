@@ -66,12 +66,10 @@
   app.use(passport.session());
   
   //initilaize slack bot
-  app.use(function (req, res, next) {
-    let slackbot= new Slackbot(io);
-    slackbot.registerSocketIoListeners();
-    app.slackbot=slackbot;
-    next();
-  });
+  let slackbot= new Slackbot(io);
+  slackbot.registerSocketIoListeners();
+  app.slackbot=slackbot;
+  
     
     
     app.use(function (err, req, res, next) {

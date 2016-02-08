@@ -107,12 +107,9 @@ app.use(_passport2.default.initialize());
 app.use(_passport2.default.session());
 
 //initilaize slack bot
-app.use(function (req, res, next) {
-    var slackbot = new _bot2.default(io);
-    slackbot.registerSocketIoListeners();
-    app.slackbot = slackbot;
-    next();
-});
+var slackbot = new _bot2.default(io);
+slackbot.registerSocketIoListeners();
+app.slackbot = slackbot;
 
 app.use(function (err, req, res, next) {
     //csrf error handler
