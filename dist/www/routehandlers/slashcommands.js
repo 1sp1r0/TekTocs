@@ -32,6 +32,10 @@ var _slackClient = require('slack-client');
 
 var _slackClient2 = _interopRequireDefault(_slackClient);
 
+var _slackhelper = require('../../helpers/slackhelper');
+
+var slackhelper = _interopRequireWildcard(_slackhelper);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -48,7 +52,7 @@ function startLive(req, res) {
     try {
         if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
             (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-                var slackTeam;
+                var slackTeam, imResponse, im;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -68,28 +72,63 @@ function startLive(req, res) {
                             case 6:
                                 slackTeam = _context.sent;
 
-                                if (slackTeam) {
-                                    req.app.slackbot.slack = new _slackClient2.default(slackTeam.bot.bot_access_token, true, true);
-                                    req.app.slackbot.slack.login();
-                                    req.app.slackbot.registerSlackListeners();
+                                if (!slackTeam) {
+                                    _context.next = 25;
+                                    break;
                                 }
-                                res.status(200).send('A direct message channel has been opened with Tektocs. Every message you post in that channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.', 200);
-                                _context.next = 15;
+
+                                req.app.slackbot.slack = new _slackClient2.default(slackTeam.bot.bot_access_token, true, true);
+                                req.app.slackbot.slack.login();
+                                req.app.slackbot.registerSlackListeners();
+                                _context.next = 13;
+                                return slackhelper.openIm(slackTeam.bot.bot_access_token, req.body.user_id);
+
+                            case 13:
+                                imResponse = _context.sent;
+                                im = JSON.parse(imResponse);
+
+                                if (!im.ok) {
+                                    _context.next = 21;
+                                    break;
+                                }
+
+                                _context.next = 18;
+                                return slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token, im.channel.id, 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
+
+                            case 18:
+                                res.status(200).send('Our friendly bot, tektocs, beckons you.');
+                                _context.next = 23;
                                 break;
 
-                            case 11:
-                                _context.prev = 11;
+                            case 21:
+                                _logger2.default.log('error', im.error);
+                                res.status(500).send('Could not open direct message channel with our bot, tektocs');
+
+                            case 23:
+                                _context.next = 27;
+                                break;
+
+                            case 25:
+                                _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
+                                res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+
+                            case 27:
+                                _context.next = 33;
+                                break;
+
+                            case 29:
+                                _context.prev = 29;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 15:
+                            case 33:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 11]]);
+                }, _callee, this, [[0, 29]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);

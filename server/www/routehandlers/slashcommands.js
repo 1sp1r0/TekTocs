@@ -5,6 +5,7 @@ import url from 'url'
 import * as Models from '../../models/'
 import "babel-polyfill"
 import Slack from 'slack-client'
+import * as slackhelper from '../../helpers/slackhelper'
 
 export function start(req, res) {
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
@@ -28,8 +29,23 @@ export function startLive(req, res) {
                     req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
                     req.app.slackbot.slack.login();
                     req.app.slackbot.registerSlackListeners();
+                    let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
+                    let im=JSON.parse(imResponse);
+                    if(im.ok){
+                        yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.')
+                        res.status(200).send('Our friendly bot, tektocs, beckons you.');
+                    }else{
+                        winston.log('error', im.error);
+                        res.status(500).send('Could not open direct message channel with our bot, tektocs');
+                    }
+                    
                 }
-                res.status(200).send('A direct message channel has been opened with Tektocs. Every message you post in that channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.', 200);
+                else{
+                    winston.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
+                    res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+                }
+                
+                
             }
             catch (err) {
                 winston.log('error', err.stack);
@@ -62,3 +78,6 @@ function saveSlashCommand(body) {
                     pending:true});
     return slashCommand.save();                
 }
+
+
+ 
