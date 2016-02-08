@@ -110,10 +110,10 @@ slackbot.registerSocketIoListeners();
 app.slackbot = slackbot;
 
 app.use(function (err, req, res, next) {
+    //Allow slack slash commands that post with the verification token.
+    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) return next();
     //csrf error handler
     if (err.code !== 'EBADCSRFTOKEN') return next(err);
-    //Allow slack slash commands that post with the verification token.
-    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) return next(err);
     res.status(403);
     res.send('Form data has been tampered with.');
 });
