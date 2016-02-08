@@ -80,7 +80,7 @@ function startLive(req, res) {
                                         _logger2.default.log('info', req.app.slackbot.slack);
                                         // req.app.slackbot.slack.disconnect();
                                     }
-                                    req.app.slackbot.slack = new _slackClient2.default(slackTeam.bot.bot_access_token, true, true);
+                                    req.app.slackbot.slack = new _slackClient2.default(slackTeam.bot.bot_access_token, false, false);
                                     req.app.slackbot.slack.login();
                                     req.app.slackbot.removeSlackListeners();
                                     req.app.slackbot.registerSlackListeners();
