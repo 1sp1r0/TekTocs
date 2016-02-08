@@ -26,7 +26,7 @@ export function startLive(req, res) {
                     req.app.slackbot.slack.login();
                     req.app.slackbot.registerSlackListeners();
                 }
-                res.status(200).send('Hello ' + req.body.channel_id, 200);
+                res.status(200).send('A direct message channel has been opened with Tektocs. Every message you post in that channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.', 200);
             }
             catch (err) {
                 winston.log('error', err.stack);

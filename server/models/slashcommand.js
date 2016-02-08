@@ -1,5 +1,13 @@
 import mongoose from 'mongoose'
 
+let slideSchema = mongoose.Schema({
+    slideindex:Number,
+    slideText:String,
+    slideCaption:String,
+    slideAssetUrl:String,
+});
+
+let Slide = mongoose.model('Slide', slideSchema);
 
 let slashCommandSchema = mongoose.Schema({
     team_id:String,
@@ -11,11 +19,19 @@ let slashCommandSchema = mongoose.Schema({
     command:String,
     text:String,
     response_url:String,
-    pending:Boolean
+    attachments:{
+        slideshow:{
+            title: {type: [String], index: true },
+            slides:[slideSchema],
+            published:Boolean
+        }
+    },
+    pending:Boolean,
+    createDate:Date
 });
 
 slashCommandSchema.index({ team_id: 1, user_id: 1, command:1 });
 
 let SlashCommand = mongoose.model('SlashCommand', slashCommandSchema);
 
-export  {SlashCommand};
+export  {SlashCommand,Slide};
