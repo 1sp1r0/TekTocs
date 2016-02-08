@@ -22,6 +22,7 @@ export function startLive(req, res) {
             try {
                 if (req.body.text.trim()===''){
                     res.status(200).send('Every slideshow needs a title. Enter the title after the command - "/tektocs-startlive titleOfYourSlideshow"');
+                    return;
                 }
                 yield saveSlashCommand(req.body);
                 let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
@@ -33,7 +34,7 @@ export function startLive(req, res) {
                     let im=JSON.parse(imResponse);
                     if(im.ok){
                         yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.')
-                        res.status(200).send('Our friendly bot, tektocs, beckons you.');
+                        res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
                     }else{
                         winston.log('error', im.error);
                         res.status(500).send('Could not open direct message channel with our bot, tektocs');
