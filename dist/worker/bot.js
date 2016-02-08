@@ -33,26 +33,15 @@ var Slackbot = function () {
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer = io;
         this.slack = null;
-
-        //this.slack = new Slack(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
-        //this.slack.login();
     }
 
     _createClass(Slackbot, [{
-        key: 'removeSlackListeners',
-        value: function removeSlackListeners() {
-            this.slack.removeAllListeners('message');
-        }
-    }, {
         key: 'registerSlackListeners',
         value: function registerSlackListeners() {
             var self = this;
             this.slack.on('message', function (message) {
-                console.log(message);
-                _logger2.default.log('info', message.text);
                 //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
                 self.clientio.emit('SlackMessage', message.text);
-                //self.socketioServer.emit('SlackMessage',msg);
             });
         }
     }, {
@@ -62,9 +51,9 @@ var Slackbot = function () {
             this.socketioServer.on('connection', function (socket) {
 
                 socket.on('disconnect', function () {});
+
                 //listener for SlackMessage event emitted by handler of slack.on('message')
                 socket.on('SlackMessage', function (msg) {
-                    //winston.log('info',msg);
                     //emit message to connected browser clients
                     self.socketioServer.emit('DisplaySlackMessage', msg);
                 });

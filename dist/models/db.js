@@ -29,21 +29,16 @@ var DbConnection = function () {
 
             _mongoose2.default.connect(process.env.MONGOLAB_URI);
 
-            _mongoose2.default.connection.on('connected', function () {
-                _logger2.default.log('info', 'Mongoose connection opened.');
-            });
+            _mongoose2.default.connection.on('connected', function () {});
 
             _mongoose2.default.connection.on('error', function (err) {
                 _logger2.default.log('error', 'Mongoose connection error: ' + err);
             });
 
-            _mongoose2.default.connection.on('disconnected', function () {
-                _logger2.default.log('info', 'Mongoose connection disconnected.');
-            });
+            _mongoose2.default.connection.on('disconnected', function () {});
 
             process.on('SIGINT', function () {
                 _mongoose2.default.connection.close(function () {
-                    _logger2.default.log('info', 'Mongoose connection disconnected during app shutdown.');
                     process.exit(0);
                 });
             });

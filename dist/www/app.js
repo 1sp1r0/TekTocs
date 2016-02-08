@@ -56,8 +56,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import registerListeners from './socket.js'
-
 var port = process.env.PORT || 8080;
 var app = (0, _express2.default)();
 var httpServer = _http2.default.Server(app);
@@ -95,7 +93,7 @@ app.use(_express2.default.static('public'));
 app.use(_bodyParser2.default.json());
 app.use(_bodyParser2.default.urlencoded({ extended: true }));
 app.use((0, _cookieParser2.default)());
-//app.use(csrf({ cookie: true }));
+app.use((0, _csurf2.default)({ cookie: true }));
 app.set('trust proxy', 1); // trust first proxy
 app.use((0, _expressSession2.default)({
     secret: 't3kt0cs1sn01',
@@ -114,6 +112,8 @@ app.slackbot = slackbot;
 app.use(function (err, req, res, next) {
     //csrf error handler
     if (err.code !== 'EBADCSRFTOKEN') return next(err);
+    //Allow slack slash commands that post with the verification token.
+    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) return next(err);
     res.status(403);
     res.send('Form data has been tampered with.');
 });

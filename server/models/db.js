@@ -8,7 +8,7 @@ export default class DbConnection{
         mongoose.connect(process.env.MONGOLAB_URI);
         
         mongoose.connection.on('connected', function () {
-            winston.log('info','Mongoose connection opened.');
+            
         });
 
         
@@ -18,13 +18,12 @@ export default class DbConnection{
 
         
         mongoose.connection.on('disconnected', function () {
-            winston.log('info','Mongoose connection disconnected.');
+            
         });
 
 
         process.on('SIGINT', function() {
             mongoose.connection.close(function () {
-                winston.log('info','Mongoose connection disconnected during app shutdown.');
                 process.exit(0);
             });
         });

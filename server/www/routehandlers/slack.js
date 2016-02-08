@@ -38,35 +38,6 @@ export function oauth(req, res) {
     }
 }
 
-export function command(req, res) {
-    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
-        co(function* () {
-            try{
-                let body = yield request('https://slack.com/api/im.open?token=' + process.env.SLACK_BOT_ACCESS_TOKEN + '&user=' + req.body.user_id);
-                let result = JSON.parse(body);
-                if(result.ok){
-                    res.status(200).send('Hello ' + result.channel.id, 200);
-                    
-                }else{
-                    res.status(200).send('Error ' + body, 200);
-                }
-            }
-            catch (err) {
-                    winston.log('error', err);
-                    res.sendStatus(500);
-                }
-        }).catch((err) => {
-                winston.log('error', err.stack);
-                res.sendStatus(500);
-            });;
-        //function(req,res,body){});
-        
-    } else {
-        winston.log('warn', 'unauthorized slash command access');
-    }
-}
-
-
 function saveSlackAuthToken(result) {
     return new Promise((resolve, reject) => {
         try {
