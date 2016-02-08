@@ -34,8 +34,9 @@ var Slackbot = function () {
         this.socketioServer = io;
         this.slack = null;
 
-        //this.slack = new Slack(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
-        //this.slack.login();
+        this.slack = new _slackClient2.default(process.env.SLACK_BOT_ACCESS_TOKEN, true, true);
+        this.slack.login();
+        this.registerSlackListeners();
     }
 
     _createClass(Slackbot, [{
