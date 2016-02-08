@@ -45,9 +45,9 @@ export default class Slackbot{
             });
             //listener for SlackMessage event emitted by handler of slack.on('message')
             socket.on('SlackMessage', function(msg){ 
-                winston.log('info',msg);
+                //winston.log('info',msg);
                 //emit message to connected browser clients
-                self.socketioServer.emit('SlackMessage',msg);
+                self.socketioServer.emit('DisplaySlackMessage',msg);
             });
         });
     

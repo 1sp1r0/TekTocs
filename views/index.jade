@@ -7,7 +7,7 @@ block content
     script(src="/socket.io/socket.io.js")
     script.
         var socket = io();
-         socket.on('SlackMessage', function(msg){
+         socket.on('DisplaySlackMessage', function(msg){
             $('#messages').append($('<li>').text(msg));
          });
     script(src='/js/build/bundle.js')    

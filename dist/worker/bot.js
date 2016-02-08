@@ -64,9 +64,9 @@ var Slackbot = function () {
                 socket.on('disconnect', function () {});
                 //listener for SlackMessage event emitted by handler of slack.on('message')
                 socket.on('SlackMessage', function (msg) {
-                    _logger2.default.log('info', msg);
+                    //winston.log('info',msg);
                     //emit message to connected browser clients
-                    self.socketioServer.emit('SlackMessage', msg);
+                    self.socketioServer.emit('DisplaySlackMessage', msg);
                 });
             });
         }
