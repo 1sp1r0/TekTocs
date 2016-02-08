@@ -82,6 +82,7 @@ function startLive(req, res) {
                                     }
                                     req.app.slackbot.slack = new _slackClient2.default(slackTeam.bot.bot_access_token, true, true);
                                     req.app.slackbot.slack.login();
+                                    req.app.slackbot.removeSlackListeners();
                                     req.app.slackbot.registerSlackListeners();
                                 }
                                 res.status(200).send('Hello ' + req.body.channel_id, 200);
