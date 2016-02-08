@@ -19,18 +19,8 @@ export function startLive(req, res) {
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
         co(function* () {
             try {
-                let slashCommand = new Models.SlashCommand({team_id:req.body.team_id,
-                    team_domain: req.body.team_domain,
-                    channel_id:req.body.channel_id,
-                    channel_name:req.body.channel_name,
-                    user_id:req.body.user_id,
-                    user_name:req.body.user_name,
-                    command:req.body.command,
-                    text:req.body.text,
-                    response_url:req.body.response_url,
-                    pending:true});
-                yield slashCommand.save();
-                let slackTeam=yield Models.SlackTeam.findOne({team_id:slashCommand.team_id});
+                yield saveSlashCommand(req.body);
+                let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
                 if(slackTeam){
                     req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
                     req.app.slackbot.slack.login();
@@ -56,19 +46,16 @@ export function startLive(req, res) {
     }
 }
 
-function saveSlashCommand(result) {
-    return new Promise((resolve, reject) => {
-        try {
-            SlackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(raw);
-                }
-            });
-        }
-        catch (err) {
-            reject(err);
-        }
-    });
+function saveSlashCommand(body) {
+    let slashCommand = new Models.SlashCommand({team_id:body.team_id,
+                    team_domain: body.team_domain,
+                    channel_id:body.channel_id,
+                    channel_name:body.channel_name,
+                    user_id:body.user_id,
+                    user_name:body.user_name,
+                    command:body.command,
+                    text:body.text,
+                    response_url:body.response_url,
+                    pending:true});
+    return slashCommand.save();                
 }
