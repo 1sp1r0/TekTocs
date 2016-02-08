@@ -54,14 +54,18 @@ function startLive(req, res) {
                         switch (_context.prev = _context.next) {
                             case 0:
                                 _context.prev = 0;
-                                _context.next = 3;
+
+                                if (req.body.text.trim() === '') {
+                                    res.status(200).send('Every slideshow needs a title. Enter the title after the command - "/tektocs-startlive titleOfYourSlideshow"');
+                                }
+                                _context.next = 4;
                                 return saveSlashCommand(req.body);
 
-                            case 3:
-                                _context.next = 5;
+                            case 4:
+                                _context.next = 6;
                                 return Models.SlackTeam.findOne({ team_id: req.body.team_id });
 
-                            case 5:
+                            case 6:
                                 slackTeam = _context.sent;
 
                                 if (slackTeam) {
@@ -70,22 +74,22 @@ function startLive(req, res) {
                                     req.app.slackbot.registerSlackListeners();
                                 }
                                 res.status(200).send('A direct message channel has been opened with Tektocs. Every message you post in that channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.', 200);
-                                _context.next = 14;
+                                _context.next = 15;
                                 break;
 
-                            case 10:
-                                _context.prev = 10;
+                            case 11:
+                                _context.prev = 11;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 14:
+                            case 15:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 10]]);
+                }, _callee, this, [[0, 11]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
