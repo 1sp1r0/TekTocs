@@ -31,8 +31,8 @@ export default class Slackbot{
         console.log(message);
         winston.log('info',message.text);
         //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
-        //self.clientio.emit('SlackMessage',message.text);
-        self.socketioServer.emit('SlackMessage',msg);
+        self.clientio.emit('SlackMessage',message.text);
+        //self.socketioServer.emit('SlackMessage',msg);
     });
     }
 
