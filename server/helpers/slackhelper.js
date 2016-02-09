@@ -19,5 +19,22 @@ function openIm(token,userId){
                         "user": userId
                         }});
         }
+        
+function processMessage(message){
+    return new Promise((resolve, reject) => {
+        try {
+            Models.SlackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(raw);
+                }
+            });
+        }
+        catch (err) {
+            reject(err);
+        }
+    });
+}        
     
-export {postMessageToSlack,openIm};
+export {postMessageToSlack,openIm,processMessage};

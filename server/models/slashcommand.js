@@ -5,7 +5,9 @@ let slideSchema = mongoose.Schema({
     slideText:String,
     slideCaption:String,
     slideAssetUrl:String,
-});
+    slideTitle:String,
+    slideMimeType:String
+ });
 
 let Slide = mongoose.model('Slide', slideSchema);
 
