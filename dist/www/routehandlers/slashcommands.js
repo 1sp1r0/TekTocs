@@ -69,13 +69,9 @@ function startLive(req, res) {
 
                             case 4:
                                 _context.next = 6;
-                                return saveSlashCommand(req.body);
-
-                            case 6:
-                                _context.next = 8;
                                 return Models.SlackTeam.findOne({ team_id: req.body.team_id });
 
-                            case 8:
+                            case 6:
                                 slackTeam = _context.sent;
 
                                 if (!slackTeam) {
@@ -86,10 +82,10 @@ function startLive(req, res) {
                                 req.app.slackbot.slack = new _slackClient2.default(slackTeam.bot.bot_access_token, true, true);
                                 req.app.slackbot.slack.login();
                                 req.app.slackbot.registerSlackListeners();
-                                _context.next = 15;
+                                _context.next = 13;
                                 return slackhelper.openIm(slackTeam.bot.bot_access_token, req.body.user_id);
 
-                            case 15:
+                            case 13:
                                 imResponse = _context.sent;
                                 im = JSON.parse(imResponse);
 
@@ -98,6 +94,10 @@ function startLive(req, res) {
                                     break;
                                 }
 
+                                _context.next = 18;
+                                return saveSlashCommand(req.body, im.channel.id);
+
+                            case 18:
                                 _context.next = 20;
                                 return slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token, im.channel.id, 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
 
@@ -148,14 +148,15 @@ function startLive(req, res) {
     }
 }
 
-function saveSlashCommand(body) {
+function saveSlashCommand(body, channelId) {
+
     var slashCommand = new Models.SlashCommand({ team_id: body.team_id,
         team_domain: body.team_domain,
-        channel_id: body.channel_id,
-        channel_name: body.channel_name,
+        channel_id: channelId,
         user_id: body.user_id,
         user_name: body.user_name,
         command: body.command,
+        commandType: body.command === '/tektocs-start' || body.command === '/tektocs-startlive' ? 'start' : '',
         text: body.text,
         response_url: body.response_url,
         pending: true });
