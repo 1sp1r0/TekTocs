@@ -34,7 +34,7 @@ var slashCommandSchema = _mongoose2.default.Schema({
     response_url: String,
     attachments: {
         slideshow: {
-            title: { type: [String], index: true },
+            title: { type: String, index: true },
             slides: [slideSchema],
             published: Boolean
         }

@@ -13,10 +13,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var slackTeamSchema = _mongoose2.default.Schema({
     ok: Boolean,
-    access_token: { type: [String], index: true },
+    access_token: { type: String, index: true },
     scope: String,
     team_name: String,
-    team_id: { type: [String], index: true },
+    team_id: { type: String, index: true },
     incoming_webhook: { url: String, channel: String, configuration_url: String },
     bot: { bot_user_id: String, bot_access_token: String }
 });
