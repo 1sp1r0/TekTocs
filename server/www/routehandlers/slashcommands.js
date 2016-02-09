@@ -27,9 +27,11 @@ export function startLive(req, res) {
                 
                 let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
                 if(slackTeam){
-                    req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
-                    req.app.slackbot.slack.login();
-                    req.app.slackbot.registerSlackListeners();
+                    if(req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
+                        req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
+                        req.app.slackbot.slack.login();
+                        req.app.slackbot.registerSlackListeners();
+                    }
                     let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
                     let im=JSON.parse(imResponse);
                     if(im.ok){
