@@ -64,6 +64,7 @@ function getNextSlideindex(slides){
 }  
 
 function getSlide(message,slideIndex,botAccessToken){
+    return new Promise((resolve, reject) => {
      co(function* () {
         try {
             let slideCaption='';
@@ -78,30 +79,30 @@ function getSlide(message,slideIndex,botAccessToken){
             }else{
                  slideAssetUrl=message.file.url_private_download;
             }
-         return new Models.Slide({
+         resolve (new Models.Slide({
              slideIndex:slideIndex,
              slideText:slideText,
              slideCaption:slideCaption,
              slideAssetUrl:slideAssetUrl,
              slideTitle:message.file.title,
              slideMimeType:message.file.mimetype
-         });
+         }));
      }else{
-         return new Models.Slide({slideIndex:slideIndex,
+         resolve(new Models.Slide({slideIndex:slideIndex,
                 slideText:message.text,
                 slideCaption:'',
                 slideAssetUrl:'',
                 slideTitle:'',
-                slideMimeType:''});
+                slideMimeType:''}));
      }
     }
         catch (err) {
-           throw err.stack;
+           reject(err.stack);
          }
         }).catch((err) => {
-              throw err.stack;
+           reject(err.stack);
         });
-                
+    });          
 }
 
 

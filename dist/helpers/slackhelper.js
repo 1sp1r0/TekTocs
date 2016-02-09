@@ -122,77 +122,82 @@ function getNextSlideindex(slides) {
 }
 
 function getSlide(message, slideIndex, botAccessToken) {
-    (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
-        var slideCaption, slideText, slideAssetUrl;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-            while (1) {
-                switch (_context2.prev = _context2.next) {
-                    case 0:
-                        _context2.prev = 0;
-                        slideCaption = '';
-                        slideText = '';
-                        slideAssetUrl = '';
+    return new Promise(function (resolve, reject) {
+        (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
+            var slideCaption, slideText, slideAssetUrl;
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            _context2.prev = 0;
+                            slideCaption = '';
+                            slideText = '';
+                            slideAssetUrl = '';
 
-                        if (!(message.subtype === 'file_share')) {
-                            _context2.next = 16;
+                            if (!(message.subtype === 'file_share')) {
+                                _context2.next = 16;
+                                break;
+                            }
+
+                            if (message.file.comments_count > 0) {
+                                slideCaption = message.file.initial_comment.comment;
+                            }
+
+                            if (!(message.file.mode === 'snippet')) {
+                                _context2.next = 12;
+                                break;
+                            }
+
+                            _context2.next = 9;
+                            return getSnippetText(message.file.url_private_download, botAccessToken);
+
+                        case 9:
+                            slideText = _context2.sent;
+                            _context2.next = 13;
                             break;
-                        }
 
-                        if (message.file.comments_count > 0) {
-                            slideCaption = message.file.initial_comment.comment;
-                        }
+                        case 12:
+                            slideAssetUrl = message.file.url_private_download;
 
-                        if (!(message.file.mode === 'snippet')) {
-                            _context2.next = 12;
+                        case 13:
+                            resolve(new Models.Slide({
+                                slideIndex: slideIndex,
+                                slideText: slideText,
+                                slideCaption: slideCaption,
+                                slideAssetUrl: slideAssetUrl,
+                                slideTitle: message.file.title,
+                                slideMimeType: message.file.mimetype
+                            }));
+                            _context2.next = 17;
                             break;
-                        }
 
-                        _context2.next = 9;
-                        return getSnippetText(message.file.url_private_download, botAccessToken);
+                        case 16:
+                            resolve(new Models.Slide({ slideIndex: slideIndex,
+                                slideText: message.text,
+                                slideCaption: '',
+                                slideAssetUrl: '',
+                                slideTitle: '',
+                                slideMimeType: '' }));
 
-                    case 9:
-                        slideText = _context2.sent;
-                        _context2.next = 13;
-                        break;
+                        case 17:
+                            _context2.next = 22;
+                            break;
 
-                    case 12:
-                        slideAssetUrl = message.file.url_private_download;
+                        case 19:
+                            _context2.prev = 19;
+                            _context2.t0 = _context2['catch'](0);
 
-                    case 13:
-                        return _context2.abrupt('return', new Models.Slide({
-                            slideIndex: slideIndex,
-                            slideText: slideText,
-                            slideCaption: slideCaption,
-                            slideAssetUrl: slideAssetUrl,
-                            slideTitle: message.file.title,
-                            slideMimeType: message.file.mimetype
-                        }));
+                            reject(_context2.t0.stack);
 
-                    case 16:
-                        return _context2.abrupt('return', new Models.Slide({ slideIndex: slideIndex,
-                            slideText: message.text,
-                            slideCaption: '',
-                            slideAssetUrl: '',
-                            slideTitle: '',
-                            slideMimeType: '' }));
-
-                    case 17:
-                        _context2.next = 22;
-                        break;
-
-                    case 19:
-                        _context2.prev = 19;
-                        _context2.t0 = _context2['catch'](0);
-                        throw _context2.t0.stack;
-
-                    case 22:
-                    case 'end':
-                        return _context2.stop();
+                        case 22:
+                        case 'end':
+                            return _context2.stop();
+                    }
                 }
-            }
-        }, _callee2, this, [[0, 19]]);
-    })).catch(function (err) {
-        throw err.stack;
+            }, _callee2, this, [[0, 19]]);
+        })).catch(function (err) {
+            reject(err.stack);
+        });
     });
 }
 
