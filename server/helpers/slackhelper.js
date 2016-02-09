@@ -36,6 +36,8 @@ function processMessage(message){
                 reject('Slideshow has not been started yet.');
             }else{
                 let botAccessToken = yield getBotAccessToken(slashCommand.team_id);
+                resolve({slideText:botAccessToken});
+                /*
                 let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
                 let slide=yield getSlide(message,slideIndex,botAccessToken);
                 if(slide){
@@ -44,7 +46,7 @@ function processMessage(message){
                             resolve(slide)
                  }else{
                      reject("error getting slide data");
-                 }
+                 }*/
             }
         }
         catch (err) {

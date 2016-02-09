@@ -46,7 +46,7 @@ function openIm(token, userId) {
 function processMessage(message) {
     return new Promise(function (resolve, reject) {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-            var slashCommand, botAccessToken, slideIndex, slide;
+            var slashCommand, botAccessToken;
             return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
@@ -66,7 +66,7 @@ function processMessage(message) {
                             }
 
                             reject('Slideshow has not been started yet.');
-                            _context.next = 23;
+                            _context.next = 12;
                             break;
 
                         case 8:
@@ -75,46 +75,35 @@ function processMessage(message) {
 
                         case 10:
                             botAccessToken = _context.sent;
-                            slideIndex = getNextSlideindex(slashCommand.attachments.slideshow.slides);
-                            _context.next = 14;
-                            return getSlide(message, slideIndex, botAccessToken);
+
+                            resolve({ slideText: botAccessToken });
+                            /*
+                            let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
+                            let slide=yield getSlide(message,slideIndex,botAccessToken);
+                            if(slide){
+                                        slashCommand.attachments.slideshow.slides.push(slide);
+                                        yield slashCommand.attachments.slideshow.save();
+                                        resolve(slide)
+                             }else{
+                                 reject("error getting slide data");
+                             }*/
+
+                        case 12:
+                            _context.next = 17;
+                            break;
 
                         case 14:
-                            slide = _context.sent;
-
-                            if (!slide) {
-                                _context.next = 22;
-                                break;
-                            }
-
-                            slashCommand.attachments.slideshow.slides.push(slide);
-                            _context.next = 19;
-                            return slashCommand.attachments.slideshow.save();
-
-                        case 19:
-                            resolve(slide);
-                            _context.next = 23;
-                            break;
-
-                        case 22:
-                            reject("error getting slide data");
-
-                        case 23:
-                            _context.next = 28;
-                            break;
-
-                        case 25:
-                            _context.prev = 25;
+                            _context.prev = 14;
                             _context.t0 = _context['catch'](0);
 
                             reject(_context.t0.stack);
 
-                        case 28:
+                        case 17:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 25]]);
+            }, _callee, this, [[0, 14]]);
         })).catch(function (err) {
             reject(err.stack);
         });
