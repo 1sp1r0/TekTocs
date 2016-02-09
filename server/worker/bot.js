@@ -19,11 +19,12 @@ export default class Slackbot{
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer=io;
         this.slack=null;
+        /*
         this.slack=new Slack('xoxb-17952512917-xCZUmeEjTLLjR3DtXqAkLv2v', true, true);
         this.slack.login();
         let self=this;
         this.slack.on('message', function(message) {
-            //console.log(message);
+            console.log(message);
             console.log(message.file.mode); //snippet, post, hosted , external
             console.log(message.file.filetype);
             console.log(message.file.mimetype);
@@ -57,7 +58,7 @@ export default class Slackbot{
             //message.file.url_private_download - url to the file.
             
         });
-        
+        */
     }
     
    
@@ -72,9 +73,9 @@ export default class Slackbot{
                     return;
                 }
                 
-                let msg=yield slackhelper.processMessage(message);
+                let slide=yield slackhelper.processMessage(message);
                 //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
-                self.clientio.emit('SlackMessage',message.text);
+                self.clientio.emit('SlackMessage',slide.slideText);
             }).catch((err) => {
                 winston.log('error', err.stack);
             });

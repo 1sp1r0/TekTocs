@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 let slideSchema = mongoose.Schema({
-    slideindex:Number,
+    slideIndex:Number,
     slideText:String,
     slideCaption:String,
     slideAssetUrl:String,
@@ -15,10 +15,10 @@ let slashCommandSchema = mongoose.Schema({
     team_id:String,
     team_domain: String,
     channel_id:String,
-    channel_name:String,
     user_id:String,
     user_name:String,
     command:String,
+    commandType:String,
     text:String,
     response_url:String,
     attachments:{
@@ -32,7 +32,7 @@ let slashCommandSchema = mongoose.Schema({
     createDate:Date
 });
 
-slashCommandSchema.index({ team_id: 1, user_id: 1, command:1 });
+slashCommandSchema.index({ channel_id: 1, user_id: 1, commandType:1 });
 
 let SlashCommand = mongoose.model('SlashCommand', slashCommandSchema);
 

@@ -11,6 +11,8 @@ let slackTeamSchema = mongoose.Schema({
     bot:{bot_user_id:String,bot_access_token:String}
 });
 
+
+
 let SlackTeam = mongoose.model('SlackTeam', slackTeamSchema);
 
 export  {SlackTeam};

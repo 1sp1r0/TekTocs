@@ -24,7 +24,7 @@ export function startLive(req, res) {
                     res.status(200).send('Every slideshow needs a title. Enter the title after the command - "/tektocs-startlive titleOfYourSlideshow"');
                     return;
                 }
-                yield saveSlashCommand(req.body);
+                
                 let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
                 if(slackTeam){
                     req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
@@ -33,6 +33,7 @@ export function startLive(req, res) {
                     let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
                     let im=JSON.parse(imResponse);
                     if(im.ok){
+                        yield saveSlashCommand(req.body,im.channel.id);
                         yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.')
                         res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
                     }else{
@@ -66,14 +67,15 @@ export function startLive(req, res) {
     }
 }
 
-function saveSlashCommand(body) {
+function saveSlashCommand(body,channelId) {
+    
     let slashCommand = new Models.SlashCommand({team_id:body.team_id,
                     team_domain: body.team_domain,
-                    channel_id:body.channel_id,
-                    channel_name:body.channel_name,
+                    channel_id:channelId,
                     user_id:body.user_id,
                     user_name:body.user_name,
                     command:body.command,
+                    commandType:(body.command==='/tektocs-start' || body.command==='/tektocs-startlive')?'start':'',
                     text:body.text,
                     response_url:body.response_url,
                     pending:true});
