@@ -35,10 +35,11 @@ function processMessage(message){
             if(!slashCommand){
                 reject('Slideshow has not been started yet.');
             }else{
-                let team = yield getBotAccessToken(slashCommand.team_id);
-                resolve({slideText:team.bot.bot_access_token});
-                /*
+                let team = yield getSlackTeam(slashCommand.team_id);
+                let botAccessToken=team.bot.bot_access_token;
                 let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
+                resolve({slideText:slideIndex});
+                /*
                 let slide=yield getSlide(message,slideIndex,botAccessToken);
                 if(slide){
                             slashCommand.attachments.slideshow.slides.push(slide);
@@ -106,7 +107,7 @@ function getSlide(message,slideIndex,botAccessToken){
 }
 
 
-function getBotAccessToken(teamId){
+function getSlackTeam(teamId){
     return Models.SlackTeam.findOne({team_id: teamId}).select('bot.bot_access_token').exec();
 }
 
