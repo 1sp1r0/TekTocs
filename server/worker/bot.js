@@ -74,8 +74,24 @@ export default class Slackbot{
                 }
                 
                 let slide=yield slackhelper.processMessage(message);
-                //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
-                self.clientio.emit('SlackMessage',slide.slideText);
+                //check if the message is an image instead of text. If so, send the image
+                if(slide.slideAssetUrl !=''){
+                     request({headers: {'Authorization': 'Bearer ' + this.slack.token},encoding:null,url:slide.slideAssetUrl},
+                     function(err,res,body){
+                            if(err){
+                                winston.log('error',err);
+                            }else{
+                                //emit SlackMessage event to the server- socketioServer.
+                                self.socketioServer.emit('DisplaySlackMessage',{src:'data:' + slide.slideMimeType + ';base64,' 
+                                + body.toString('base64'),isImage:true });
+                            }
+                
+                     });
+                }else{
+                    //emit SlackMessage event to the server- socketioServer.
+                    self.clientio.emit('SlackMessage',slide.slideText);
+                }
+                
             }).catch((err) => {
                 winston.log('error', err.stack);
             });
@@ -98,6 +114,7 @@ export default class Slackbot{
         });
   }
   
+ 
 }
    
 

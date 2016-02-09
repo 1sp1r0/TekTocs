@@ -119,8 +119,20 @@ var Slackbot = function () {
                                 case 4:
                                     slide = _context.sent;
 
-                                    //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
-                                    self.clientio.emit('SlackMessage', slide.slideText);
+                                    //check if the message is an image instead of text. If so, send the image
+                                    if (slide.slideAssetUrl != '') {
+                                        (0, _request2.default)({ headers: { 'Authorization': 'Bearer ' + this.slack.token }, encoding: null, url: slide.slideAssetUrl }, function (err, res, body) {
+                                            if (err) {
+                                                _logger2.default.log('error', err);
+                                            } else {
+                                                //emit SlackMessage event to the server- socketioServer.
+                                                self.socketioServer.emit('DisplaySlackMessage', { src: 'data:' + slide.slideMimeType + ';base64,' + body.toString('base64'), isImage: true });
+                                            }
+                                        });
+                                    } else {
+                                        //emit SlackMessage event to the server- socketioServer.
+                                        self.clientio.emit('SlackMessage', slide.slideText);
+                                    }
 
                                 case 6:
                                 case 'end':
