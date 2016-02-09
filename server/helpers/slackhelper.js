@@ -40,8 +40,8 @@ function processMessage(message){
                 let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
                 let slide=yield getSlide(message,slideIndex,botAccessToken);
                 if(slide){
-                            //slashCommand.attachments.slideshow.slides.push(slide);
-                            //yield slashCommand.attachments.slideshow.save();
+                            slashCommand.attachments.slideshow.slides.push(slide);
+                            yield slashCommand.attachments.slideshow.save();
                             resolve(slide)
                  }else{
                      reject("error getting slide data");

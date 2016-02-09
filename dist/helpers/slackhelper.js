@@ -66,7 +66,7 @@ function processMessage(message) {
                             }
 
                             reject('Slideshow has not been started yet.');
-                            _context.next = 17;
+                            _context.next = 24;
                             break;
 
                         case 8:
@@ -83,30 +83,39 @@ function processMessage(message) {
                         case 15:
                             slide = _context.sent;
 
-                            if (slide) {
-                                //slashCommand.attachments.slideshow.slides.push(slide);
-                                //yield slashCommand.attachments.slideshow.save();
-                                resolve(slide);
-                            } else {
-                                reject("error getting slide data");
+                            if (!slide) {
+                                _context.next = 23;
+                                break;
                             }
 
-                        case 17:
-                            _context.next = 22;
+                            slashCommand.attachments.slideshow.slides.push(slide);
+                            _context.next = 20;
+                            return slashCommand.attachments.slideshow.save();
+
+                        case 20:
+                            resolve(slide);
+                            _context.next = 24;
                             break;
 
-                        case 19:
-                            _context.prev = 19;
+                        case 23:
+                            reject("error getting slide data");
+
+                        case 24:
+                            _context.next = 29;
+                            break;
+
+                        case 26:
+                            _context.prev = 26;
                             _context.t0 = _context['catch'](0);
 
                             reject(_context.t0.stack);
 
-                        case 22:
+                        case 29:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 19]]);
+            }, _callee, this, [[0, 26]]);
         })).catch(function (err) {
             reject(err.stack);
         });
