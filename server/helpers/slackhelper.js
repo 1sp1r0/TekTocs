@@ -35,8 +35,8 @@ function processMessage(message){
             if(!slashCommand){
                 reject('Slideshow has not been started yet.');
             }else{
-                let botAccessToken = yield getBotAccessToken(slashCommand.team_id);
-                resolve({slideText:botAccessToken});
+                let team = yield getBotAccessToken(slashCommand.team_id);
+                resolve({slideText:team.bot.bot_access_token});
                 /*
                 let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
                 let slide=yield getSlide(message,slideIndex,botAccessToken);

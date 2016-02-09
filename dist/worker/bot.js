@@ -120,7 +120,7 @@ var Slackbot = function () {
                                     slide = _context.sent;
 
                                     //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
-                                    self.clientio.emit('SlackMessage', JSON.parse(slide.slideText));
+                                    self.clientio.emit('SlackMessage', slide.slideText);
 
                                 case 6:
                                 case 'end':

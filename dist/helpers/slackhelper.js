@@ -46,7 +46,7 @@ function openIm(token, userId) {
 function processMessage(message) {
     return new Promise(function (resolve, reject) {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-            var slashCommand, botAccessToken;
+            var slashCommand, team;
             return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
@@ -74,9 +74,9 @@ function processMessage(message) {
                             return getBotAccessToken(slashCommand.team_id);
 
                         case 10:
-                            botAccessToken = _context.sent;
+                            team = _context.sent;
 
-                            resolve({ slideText: botAccessToken });
+                            resolve({ slideText: team.bot.bot_access_token });
                             /*
                             let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
                             let slide=yield getSlide(message,slideIndex,botAccessToken);
