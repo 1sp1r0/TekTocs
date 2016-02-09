@@ -75,7 +75,7 @@ export default class Slackbot{
                 
                 let slide=yield slackhelper.processMessage(message);
                 //when message arrives from Slack, emit SlackMessage event to the server- socketioServer.
-                self.clientio.emit('SlackMessage',slide.slideText);
+                self.clientio.emit('SlackMessage',JSON.parse(slide.slideText));
             }).catch((err) => {
                 winston.log('error', err.stack);
             });
