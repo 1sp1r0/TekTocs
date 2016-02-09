@@ -69,7 +69,7 @@ export default class Slackbot{
         this.slack.on('message', function(message) {
             co(function* () {
                 //ignore messages sent by the bot.
-                if(message.user===this.slack.self.id){
+                if(message.user===self.slack.self.id){
                     return;
                 }
                 

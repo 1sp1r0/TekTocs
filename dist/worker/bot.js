@@ -105,7 +105,7 @@ var Slackbot = function () {
                         while (1) {
                             switch (_context.prev = _context.next) {
                                 case 0:
-                                    if (!(message.user === this.slack.self.id)) {
+                                    if (!(message.user === self.slack.self.id)) {
                                         _context.next = 2;
                                         break;
                                     }
