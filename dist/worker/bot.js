@@ -121,7 +121,7 @@ var Slackbot = function () {
 
                                     //check if the message is an image instead of text. If so, send the image
                                     if (slide.slideAssetUrl != '') {
-                                        (0, _request2.default)({ headers: { 'Authorization': 'Bearer ' + this.slack.token }, encoding: null, url: slide.slideAssetUrl }, function (err, res, body) {
+                                        (0, _request2.default)({ headers: { 'Authorization': 'Bearer ' + self.slack.token }, encoding: null, url: slide.slideAssetUrl }, function (err, res, body) {
                                             if (err) {
                                                 _logger2.default.log('error', err);
                                             } else {
