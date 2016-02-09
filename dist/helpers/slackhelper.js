@@ -46,7 +46,7 @@ function openIm(token, userId) {
 function processMessage(message) {
     return new Promise(function (resolve, reject) {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-            var slashCommand, team, botAccessToken, slideIndex;
+            var slashCommand, team, botAccessToken, slideIndex, slide;
             return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
@@ -66,7 +66,7 @@ function processMessage(message) {
                             }
 
                             reject('Slideshow has not been started yet.');
-                            _context.next = 14;
+                            _context.next = 17;
                             break;
 
                         case 8:
@@ -77,34 +77,36 @@ function processMessage(message) {
                             team = _context.sent;
                             botAccessToken = team.bot.bot_access_token;
                             slideIndex = getNextSlideindex(slashCommand.attachments.slideshow.slides);
+                            _context.next = 15;
+                            return getSlide(message, slideIndex, botAccessToken);
 
-                            resolve({ slideText: slideIndex });
-                            /*
-                            let slide=yield getSlide(message,slideIndex,botAccessToken);
-                            if(slide){
-                                        slashCommand.attachments.slideshow.slides.push(slide);
-                                        yield slashCommand.attachments.slideshow.save();
-                                        resolve(slide)
-                             }else{
-                                 reject("error getting slide data");
-                             }*/
+                        case 15:
+                            slide = _context.sent;
 
-                        case 14:
-                            _context.next = 19;
+                            if (slide) {
+                                //slashCommand.attachments.slideshow.slides.push(slide);
+                                //yield slashCommand.attachments.slideshow.save();
+                                resolve(slide);
+                            } else {
+                                reject("error getting slide data");
+                            }
+
+                        case 17:
+                            _context.next = 22;
                             break;
 
-                        case 16:
-                            _context.prev = 16;
+                        case 19:
+                            _context.prev = 19;
                             _context.t0 = _context['catch'](0);
 
                             reject(_context.t0.stack);
 
-                        case 19:
+                        case 22:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 16]]);
+            }, _callee, this, [[0, 19]]);
         })).catch(function (err) {
             reject(err.stack);
         });

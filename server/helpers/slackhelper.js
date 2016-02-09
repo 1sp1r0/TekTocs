@@ -38,16 +38,14 @@ function processMessage(message){
                 let team = yield getSlackTeam(slashCommand.team_id);
                 let botAccessToken=team.bot.bot_access_token;
                 let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
-                resolve({slideText:slideIndex});
-                /*
                 let slide=yield getSlide(message,slideIndex,botAccessToken);
                 if(slide){
-                            slashCommand.attachments.slideshow.slides.push(slide);
-                            yield slashCommand.attachments.slideshow.save();
+                            //slashCommand.attachments.slideshow.slides.push(slide);
+                            //yield slashCommand.attachments.slideshow.save();
                             resolve(slide)
                  }else{
                      reject("error getting slide data");
-                 }*/
+                 }
             }
         }
         catch (err) {
