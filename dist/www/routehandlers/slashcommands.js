@@ -161,6 +161,13 @@ function saveSlashCommand(body, channelId) {
         commandType: body.command === '/tektocs-start' || body.command === '/tektocs-startlive' ? 'start' : '',
         text: body.text,
         response_url: body.response_url,
+        attachments: {
+            slideshow: {
+                title: body.text,
+                slides: [],
+                published: false
+            }
+        },
         pending: true });
     return slashCommand.save();
 }
