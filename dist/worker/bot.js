@@ -132,7 +132,7 @@ var Slackbot = function () {
                                         });
                                     } else {
                                         //emit SlackMessage event to the server- socketioServer.
-                                        self.clientio.emit('SlackMessage', '<pre>' + slide.slideText + '</pre>');
+                                        self.clientio.emit('SlackMessage', slide.slideText);
                                     }
 
                                 case 6:
