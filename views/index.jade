@@ -63,7 +63,7 @@ block content
               $('.carousel').carousel({
                 interval: false
              })
-             $('.carousel').carousel('pause');
+             //$('.carousel').carousel('pause');
              if(msg.isImage){
                  //$('#serverimage').attr('src',msg.src);
                  $('.carousel-inner').append($('<div class="item"><img src="' + msg.src + '"/></div>'));
@@ -73,7 +73,7 @@ block content
                  $('.carousel-inner').append($(`<div class="item active">${msg}</div>`));
              }
             
-            $('.carousel').carousel('next');
+            //$('.carousel').carousel('next');
          });
     script(src='/js/build/bundle.js')    
      
