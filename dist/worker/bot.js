@@ -127,7 +127,7 @@ var Slackbot = function () {
                                                     _logger2.default.log('error', err);
                                                 } else {
                                                     //emit the text
-                                                    self.socketioServer.emit('DisplaySlackMessage', slide.slideText);
+                                                    self.socketioServer.emit('DisplaySlackMessage', res.body);
                                                 }
                                             });
                                         } else {
