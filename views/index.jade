@@ -70,7 +70,7 @@ block content
              }else{
                 //$('#messages').append($('<li>').text(msg));
                 
-                 $('.carousel-inner').append($('<div class="item">' + msg + '</div>'));
+                 $('.carousel-inner').append($(`<div class="item active">${msg}</div>`));
              }
             
             $('.carousel').carousel('next');
