@@ -81,9 +81,14 @@ export default class Slackbot{
                             if(err){
                                 winston.log('error',err);
                             }else{
-                                //emit SlackMessage event to the server- socketioServer.
-                                self.socketioServer.emit('DisplaySlackMessage',{src:'data:' + slide.slideMimeType + ';base64,' 
-                                + body.toString('base64'),isImage:true });
+                                //if snippet send the text, if image send data url
+                                if (slide.slideMode==='snippet'){
+                                    self.socketioServer.emit('DisplaySlackMessage',res.body);
+                                }else{
+                                    //emit SlackMessage event to the server- socketioServer.
+                                    self.socketioServer.emit('DisplaySlackMessage',{src:'data:' + slide.slideMimeType + ';base64,' 
+                                    + body.toString('base64'),isImage:true });
+                                }
                             }
                 
                      });

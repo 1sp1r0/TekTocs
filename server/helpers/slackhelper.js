@@ -70,22 +70,24 @@ function getSlide(message,slideIndex,botAccessToken){
             let slideCaption='';
             let slideText='';
             let slideAssetUrl='';
+            let slideMode='';
        if (message.subtype==='file_share'){
-                if(message.file.comments_count >0){
-                    slideCaption=message.file.initial_comment.comment;
-                }
-            if(message.file.mode==='snippet'){
-                 slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
-            }else{
-                 slideAssetUrl=message.file.url_private_download;
-            }
+           slideMode=message.file.mode;
+           slideAssetUrl=message.file.url_private_download;
+           if(message.file.comments_count >0){
+              slideCaption=message.file.initial_comment.comment;
+           }
+            //if(message.file.mode==='snippet'){
+            //     slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
+           //}
          resolve (new Models.Slide({
              slideIndex:slideIndex,
              slideText:slideText,
              slideCaption:slideCaption,
              slideAssetUrl:slideAssetUrl,
              slideTitle:message.file.title,
-             slideMimeType:message.file.mimetype
+             slideMimeType:message.file.mimetype,
+             slideMode:slideMode
          }));
      }else{
          resolve(new Models.Slide({slideIndex:slideIndex,
@@ -93,7 +95,8 @@ function getSlide(message,slideIndex,botAccessToken){
                 slideCaption:'',
                 slideAssetUrl:'',
                 slideTitle:'',
-                slideMimeType:''}));
+                slideMimeType:'',
+                slideMode:''}));
      }
     }
         catch (err) {
