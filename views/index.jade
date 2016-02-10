@@ -69,8 +69,8 @@ block content
                  $('.carousel-inner').append($('<div class="item"><img src="' + msg.src + '"/></div>'));
              }else{
                 //$('#messages').append($('<li>').text(msg));
-                alert(`<div class="item">${msg}</div>`);
-                 $('.carousel-inner').append($(`<div class="item">${msg}</div>`));
+                
+                 $('.carousel-inner').append($('<div class="item">' + msg + '</div>'));
              }
             
             $('.carousel').carousel('next');
