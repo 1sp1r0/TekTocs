@@ -74,24 +74,31 @@ export default class Slackbot{
                 }
                 
                 let slide=yield slackhelper.processMessage(message);
-                //check if the message is an image instead of text. If so, send the image
+                //check if the message is an image or snippet. 
                 if(slide.slideAssetUrl !=''){
-                     request({headers: {'Authorization': 'Bearer ' + self.slack.token},encoding:null,url:slide.slideAssetUrl},
+                    if (slide.slideMode==='snippet'){
+                          request({headers: {'Authorization': 'Bearer ' + self.slack.token},url:slide.slideAssetUrl},
+                     function(err,res){
+                            if(err){
+                                winston.log('error',err);
+                            }else{
+                                //emit the text
+                                self.socketioServer.emit('DisplaySlackMessage',res.body);
+                            }
+                     });
+                    }else{
+                          request({headers: {'Authorization': 'Bearer ' + self.slack.token},encoding:null,url:slide.slideAssetUrl},
                      function(err,res,body){
                             if(err){
                                 winston.log('error',err);
                             }else{
-                                //if snippet send the text, if image send data url
-                                if (slide.slideMode==='snippet'){
-                                    self.socketioServer.emit('DisplaySlackMessage',res.body);
-                                }else{
-                                    //emit SlackMessage event to the server- socketioServer.
-                                    self.socketioServer.emit('DisplaySlackMessage',{src:'data:' + slide.slideMimeType + ';base64,' 
-                                    + body.toString('base64'),isImage:true });
-                                }
+                                //emit SlackMessage event to the server- socketioServer.
+                                self.socketioServer.emit('DisplaySlackMessage',{src:'data:' + slide.slideMimeType + ';base64,' 
+                                + body.toString('base64'),isImage:true });
                             }
                 
                      });
+                    }
                 }else{
                     //emit SlackMessage event to the server- socketioServer.
                     self.clientio.emit('SlackMessage',slide.slideText);
