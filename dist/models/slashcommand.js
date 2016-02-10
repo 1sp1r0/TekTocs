@@ -17,7 +17,8 @@ var slideSchema = _mongoose2.default.Schema({
     slideCaption: String,
     slideAssetUrl: String,
     slideTitle: String,
-    slideMimeType: String
+    slideMimeType: String,
+    slideMode: String
 });
 
 var Slide = _mongoose2.default.model('Slide', slideSchema);

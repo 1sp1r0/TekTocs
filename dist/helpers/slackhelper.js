@@ -133,77 +133,54 @@ function getNextSlideindex(slides) {
 function getSlide(message, slideIndex, botAccessToken) {
     return new Promise(function (resolve, reject) {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
-            var slideCaption, slideText, slideAssetUrl;
+            var slideCaption, slideText, slideAssetUrl, slideMode;
             return regeneratorRuntime.wrap(function _callee2$(_context2) {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
                         case 0:
-                            _context2.prev = 0;
-                            slideCaption = '';
-                            slideText = '';
-                            slideAssetUrl = '';
+                            try {
+                                slideCaption = '';
+                                slideText = '';
+                                slideAssetUrl = '';
+                                slideMode = '';
 
-                            if (!(message.subtype === 'file_share')) {
-                                _context2.next = 16;
-                                break;
+                                if (message.subtype === 'file_share') {
+                                    slideMode = message.file.mode;
+                                    slideAssetUrl = message.file.url_private_download;
+                                    if (message.file.comments_count > 0) {
+                                        slideCaption = message.file.initial_comment.comment;
+                                    }
+                                    //if(message.file.mode==='snippet'){
+                                    //     slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
+                                    //}
+                                    resolve(new Models.Slide({
+                                        slideIndex: slideIndex,
+                                        slideText: slideText,
+                                        slideCaption: slideCaption,
+                                        slideAssetUrl: slideAssetUrl,
+                                        slideTitle: message.file.title,
+                                        slideMimeType: message.file.mimetype,
+                                        slideMode: slideMode
+                                    }));
+                                } else {
+                                    resolve(new Models.Slide({ slideIndex: slideIndex,
+                                        slideText: message.text,
+                                        slideCaption: '',
+                                        slideAssetUrl: '',
+                                        slideTitle: '',
+                                        slideMimeType: '',
+                                        slideMode: '' }));
+                                }
+                            } catch (err) {
+                                reject(err.stack);
                             }
 
-                            if (message.file.comments_count > 0) {
-                                slideCaption = message.file.initial_comment.comment;
-                            }
-
-                            if (!(message.file.mode === 'snippet')) {
-                                _context2.next = 12;
-                                break;
-                            }
-
-                            _context2.next = 9;
-                            return getSnippetText(message.file.url_private_download, botAccessToken);
-
-                        case 9:
-                            slideText = _context2.sent;
-                            _context2.next = 13;
-                            break;
-
-                        case 12:
-                            slideAssetUrl = message.file.url_private_download;
-
-                        case 13:
-                            resolve(new Models.Slide({
-                                slideIndex: slideIndex,
-                                slideText: slideText,
-                                slideCaption: slideCaption,
-                                slideAssetUrl: slideAssetUrl,
-                                slideTitle: message.file.title,
-                                slideMimeType: message.file.mimetype
-                            }));
-                            _context2.next = 17;
-                            break;
-
-                        case 16:
-                            resolve(new Models.Slide({ slideIndex: slideIndex,
-                                slideText: message.text,
-                                slideCaption: '',
-                                slideAssetUrl: '',
-                                slideTitle: '',
-                                slideMimeType: '' }));
-
-                        case 17:
-                            _context2.next = 22;
-                            break;
-
-                        case 19:
-                            _context2.prev = 19;
-                            _context2.t0 = _context2['catch'](0);
-
-                            reject(_context2.t0.stack);
-
-                        case 22:
+                        case 1:
                         case 'end':
                             return _context2.stop();
                     }
                 }
-            }, _callee2, this, [[0, 19]]);
+            }, _callee2, this);
         })).catch(function (err) {
             reject(err.stack);
         });
