@@ -120,29 +120,19 @@ var Slackbot = function () {
                                     slide = _context.sent;
 
                                     //check if the message is an image or snippet.
-                                    if (slide.slideAssetUrl != '') {
-                                        if (slide.slideMode === 'snippet') {
-                                            (0, _request2.default)({ headers: { 'Authorization': 'Bearer ' + self.slack.token }, url: slide.slideAssetUrl }, function (err, res) {
-                                                if (err) {
-                                                    _logger2.default.log('error', err);
-                                                } else {
-                                                    //emit the text
-                                                    self.socketioServer.emit('DisplaySlackMessage', slide.slideText);
-                                                }
-                                            });
-                                        } else {
-                                            (0, _request2.default)({ headers: { 'Authorization': 'Bearer ' + self.slack.token }, encoding: null, url: slide.slideAssetUrl }, function (err, res, body) {
-                                                if (err) {
-                                                    _logger2.default.log('error', err);
-                                                } else {
-                                                    //emit SlackMessage event to the server- socketioServer.
-                                                    self.socketioServer.emit('DisplaySlackMessage', { src: 'data:' + slide.slideMimeType + ';base64,' + body.toString('base64'), isImage: true });
-                                                }
-                                            });
-                                        }
+
+                                    if (slide.slideAssetUrl != '' && slide.slideMode != 'snippet') {
+                                        (0, _request2.default)({ headers: { 'Authorization': 'Bearer ' + self.slack.token }, encoding: null, url: slide.slideAssetUrl }, function (err, res, body) {
+                                            if (err) {
+                                                _logger2.default.log('error', err);
+                                            } else {
+                                                //emit SlackMessage event to the server- socketioServer.
+                                                self.socketioServer.emit('DisplaySlackMessage', { src: 'data:' + slide.slideMimeType + ';base64,' + body.toString('base64'), isImage: true });
+                                            }
+                                        });
                                     } else {
                                         //emit SlackMessage event to the server- socketioServer.
-                                        self.clientio.emit('SlackMessage', slide.slideText);
+                                        self.clientio.emit('SlackMessage', '<pre>' + slide.slideText + '</pre>');
                                     }
 
                                 case 6:
