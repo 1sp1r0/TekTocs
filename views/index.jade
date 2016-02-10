@@ -15,18 +15,18 @@ block content
             div.col-md-6
                 div.jumbotron
                     div.carousel.slide#carousel-example-generic(data-ride="carousel")
-                        ol.carousel-indicators
+                        ///ol.carousel-indicators
                             li.active(data-target="#carousel-example-generic", data-slide-to="0")
                             li(data-target="#carousel-example-generic", data-slide-to="1")
                             li(data-target="#carousel-example-generic", data-slide-to="2")
   
                         div.carousel-inner(role="listbox")
-                            div.item.active
+                            ///div.item.active
                                 img(src="http://bootflat.github.io/img/slider1.jpg" alt="...")
                                 div.carousel-caption
                                     h3
                                         |Hello
-                            div.item
+                            ///div.item
                                 img(src="http://bootflat.github.io/img/slider2.jpg" alt="...")
                                 div.carousel-caption
                                     |...   
@@ -67,6 +67,9 @@ block content
                 //$('#messages').append($('<li>').text(msg));
                  $('.div.carousel-inner').append($(`<div class="item">${msg}</div>`));
              }
+             $('.carousel').carousel({
+                interval: 2000
+             })
             
          });
     script(src='/js/build/bundle.js')    
