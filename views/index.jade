@@ -8,6 +8,7 @@ block content
                     div.jumbotron-photo
                         img(src="http://bootflat.github.io/img/Jumbotron.jpg")
                     div.jumbotron-contents
+                        
                         h3 Slideshow Title
                         p(style="font-size:18px;line-height:35px;")
                             |If email signup is enabled for your team, new members will be able to create an account on their own. Team Owners can manage this option under Team Sign Up Mode on the Team Settings page.
@@ -16,7 +17,15 @@ block content
                
                 div.jumbotron
                     div.jumbotron-contents
+                        a.left.pull-left(href="#carousel-example-generic", role="button", data-slide="prev")
+                            span.glyphicon.glyphicon-chevron-left(aria-hidden="true")
+                            span.sr-only
+                                |Previous
                         h3(style="margin-top:0px;") Washington State University: Organic farming is a double win — more profitable and more sustainable. 
+                        a.right.pull-right(href="#carousel-example-generic", role="button", data-slide="next")
+                            span.glyphicon.glyphicon-chevron-right(aria-hidden="true")
+                            span.sr-only
+                                |Next
                     //div.row
                         div.col-md-2.col-sm-2.col-xs-2
                             button.btn.btn-primary(type="button" onclick="$('.carousel').carousel('prev')")
