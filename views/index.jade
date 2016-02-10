@@ -60,17 +60,19 @@ block content
     script.
         var socket = io();
          socket.on('DisplaySlackMessage', function(msg){
+              $('.carousel').carousel({
+                interval: false
+             })
+             $('.carousel').carousel('pause');
              if(msg.isImage){
                  //$('#serverimage').attr('src',msg.src);
-                 $('.div.carousel-inner').append($('<div class="item"><img src="' + msg.src + '"/></div>'));
+                 $('.carousel-inner').append($('<div class="item"><img src="' + msg.src + '"/></div>'));
              }else{
                 //$('#messages').append($('<li>').text(msg));
-                 $('.div.carousel-inner').append($(`<div class="item">${msg}</div>`));
+                 $('.carousel-inner').append($(`<div class="item">${msg}</div>`));
              }
-             $('.carousel').carousel({
-                interval: 2000
-             })
             
+            $('.carousel').carousel('next');
          });
     script(src='/js/build/bundle.js')    
      
