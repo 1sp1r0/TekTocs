@@ -1,18 +1,71 @@
 extends ./layout.jade
 block content
-    .container(style='padding-top: 75px;')      
+    .container(style='padding-top: 175px;') 
+        
+        div.row
+            div.col-md-6
+                div.jumbotron
+                    div.jumbotron-photo
+                        img(src="http://bootflat.github.io/img/Jumbotron.jpg")
+                    div.jumbotron-contents
+                        h3 Slideshow Title
+                        p(style="font-size:18px;line-height:35px;")
+                            |If email signup is enabled for your team, new members will be able to create an account on their own. Team Owners can manage this option under Team Sign Up Mode on the Team Settings page.
+                            |For security, only those with access to an email address at the domains specified by the team's Owner will be able to sign up. We'll send a validation link to each new team member's email address to verify their identity before they can create an account.     
+            div.col-md-6
+                div.jumbotron
+                    div.carousel.slide#carousel-example-generic(data-ride="carousel")
+                        ol.carousel-indicators
+                            li.active(data-target="#carousel-example-generic", data-slide-to="0")
+                            li(data-target="#carousel-example-generic", data-slide-to="1")
+                            li(data-target="#carousel-example-generic", data-slide-to="2")
+  
+                        div.carousel-inner(role="listbox")
+                            div.item.active
+                                img(src="http://bootflat.github.io/img/slider1.jpg" alt="...")
+                                div.carousel-caption
+                                    h3
+                                        |Hello
+                            div.item
+                                img(src="http://bootflat.github.io/img/slider2.jpg" alt="...")
+                                div.carousel-caption
+                                    |...   
+                
+                        a.left.carousel-control(href="#carousel-example-generic", role="button", data-slide="prev")
+                            span.glyphicon.glyphicon-chevron-left(aria-hidden="true")
+                            span.sr-only
+                                |Previous
+                        a.right.carousel-control(href="#carousel-example-generic", role="button", data-slide="next")
+                            span.glyphicon.glyphicon-chevron-right(aria-hidden="true")
+                            span.sr-only
+                                |Next
+                    div.jumbotron-contents
+                        h3 Slideshow Title
+                        p(style="font-size:18px;line-height:35px;")
+                            |If email signup is enabled for your team, new members will be able to create an account on their own. Team Owners can manage this option under Team Sign Up Mode on the Team Settings page.
+                            |For security, only those with access to an email address at the domains specified by the team's Owner will be able to sign up. We'll send a validation link to each new team member's email address to verify their identity before they can create an account.    
+        p
+            a(href="https://slack.com/oauth/authorize?scope=commands,bot&client_id=2605154976.20361890802")
+                img(alt="Add to Slack", height="40", width="139", src="https://platform.slack-edge.com/img/add_to_slack.png", srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x")
         ul#messages
         img#serverimage(width="200")
+        a.btn.btn-primary
+            |Flat button
         a(href="https://slack.com/oauth/authorize?scope=commands,bot&client_id=2605154976.20361890802")
             img(alt="Add to Slack", height="40", width="139", src="https://platform.slack-edge.com/img/add_to_slack.png", srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x")
+     
+        
+  
     script(src="/socket.io/socket.io.js")
     script.
         var socket = io();
          socket.on('DisplaySlackMessage', function(msg){
              if(msg.isImage){
-                 $('#serverimage').attr('src',msg.src);
+                 //$('#serverimage').attr('src',msg.src);
+                 $('.div.carousel-inner').append($('<div class="item"><img src="' + msg.src + '"/></div>'));
              }else{
-                $('#messages').append($('<li>').text(msg));
+                //$('#messages').append($('<li>').text(msg));
+                 $('.div.carousel-inner').append($(`<div class="item">${msg}</div>`));
              }
             
          });

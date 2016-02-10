@@ -75,18 +75,8 @@ export default class Slackbot{
                 
                 let slide=yield slackhelper.processMessage(message);
                 //check if the message is an image or snippet. 
-                if(slide.slideAssetUrl !=''){
-                    if (slide.slideMode==='snippet'){
-                          request({headers: {'Authorization': 'Bearer ' + self.slack.token},url:slide.slideAssetUrl},
-                     function(err,res){
-                            if(err){
-                                winston.log('error',err);
-                            }else{
-                                //emit the text
-                                self.socketioServer.emit('DisplaySlackMessage',res.body);
-                            }
-                     });
-                    }else{
+                
+                    if (slide.slideAssetUrl !='' && slide.slideMode!='snippet'){
                           request({headers: {'Authorization': 'Bearer ' + self.slack.token},encoding:null,url:slide.slideAssetUrl},
                      function(err,res,body){
                             if(err){
@@ -99,9 +89,9 @@ export default class Slackbot{
                 
                      });
                     }
-                }else{
+                else{
                     //emit SlackMessage event to the server- socketioServer.
-                    self.clientio.emit('SlackMessage',slide.slideText);
+                    self.clientio.emit('SlackMessage',`<pre>${slide.slideText}</pre>`);
                 }
                 
             }).catch((err) => {

@@ -77,9 +77,9 @@ function getSlide(message,slideIndex,botAccessToken){
            if(message.file.comments_count >0){
               slideCaption=message.file.initial_comment.comment;
            }
-            //if(message.file.mode==='snippet'){
-            //     slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
-           //}
+           if(message.file.mode==='snippet'){
+                 slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
+           }
          resolve (new Models.Slide({
              slideIndex:slideIndex,
              slideText:slideText,
@@ -115,19 +115,16 @@ function getSlackTeam(teamId){
 
 function getSnippetText(url,botAccessToken){
     return new Promise((resolve, reject) => {
-        co(function* () {
-        try {
-        let res= yield request({headers: 
+        request({headers: 
             {'Authorization': 'Bearer ' + botAccessToken},
-            url:url});
-          resolve(res.body);  
-        }
-        catch (err) {
-            reject(err.stack);
-         }
-        }).catch((err) => {
-              reject(err.stack);
-            });
+            url:url},function(err,res){
+                            if(err){
+                                reject(err);
+                            }else{
+                                resolve(res.body);
+                            }
+                     });
+          
     });
 }
     
