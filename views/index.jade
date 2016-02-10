@@ -13,7 +13,9 @@ block content
                             |If email signup is enabled for your team, new members will be able to create an account on their own. Team Owners can manage this option under Team Sign Up Mode on the Team Settings page.
                             |For security, only those with access to an email address at the domains specified by the team's Owner will be able to sign up. We'll send a validation link to each new team member's email address to verify their identity before they can create an account.     
             div.col-md-6
+               
                 div.jumbotron
+             
                     div.carousel#carousel-example-generic
                         ///ol.carousel-indicators
                             li.active(data-target="#carousel-example-generic", data-slide-to="0")
@@ -31,11 +33,11 @@ block content
                                 div.carousel-caption
                                     |...   
                 
-                        a.left.carousel-control(href="#carousel-example-generic", role="button", data-slide="prev")
+                        //a.left.carousel-control(href="#carousel-example-generic", role="button", data-slide="prev")
                             span.glyphicon.glyphicon-chevron-left(aria-hidden="true")
                             span.sr-only
                                 |Previous
-                        a.right.carousel-control(href="#carousel-example-generic", role="button", data-slide="next")
+                        //a.right.carousel-control(href="#carousel-example-generic", role="button", data-slide="next")
                             span.glyphicon.glyphicon-chevron-right(aria-hidden="true")
                             span.sr-only
                                 |Next
@@ -81,7 +83,7 @@ block content
              }else{
                 //$('#messages').append($('<li>').text(msg));
                 
-                 $('.carousel-inner').append($(`<div class="item active">${msg}</div>`));
+                 $('.carousel-inner').append($(`<div style="padding:10px;font-size:18px;line-height:35px;" class="item active">${msg}</div>`));
              }
             
             //$('.carousel').carousel('next');
