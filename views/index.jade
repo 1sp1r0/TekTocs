@@ -57,14 +57,16 @@ block content
         
   
     script(src="/socket.io/socket.io.js")
-    script.
-        $(document).ready(function() {
-            $('.carousel').carousel({
-                interval: false
-             });
-        });
-        var socket = io();
-         socket.on('DisplaySlackMessage', function(msg){
+    script(src='/js/build/bundle.js')   
+ block pagescripts 
+        script.
+            $().ready(function() {
+                $('.carousel').carousel({
+                    interval: false
+                });
+            });
+            var socket = io();
+            socket.on('DisplaySlackMessage', function(msg){
              
              // $('.carousel').carousel({
              //   interval: false
@@ -83,6 +85,6 @@ block content
              }
             
             //$('.carousel').carousel('next');
-         });
-    script(src='/js/build/bundle.js')    
+            });
+    
      
