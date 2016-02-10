@@ -60,10 +60,13 @@ block content
     script.
         var socket = io();
          socket.on('DisplaySlackMessage', function(msg){
+             
               $('.carousel').carousel({
                 interval: false
-             })
-             $('.carousel > item').removeClass('active');
+             });
+             
+             $('.carousel  div.item').removeClass('active');
+             
              //$('.carousel').carousel('pause');
              if(msg.isImage){
                  //$('#serverimage').attr('src',msg.src);
