@@ -25,7 +25,7 @@ block content
                                     div.userinfo
                                         a Murali Narasimhan
                                         span.userinfo-extra created on 12/23/2015   
-                        div.jumbotron-photo
+                        //div.jumbotron-photo
                             img(src="http://bootflat.github.io/img/Jumbotron.jpg",style="width:100%;margin-bottom:5px;")
                         p(style="font-size:24px;margin-top:0px;font-weight:bold;") Washington State University: Organic farming is a double win — more profitable and more sustainable.
                         div.row
@@ -104,7 +104,7 @@ block content
                  if(msg.isImage){
                      $('.carousel-inner').append($(`<div class='item active'><img src='${msg.src}'/></div>`));
                  }else{
-                     $('.carousel-inner').append($(`<div style="padding:10px;font-size:18px;line-height:35px;" class="item active">${msg}</div>`));
+                     $('.carousel-inner').append($(`<div style="padding:10px;font-size:18px;line-height:35px;" class="item active slideContainer"><div class="slide">${msg}</div></div>`));
                 }
             });
     

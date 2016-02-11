@@ -44,6 +44,18 @@ body{
     line-height: 1.1;
 }
 
+.slideContainer{
+    display: table;
+}
+
+.slide{
+    display: table-cell;
+    vertical-align: middle;
+    text-align:center;
+    background-color: #656D78;
+    color:#ffffff;
+}
+
 /***********************
   RAISED BUTTONS
 ************************/
