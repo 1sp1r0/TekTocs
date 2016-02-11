@@ -43,23 +43,25 @@ body{
     font-size: 12px;
     line-height: 1.1;
 }
-.Absolute-Center {
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-}
+
 
 .slideContainer{
   /*  display: table;
     background-color: #656D78;
     position:absolute; height:100%; width:100%;*/
+    padding:10px;
+    font-size:18px;
+    line-height:35px;
     height: 200px;
     overflow: hidden;
 }
 
 .slide{
-    display: table-cell;
-    vertical-align: middle;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    /*display: table-cell;
+    vertical-align: middle;*/
     text-align:center;
     
     color:#ffffff;
