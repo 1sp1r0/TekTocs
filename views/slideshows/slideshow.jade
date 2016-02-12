@@ -1,0 +1,82 @@
+extends ../layout.jade
+block content
+    .container(style='padding-top: 150px;') 
+        
+        div.row
+            div.col-md-6
+                div.jumbotron(style="background-color:#ecf0f1")
+                    //div.jumbotron-photo
+                        img(src="http://bootflat.github.io/img/Jumbotron.jpg")
+                    div.jumbotron-contents
+                        
+                        h3 This particular #{slideshow}
+                        p(style="font-size:18px;line-height:35px;")
+                            |If email signup is enabled for your team, new members will be able to create an account on their own. Team Owners can manage this option under Team Sign Up Mode on the Team Settings page.
+                            |For security, only those with access to an email address at the domains specified by the team's Owner will be able to sign up. We'll send a validation link to each new team member's email address to verify their identity before they can create an account.     
+            div.col-md-6
+                div.jumbotron
+                    div.jumbotron-contents
+                        div.row
+                            div.col-md-12
+                                div.floatLeft
+                                    div.avatar-container
+                                        a.avatar
+                                            img.avatar-image(src="https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=32&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png")
+                                    div.userinfo
+                                        a Murali Narasimhan
+                                        span.userinfo-extra created on 12/23/2015   
+                        //div.jumbotron-photo
+                            img(src="http://bootflat.github.io/img/Jumbotron.jpg",style="width:100%;margin-bottom:5px;")
+                        p(style="font-size:24px;margin-top:0px;font-weight:bold;") 
+                            |Washington State University: Organic farming is a double win — more profitable and more sustainable.
+                        //div.row(style="background-color:#656D78")
+                        //div.col-md-1.col-sm-1.col-xs-2
+                                a.left.pull-left(href="#carousel-example-generic", role="button", data-slide="prev")
+                                    span.glyphicon.glyphicon-chevron-left(aria-hidden="true")
+                                    span.sr-only
+                                        |Previous
+                        //div.col-md-10.col-sm-10.col-xs-8.text-center
+                                        | 1 of 50
+                        //div.col-md-1.col-sm-1.col-xs-2
+                                a.right.pull-right(href="#carousel-example-generic", role="button", data-slide="next")
+                                    span.glyphicon.glyphicon-chevron-right(aria-hidden="true")
+                                    span.sr-only
+                                        |Next
+                                        
+                    
+                    div.carousel#carousel-example-generic
+                        div.carousel-inner(role="listbox")
+ 
+                  div.col-md-1.col-sm-1.col-xs-2
+                                a.left.pull-left(href="#carousel-example-generic", role="button", data-slide="prev")
+                                    span.glyphicon.glyphicon-chevron-left(aria-hidden="true")
+                                    span.sr-only
+                                        |Previous
+                  div.col-md-10.col-sm-10.col-xs-8.text-center
+                                        | 1 of 50
+                  div.col-md-1.col-sm-1.col-xs-2
+                                a.right.pull-right(href="#carousel-example-generic", role="button", data-slide="next")
+                                    span.glyphicon.glyphicon-chevron-right(aria-hidden="true")
+                                    span.sr-only
+                                        |Next
+  
+    script(src="/socket.io/socket.io.js")
+    script(src='/js/build/bundle.js')   
+ block pagescripts 
+        script.
+            $().ready(function() {
+                $('.carousel').carousel({
+                    interval: false
+                });
+            });
+            var socket = io();
+            socket.on('DisplaySlackMessage', function(msg){
+                $('.carousel  div.item').removeClass('active');
+                 if(msg.isImage){
+                     $('.carousel-inner').append($(`<div class='item active'><img src='${msg.src}'/></div>`));
+                 }else{
+                     $('.carousel-inner').append($(`<div style="" class="item active slideContainer"><div class="slide">${msg}</div></div>`));
+                }
+            });
+    
+     

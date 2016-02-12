@@ -5,6 +5,7 @@
     import csrf from 'csurf';
     import home  from  './routes/home';
     import slack from './routes/slack';
+    import slideshows from './routes/slideshows';
     import helmet from 'helmet';
     import passport from 'passport';
     import * as facebook from 'passport-facebook';
@@ -102,26 +103,10 @@
             res.redirect('/login')
     }
 
-app.use('/', home);  
-app.use('/slack', slack); 
-/*
-    app.get('/', function(req,res){
-       handlerMappings['/'][req.method.toLowerCase()](req,res);
-    } );
-    
-     app.get('/slack/oauth', function(req,res){
-       handlerMappings['/slack/oauth'][req.method.toLowerCase()](req,res);
-    } );
-    
-    app.post('/slack/command', function(req,res){
-       handlerMappings['/slack/command'][req.method.toLowerCase()](req,res);
-    } );
-    
-    app.post('/slack/commands/startlive', function(req,res){
-       handlerMappings['/slack/commands/startlive'][req.method.toLowerCase()](req,res);
-    } );
-     
-    */
+    app.use('/', home);  
+    app.use('/slack', slack); 
+    app.use('/slideshows', slideshows); 
+
     //connect to database
     DbConnection.connect();
     

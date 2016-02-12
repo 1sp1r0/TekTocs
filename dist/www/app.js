@@ -28,6 +28,10 @@ var _slack = require('./routes/slack');
 
 var _slack2 = _interopRequireDefault(_slack);
 
+var _slideshows = require('./routes/slideshows');
+
+var _slideshows2 = _interopRequireDefault(_slideshows);
+
 var _helmet = require('helmet');
 
 var _helmet2 = _interopRequireDefault(_helmet);
@@ -146,24 +150,8 @@ function ensureAuthenticated(req, res, next) {
 
 app.use('/', _home2.default);
 app.use('/slack', _slack2.default);
-/*
-    app.get('/', function(req,res){
-       handlerMappings['/'][req.method.toLowerCase()](req,res);
-    } );
-    
-     app.get('/slack/oauth', function(req,res){
-       handlerMappings['/slack/oauth'][req.method.toLowerCase()](req,res);
-    } );
-    
-    app.post('/slack/command', function(req,res){
-       handlerMappings['/slack/command'][req.method.toLowerCase()](req,res);
-    } );
-    
-    app.post('/slack/commands/startlive', function(req,res){
-       handlerMappings['/slack/commands/startlive'][req.method.toLowerCase()](req,res);
-    } );
-     
-    */
+app.use('/slideshows', _slideshows2.default);
+
 //connect to database
 _db2.default.connect();
 

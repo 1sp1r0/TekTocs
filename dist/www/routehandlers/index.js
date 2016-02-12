@@ -15,36 +15,54 @@ Object.defineProperty(exports, 'home_index', {
 
 var _slack = require('./slack');
 
-var _loop = function _loop(_key3) {
-  if (_key3 === "default") return 'continue';
-  Object.defineProperty(exports, _key3, {
+var _loop = function _loop(_key4) {
+  if (_key4 === "default") return 'continue';
+  Object.defineProperty(exports, _key4, {
     enumerable: true,
     get: function get() {
-      return _slack[_key3];
+      return _slack[_key4];
     }
   });
 };
 
-for (var _key3 in _slack) {
-  var _ret = _loop(_key3);
+for (var _key4 in _slack) {
+  var _ret = _loop(_key4);
 
   if (_ret === 'continue') continue;
 }
 
 var _slashcommands = require('./slashcommands');
 
-var _loop2 = function _loop2(_key4) {
-  if (_key4 === "default") return 'continue';
-  Object.defineProperty(exports, _key4, {
+var _loop2 = function _loop2(_key5) {
+  if (_key5 === "default") return 'continue';
+  Object.defineProperty(exports, _key5, {
     enumerable: true,
     get: function get() {
-      return _slashcommands[_key4];
+      return _slashcommands[_key5];
     }
   });
 };
 
-for (var _key4 in _slashcommands) {
-  var _ret2 = _loop2(_key4);
+for (var _key5 in _slashcommands) {
+  var _ret2 = _loop2(_key5);
 
   if (_ret2 === 'continue') continue;
+}
+
+var _slideshows = require('./slideshows');
+
+var _loop3 = function _loop3(_key6) {
+  if (_key6 === "default") return 'continue';
+  Object.defineProperty(exports, _key6, {
+    enumerable: true,
+    get: function get() {
+      return _slideshows[_key6];
+    }
+  });
+};
+
+for (var _key6 in _slideshows) {
+  var _ret3 = _loop3(_key6);
+
+  if (_ret3 === 'continue') continue;
 }
