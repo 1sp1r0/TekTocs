@@ -70,7 +70,7 @@
   slackbot.registerSocketIoListeners();
   app.slackbot=slackbot;
   
-app.use('/', home);  
+//app.use('/', home);  
 app.use('/slack', slack);  
     
     app.use(function (err, req, res, next) {

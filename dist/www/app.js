@@ -113,7 +113,7 @@ var slackbot = new _bot2.default(io);
 slackbot.registerSocketIoListeners();
 app.slackbot = slackbot;
 
-app.use('/', _home2.default);
+//app.use('/', home); 
 app.use('/slack', _slack2.default);
 
 app.use(function (err, req, res, next) {
