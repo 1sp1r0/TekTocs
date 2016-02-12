@@ -113,9 +113,6 @@ var slackbot = new _bot2.default(io);
 slackbot.registerSocketIoListeners();
 app.slackbot = slackbot;
 
-//app.use('/', home); 
-app.use('/slack', _slack2.default);
-
 app.use(function (err, req, res, next) {
     //Allow slack slash commands that post with the verification token.
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) return next();
@@ -147,6 +144,8 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
+app.use('/', _home2.default);
+app.use('/slack', _slack2.default);
 /*
     app.get('/', function(req,res){
        handlerMappings['/'][req.method.toLowerCase()](req,res);

@@ -70,8 +70,7 @@
   slackbot.registerSocketIoListeners();
   app.slackbot=slackbot;
   
-//app.use('/', home);  
-app.use('/slack', slack);  
+ 
     
     app.use(function (err, req, res, next) {
         //Allow slack slash commands that post with the verification token.
@@ -103,6 +102,8 @@ app.use('/slack', slack);
             res.redirect('/login')
     }
 
+app.use('/', home);  
+app.use('/slack', slack); 
 /*
     app.get('/', function(req,res){
        handlerMappings['/'][req.method.toLowerCase()](req,res);
