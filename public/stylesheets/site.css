@@ -9,6 +9,30 @@ body{
     padding:20px 20px 0px 20px !important;
 }
 
+.bs-sidebar.affix {
+  top: 95px;
+}
+
+/*
+@media (min-width: 768px) {
+  .bs-sidebar.affix {
+    width: 158px;
+    top: 25px;
+  }
+}
+
+@media (min-width: 992px) {
+  .bs-sidebar.affix {
+    width: 213px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .bs-sidebar.affix {
+    width: 463px;
+  }
+}*/
+
 .floatLeft {
     float: left !important;
     margin-bottom:5px;
