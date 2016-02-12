@@ -20,9 +20,13 @@ var _csurf = require('csurf');
 
 var _csurf2 = _interopRequireDefault(_csurf);
 
-var _routehandlermappings = require('./routehandlermappings');
+var _home = require('./routes/home');
 
-var _routehandlermappings2 = _interopRequireDefault(_routehandlermappings);
+var _home2 = _interopRequireDefault(_home);
+
+var _slack = require('./routes/slack');
+
+var _slack2 = _interopRequireDefault(_slack);
 
 var _helmet = require('helmet');
 
@@ -109,6 +113,9 @@ var slackbot = new _bot2.default(io);
 slackbot.registerSocketIoListeners();
 app.slackbot = slackbot;
 
+app.use('/', _home2.default);
+app.use('/slack', _slack2.default);
+
 app.use(function (err, req, res, next) {
     //Allow slack slash commands that post with the verification token.
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) return next();
@@ -140,22 +147,24 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-app.get('/', function (req, res) {
-    _routehandlermappings2.default['/'][req.method.toLowerCase()](req, res);
-});
-
-app.get('/slack/oauth', function (req, res) {
-    _routehandlermappings2.default['/slack/oauth'][req.method.toLowerCase()](req, res);
-});
-
-app.post('/slack/command', function (req, res) {
-    _routehandlermappings2.default['/slack/command'][req.method.toLowerCase()](req, res);
-});
-
-app.post('/slack/commands/startlive', function (req, res) {
-    _routehandlermappings2.default['/slack/commands/startlive'][req.method.toLowerCase()](req, res);
-});
-
+/*
+    app.get('/', function(req,res){
+       handlerMappings['/'][req.method.toLowerCase()](req,res);
+    } );
+    
+     app.get('/slack/oauth', function(req,res){
+       handlerMappings['/slack/oauth'][req.method.toLowerCase()](req,res);
+    } );
+    
+    app.post('/slack/command', function(req,res){
+       handlerMappings['/slack/command'][req.method.toLowerCase()](req,res);
+    } );
+    
+    app.post('/slack/commands/startlive', function(req,res){
+       handlerMappings['/slack/commands/startlive'][req.method.toLowerCase()](req,res);
+    } );
+     
+    */
 //connect to database
 _db2.default.connect();
 

@@ -3,7 +3,8 @@
     import bodyParser from 'body-parser';
     import cookieParser from 'cookie-parser';
     import csrf from 'csurf';
-    import handlerMappings  from  './routehandlermappings';
+    import home  from  './routes/home';
+    import slack from './routes/slack';
     import helmet from 'helmet';
     import passport from 'passport';
     import * as facebook from 'passport-facebook';
@@ -69,7 +70,8 @@
   slackbot.registerSocketIoListeners();
   app.slackbot=slackbot;
   
-    
+app.use('/', home);  
+app.use('/slack', slack);  
     
     app.use(function (err, req, res, next) {
         //Allow slack slash commands that post with the verification token.
@@ -101,6 +103,7 @@
             res.redirect('/login')
     }
 
+/*
     app.get('/', function(req,res){
        handlerMappings['/'][req.method.toLowerCase()](req,res);
     } );
@@ -117,7 +120,7 @@
        handlerMappings['/slack/commands/startlive'][req.method.toLowerCase()](req,res);
     } );
      
-    
+    */
     //connect to database
     DbConnection.connect();
     
