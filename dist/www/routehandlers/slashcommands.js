@@ -56,7 +56,7 @@ function startLive(req, res) {
     try {
         if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
             (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-                var slackTeam, imResponse, im, user, userInfoResponse, userInfo;
+                var slackTeam, imResponse, im, user, userInfoResponse, userInfo, postMessageResponse, postMessage;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -79,7 +79,7 @@ function startLive(req, res) {
                                 slackTeam = _context.sent;
 
                                 if (!slackTeam) {
-                                    _context.next = 48;
+                                    _context.next = 55;
                                     break;
                                 }
 
@@ -95,7 +95,7 @@ function startLive(req, res) {
                                 im = JSON.parse(imResponse);
 
                                 if (!im.ok) {
-                                    _context.next = 44;
+                                    _context.next = 51;
                                     break;
                                 }
 
@@ -137,60 +137,76 @@ function startLive(req, res) {
 
                             case 31:
                                 if (!user) {
-                                    _context.next = 40;
+                                    _context.next = 47;
                                     break;
                                 }
 
                                 _context.next = 34;
-                                return saveSlashCommand(req.body, im.channel.id, user._id);
-
-                            case 34:
-                                req.app.slackbot.slack.login();
-                                _context.next = 37;
                                 return slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token, im.channel.id, 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
 
-                            case 37:
+                            case 34:
+                                postMessageResponse = _context.sent;
+                                postMessage = JSON.parse(postMessageResponse);
+
+                                if (!postMessage.ok) {
+                                    _context.next = 43;
+                                    break;
+                                }
+
+                                _context.next = 39;
+                                return saveSlashCommand(req.body, im.channel.id, user._id, postMessage.ts);
+
+                            case 39:
+                                req.app.slackbot.slack.login();
                                 res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
-                                _context.next = 42;
+                                _context.next = 45;
                                 break;
 
-                            case 40:
+                            case 43:
+                                _logger2.default.log('error', postMessage.error);
+                                res.status(500).send('Sorry, we had trouble waking up our bot, Tektocs.');
+
+                            case 45:
+                                _context.next = 49;
+                                break;
+
+                            case 47:
                                 _logger2.default.log('error', 'Could not retrieve user info.');
                                 res.status(500).send('Could not retrieve user info.');
 
-                            case 42:
-                                _context.next = 46;
+                            case 49:
+                                _context.next = 53;
                                 break;
 
-                            case 44:
+                            case 51:
                                 _logger2.default.log('error', im.error);
                                 res.status(500).send('Could not open direct message channel with our bot, tektocs');
 
-                            case 46:
-                                _context.next = 50;
+                            case 53:
+                                _context.next = 57;
                                 break;
 
-                            case 48:
+                            case 55:
                                 _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                            case 50:
-                                _context.next = 56;
+                            case 57:
+                                _context.next = 63;
                                 break;
 
-                            case 52:
-                                _context.prev = 52;
+                            case 59:
+                                _context.prev = 59;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 56:
+                            case 63:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 52]]);
+                }, _callee, this, [[0, 59]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
@@ -204,7 +220,7 @@ function startLive(req, res) {
     }
 }
 
-function saveSlashCommand(body, channelId, userid) {
+function saveSlashCommand(body, channelId, userid, startTs) {
 
     var slashCommand = new Models.SlashCommand({ team_id: body.team_id,
         team_domain: body.team_domain,
@@ -217,6 +233,7 @@ function saveSlashCommand(body, channelId, userid) {
         response_url: body.response_url,
         attachments: {
             slideshow: {
+                start_ts: startTs,
                 title: body.text,
                 short_id: _shortid2.default.generate(),
                 creator: userid,
@@ -224,7 +241,8 @@ function saveSlashCommand(body, channelId, userid) {
                 published: false
             }
         },
-        pending: true });
+        pending: true,
+        createDate: new Date() });
     return slashCommand.save();
 }
 

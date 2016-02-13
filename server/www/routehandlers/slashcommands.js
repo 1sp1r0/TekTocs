@@ -51,10 +51,19 @@ export function startLive(req, res) {
                             }
                         }
                         if(user){
-                            yield saveSlashCommand(req.body,im.channel.id,user._id);
-                            req.app.slackbot.slack.login();
-                            yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.')
-                            res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
+                            
+                            let postMessageResponse=yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
+                            let postMessage=JSON.parse(postMessageResponse);
+                            if(postMessage.ok){
+                                yield saveSlashCommand(req.body,im.channel.id,user._id,postMessage.ts);
+                                req.app.slackbot.slack.login();
+                                res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
+                            }else{
+                                winston.log('error', postMessage.error);
+                                res.status(500).send('Sorry, we had trouble waking up our bot, Tektocs.');
+                              
+                            }
+                            
                         }else{
                             winston.log('error', 'Could not retrieve user info.');
                             res.status(500).send('Could not retrieve user info.');
@@ -90,7 +99,7 @@ export function startLive(req, res) {
     }
 }
 
-function saveSlashCommand(body,channelId,userid) {
+function saveSlashCommand(body,channelId,userid,startTs) {
     
     let slashCommand = new Models.SlashCommand({team_id:body.team_id,
                     team_domain: body.team_domain,
@@ -103,6 +112,7 @@ function saveSlashCommand(body,channelId,userid) {
                     response_url:body.response_url,
                     attachments:{
                         slideshow:{
+                            start_ts:startTs,
                             title: body.text,
                             short_id:shortid.generate(),
                             creator:userid,
@@ -110,7 +120,8 @@ function saveSlashCommand(body,channelId,userid) {
                             published:false
                         }
                     },
-                    pending:true});
+                    pending:true,
+                    createDate:new Date()});
     return slashCommand.save();                
 }
 
