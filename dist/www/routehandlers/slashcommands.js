@@ -75,7 +75,7 @@ function startLive(req, res) {
                                 slackTeam = _context.sent;
 
                                 if (!slackTeam) {
-                                    _context.next = 47;
+                                    _context.next = 49;
                                     break;
                                 }
 
@@ -91,7 +91,7 @@ function startLive(req, res) {
                                 im = JSON.parse(imResponse);
 
                                 if (!im.ok) {
-                                    _context.next = 43;
+                                    _context.next = 45;
                                     break;
                                 }
 
@@ -102,90 +102,90 @@ function startLive(req, res) {
                                 user = _context.sent;
 
                                 if (user) {
-                                    _context.next = 30;
+                                    _context.next = 32;
                                     break;
                                 }
 
-                                _context.next = 20;
-                                return slackhelper.getUserinfo(slackTeam.bot.bot_access_token, req.body.user_id);
+                                res.send('hello');
+                                return _context.abrupt('return');
 
-                            case 20:
+                            case 22:
                                 userInfo = _context.sent;
 
                                 if (!userInfo.ok) {
-                                    _context.next = 27;
+                                    _context.next = 29;
                                     break;
                                 }
 
-                                _context.next = 24;
+                                _context.next = 26;
                                 return saveSlackUser(userInfo.user);
 
-                            case 24:
+                            case 26:
                                 user = _context.sent;
-                                _context.next = 30;
+                                _context.next = 32;
                                 break;
 
-                            case 27:
+                            case 29:
                                 _logger2.default.log('error', userInfo.error);
                                 res.status(500).send(userInfo.error);
                                 return _context.abrupt('return');
 
-                            case 30:
+                            case 32:
                                 if (!user) {
-                                    _context.next = 39;
+                                    _context.next = 41;
                                     break;
                                 }
 
-                                _context.next = 33;
+                                _context.next = 35;
                                 return saveSlashCommand(req.body, im.channel.id, user._id);
 
-                            case 33:
+                            case 35:
                                 req.app.slackbot.slack.login();
-                                _context.next = 36;
+                                _context.next = 38;
                                 return slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token, im.channel.id, 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
 
-                            case 36:
+                            case 38:
                                 res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
-                                _context.next = 41;
+                                _context.next = 43;
                                 break;
 
-                            case 39:
+                            case 41:
                                 _logger2.default.log('error', 'Could not retrieve user info.');
                                 res.status(500).send('Could not retrieve user info.');
 
-                            case 41:
-                                _context.next = 45;
+                            case 43:
+                                _context.next = 47;
                                 break;
 
-                            case 43:
+                            case 45:
                                 _logger2.default.log('error', im.error);
                                 res.status(500).send('Could not open direct message channel with our bot, tektocs');
 
-                            case 45:
-                                _context.next = 49;
+                            case 47:
+                                _context.next = 51;
                                 break;
 
-                            case 47:
+                            case 49:
                                 _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                            case 49:
-                                _context.next = 55;
+                            case 51:
+                                _context.next = 57;
                                 break;
 
-                            case 51:
-                                _context.prev = 51;
+                            case 53:
+                                _context.prev = 53;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 55:
+                            case 57:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 51]]);
+                }, _callee, this, [[0, 53]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
