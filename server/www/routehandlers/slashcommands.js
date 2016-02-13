@@ -29,7 +29,6 @@ export function startLive(req, res) {
                 if(slackTeam){
                     if(req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
                         req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
-                        req.app.slackbot.slack.login();
                         req.app.slackbot.registerSlackListeners();
                     }
                     let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
@@ -48,6 +47,7 @@ export function startLive(req, res) {
                         }
                         if(user){
                             yield saveSlashCommand(req.body,im.channel.id,user._id);
+                            req.app.slackbot.slack.login();
                             yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.')
                             res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
                         }else{

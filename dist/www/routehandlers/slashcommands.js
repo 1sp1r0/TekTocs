@@ -75,13 +75,12 @@ function startLive(req, res) {
                                 slackTeam = _context.sent;
 
                                 if (!slackTeam) {
-                                    _context.next = 45;
+                                    _context.next = 46;
                                     break;
                                 }
 
                                 if (req.app.slackbot.slack.token != slackTeam.bot.bot_access_token) {
                                     req.app.slackbot.slack = new _slackClient2.default(slackTeam.bot.bot_access_token, true, true);
-                                    req.app.slackbot.slack.login();
                                     req.app.slackbot.registerSlackListeners();
                                 }
                                 _context.next = 11;
@@ -92,7 +91,7 @@ function startLive(req, res) {
                                 im = JSON.parse(imResponse);
 
                                 if (!im.ok) {
-                                    _context.next = 41;
+                                    _context.next = 42;
                                     break;
                                 }
 
@@ -132,7 +131,7 @@ function startLive(req, res) {
 
                             case 29:
                                 if (!user) {
-                                    _context.next = 37;
+                                    _context.next = 38;
                                     break;
                                 }
 
@@ -140,51 +139,52 @@ function startLive(req, res) {
                                 return saveSlashCommand(req.body, im.channel.id, user._id);
 
                             case 32:
-                                _context.next = 34;
+                                req.app.slackbot.slack.login();
+                                _context.next = 35;
                                 return slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token, im.channel.id, 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
 
-                            case 34:
+                            case 35:
                                 res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
-                                _context.next = 39;
+                                _context.next = 40;
                                 break;
 
-                            case 37:
+                            case 38:
                                 _logger2.default.log('error', 'Could not retrieve user info.');
                                 res.status(500).send('Could not retrieve user info.');
 
-                            case 39:
-                                _context.next = 43;
+                            case 40:
+                                _context.next = 44;
                                 break;
 
-                            case 41:
+                            case 42:
                                 _logger2.default.log('error', im.error);
                                 res.status(500).send('Could not open direct message channel with our bot, tektocs');
 
-                            case 43:
-                                _context.next = 47;
+                            case 44:
+                                _context.next = 48;
                                 break;
 
-                            case 45:
+                            case 46:
                                 _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                            case 47:
-                                _context.next = 53;
+                            case 48:
+                                _context.next = 54;
                                 break;
 
-                            case 49:
-                                _context.prev = 49;
+                            case 50:
+                                _context.prev = 50;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 53:
+                            case 54:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 49]]);
+                }, _callee, this, [[0, 50]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
