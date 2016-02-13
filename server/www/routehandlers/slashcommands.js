@@ -166,6 +166,7 @@ function saveSlashCommand(body,channelId,userid,startTs) {
                     response_url:body.response_url,
                     attachments:{
                         slideshow:{
+                            end_ts:'',
                             start_ts:startTs,
                             title: body.text,
                             short_id:shortid.generate(),
