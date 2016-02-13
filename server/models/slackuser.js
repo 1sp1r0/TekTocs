@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import shortid from 'shortid'
 
 let slackUserSchema = mongoose.Schema({
-    _id: {type: String,unique: true,'default': shortid.generate},
+    _id: {type: String,unique: true,'default': shortid.generate()},
     user_id:{ type: String, index: true },
     name:String,
     first_name:String,
