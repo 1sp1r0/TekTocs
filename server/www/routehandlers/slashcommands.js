@@ -43,6 +43,7 @@ export function startLive(req, res) {
                             else{
                                 winston.log('error', userInfo.error);
                                 res.status(500).send('Could not retrieve user info.');
+                                return;
                             }
                         }
                         if(user){
