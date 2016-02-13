@@ -106,10 +106,10 @@ function startLive(req, res) {
                                     break;
                                 }
 
-                                res.send('hello');
-                                return _context.abrupt('return');
+                                _context.next = 20;
+                                return slackhelper.getUserinfo(slackTeam.bot.bot_access_token, req.body.user_id);
 
-                            case 22:
+                            case 20:
                                 userInfo = _context.sent;
 
                                 if (!userInfo.ok) {
@@ -117,8 +117,8 @@ function startLive(req, res) {
                                     break;
                                 }
 
-                                _context.next = 26;
-                                return saveSlackUser(userInfo.user);
+                                res.send('hello');
+                                return _context.abrupt('return');
 
                             case 26:
                                 user = _context.sent;

@@ -37,10 +37,11 @@ export function startLive(req, res) {
                         let user=yield Models.SlackUser.findOne({user_id:req.body.user_id});
                         
                         if(!user){
-                            res.send('hello');
-                            return;
+                            
                             let userInfo=yield slackhelper.getUserinfo(slackTeam.bot.bot_access_token,req.body.user_id);
                             if(userInfo.ok){
+                                res.send('hello');
+                            return;
                                 user=yield saveSlackUser(userInfo.user);
                             }
                             else{
