@@ -41,7 +41,7 @@ var slashCommandSchema = _mongoose2.default.Schema({
         slideshow: {
             _id: { type: String, unique: true, 'default': _shortid2.default.generate() },
             title: { type: String, index: true },
-            creator: { type: _mongoose2.default.Schema.Types.ObjectId, ref: 'SlackUser' },
+            creator: { type: String, ref: 'SlackUser' },
             slides: [slideSchema],
             published: Boolean
         }
