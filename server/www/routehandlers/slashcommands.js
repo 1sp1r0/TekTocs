@@ -120,7 +120,7 @@ function saveSlackUser(userInfo) {
         try {
             Models.SlackUser.update({ user_id: userInfo.id }, 
             Object.assign({},userInfo.profile,
-            {user_id:userInfo.id,name:userInfo.name}), 
+            {user_id:userInfo.id,name:userInfo.name,shortid:shortid.generate()}), 
             { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);

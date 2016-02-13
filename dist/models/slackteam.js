@@ -16,7 +16,7 @@ var _shortid2 = _interopRequireDefault(_shortid);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var slackTeamSchema = _mongoose2.default.Schema({
-    shortid: String,
+    shortid: { type: String, index: true },
     ok: Boolean,
     access_token: { type: String, index: true },
     scope: String,
