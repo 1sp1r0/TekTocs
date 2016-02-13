@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.processMessage = exports.openIm = exports.postMessageToSlack = undefined;
+exports.processMessage = exports.getUserinfo = exports.openIm = exports.postMessageToSlack = undefined;
 
 var _requestPromise = require('request-promise');
 
@@ -37,6 +37,15 @@ function postMessageToSlack(token, channel, msg) {
 function openIm(token, userId) {
     return (0, _requestPromise2.default)({
         url: 'https://slack.com/api/im.open',
+        qs: {
+            "token": token,
+            "user": userId
+        } });
+}
+
+function getUserinfo(token, userId) {
+    return (0, _requestPromise2.default)({
+        url: 'https://slack.com/api/users.info',
         qs: {
             "token": token,
             "user": userId
@@ -229,4 +238,5 @@ function getSnippetText(url, botAccessToken) {
 
 exports.postMessageToSlack = postMessageToSlack;
 exports.openIm = openIm;
+exports.getUserinfo = getUserinfo;
 exports.processMessage = processMessage;

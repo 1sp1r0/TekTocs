@@ -9,6 +9,10 @@ var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
+var _shortid = require('shortid');
+
+var _shortid2 = _interopRequireDefault(_shortid);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var slideSchema = _mongoose2.default.Schema({
@@ -35,7 +39,9 @@ var slashCommandSchema = _mongoose2.default.Schema({
     response_url: String,
     attachments: {
         slideshow: {
+            id: { type: String, unique: true, 'default': _shortid2.default.generate },
             title: { type: String, index: true },
+            creator: { type: _mongoose2.default.Schema.Types.ObjectId, ref: 'SlackUser' },
             slides: [slideSchema],
             published: Boolean
         }

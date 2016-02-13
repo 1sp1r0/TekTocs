@@ -22,6 +22,15 @@ function openIm(token,userId){
                         }});
         }
         
+function getUserinfo(token,userId){
+         return  request({
+                    url: 'https://slack.com/api/users.info', 
+                    qs: {
+                        "token": token,
+                        "user": userId
+                        }});
+        }        
+        
 function processMessage(message){
     return new Promise((resolve, reject) => {
         co(function* () {
@@ -128,4 +137,4 @@ function getSnippetText(url,botAccessToken){
     });
 }
     
-export {postMessageToSlack,openIm,processMessage};
+export {postMessageToSlack,openIm,getUserinfo,processMessage};

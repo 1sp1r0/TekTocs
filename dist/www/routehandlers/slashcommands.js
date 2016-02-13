@@ -52,7 +52,7 @@ function startLive(req, res) {
     try {
         if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
             (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-                var slackTeam, imResponse, im;
+                var slackTeam, imResponse, im, user, userInfo;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -75,7 +75,7 @@ function startLive(req, res) {
                                 slackTeam = _context.sent;
 
                                 if (!slackTeam) {
-                                    _context.next = 25;
+                                    _context.next = 45;
                                     break;
                                 }
 
@@ -92,51 +92,99 @@ function startLive(req, res) {
                                 im = JSON.parse(imResponse);
 
                                 if (!im.ok) {
-                                    _context.next = 21;
+                                    _context.next = 41;
                                     break;
                                 }
 
                                 _context.next = 16;
-                                return saveSlashCommand(req.body, im.channel.id);
+                                return Models.SlackUser.findOne({ user_id: req.body.user_id });
 
                             case 16:
-                                _context.next = 18;
-                                return slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token, im.channel.id, 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
+                                user = _context.sent;
 
-                            case 18:
-                                res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
-                                _context.next = 23;
+                                if (user) {
+                                    _context.next = 29;
+                                    break;
+                                }
+
+                                _context.next = 20;
+                                return slackhelper.getUserinfo(req.app.slackbot.slack.token, req.body.user_id);
+
+                            case 20:
+                                userInfo = _context.sent;
+
+                                if (!userInfo.ok) {
+                                    _context.next = 27;
+                                    break;
+                                }
+
+                                _context.next = 24;
+                                return saveSlackUser(userInfo.user);
+
+                            case 24:
+                                user = _context.sent;
+                                _context.next = 29;
                                 break;
 
-                            case 21:
+                            case 27:
+                                _logger2.default.log('error', userInfo.error);
+                                res.status(500).send('Could not retrieve user info.');
+
+                            case 29:
+                                if (!user) {
+                                    _context.next = 37;
+                                    break;
+                                }
+
+                                _context.next = 32;
+                                return saveSlashCommand(req.body, im.channel.id, user._id);
+
+                            case 32:
+                                _context.next = 34;
+                                return slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token, im.channel.id, 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
+
+                            case 34:
+                                res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
+                                _context.next = 39;
+                                break;
+
+                            case 37:
+                                _logger2.default.log('error', 'Could not retrieve user info.');
+                                res.status(500).send('Could not retrieve user info.');
+
+                            case 39:
+                                _context.next = 43;
+                                break;
+
+                            case 41:
                                 _logger2.default.log('error', im.error);
                                 res.status(500).send('Could not open direct message channel with our bot, tektocs');
 
-                            case 23:
-                                _context.next = 27;
+                            case 43:
+                                _context.next = 47;
                                 break;
 
-                            case 25:
+                            case 45:
                                 _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                            case 27:
-                                _context.next = 33;
+                            case 47:
+                                _context.next = 53;
                                 break;
 
-                            case 29:
-                                _context.prev = 29;
+                            case 49:
+                                _context.prev = 49;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 33:
+                            case 53:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 29]]);
+                }, _callee, this, [[0, 49]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
@@ -150,7 +198,7 @@ function startLive(req, res) {
     }
 }
 
-function saveSlashCommand(body, channelId) {
+function saveSlashCommand(body, channelId, userid) {
 
     var slashCommand = new Models.SlashCommand({ team_id: body.team_id,
         team_domain: body.team_domain,
@@ -164,10 +212,27 @@ function saveSlashCommand(body, channelId) {
         attachments: {
             slideshow: {
                 title: body.text,
+                creator: userid,
                 slides: [],
                 published: false
             }
         },
         pending: true });
     return slashCommand.save();
+}
+
+function saveSlackUser(userInfo) {
+    return new Promise(function (resolve, reject) {
+        try {
+            Models.SlackUser.update({ user_id: userInfo.id }, Object.assign({}, userInfo.profile, { user_id: userInfo.id, name: userInfo.name }), { upsert: true }, function (err, raw) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(raw);
+                }
+            });
+        } catch (err) {
+            reject(err);
+        }
+    });
 }

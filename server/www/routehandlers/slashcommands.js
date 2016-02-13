@@ -35,9 +35,25 @@ export function startLive(req, res) {
                     let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
                     let im=JSON.parse(imResponse);
                     if(im.ok){
-                        yield saveSlashCommand(req.body,im.channel.id);
-                        yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.')
-                        res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
+                        let user=yield Models.SlackUser.findOne({user_id:req.body.user_id});
+                        if(!user){
+                            let userInfo=yield slackhelper.getUserinfo(req.app.slackbot.slack.token,req.body.user_id);
+                            if(userInfo.ok){
+                                user=yield saveSlackUser(userInfo.user);
+                            }
+                            else{
+                                winston.log('error', userInfo.error);
+                                res.status(500).send('Could not retrieve user info.');
+                            }
+                        }
+                        if(user){
+                            yield saveSlashCommand(req.body,im.channel.id,user._id);
+                            yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.')
+                            res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
+                        }else{
+                            winston.log('error', 'Could not retrieve user info.');
+                            res.status(500).send('Could not retrieve user info.');
+                        }
                     }else{
                         winston.log('error', im.error);
                         res.status(500).send('Could not open direct message channel with our bot, tektocs');
@@ -69,7 +85,7 @@ export function startLive(req, res) {
     }
 }
 
-function saveSlashCommand(body,channelId) {
+function saveSlashCommand(body,channelId,userid) {
     
     let slashCommand = new Models.SlashCommand({team_id:body.team_id,
                     team_domain: body.team_domain,
@@ -83,6 +99,7 @@ function saveSlashCommand(body,channelId) {
                     attachments:{
                         slideshow:{
                             title: body.text,
+                            creator:userid,
                             slides:[],
                             published:false
                         }
@@ -91,5 +108,25 @@ function saveSlashCommand(body,channelId) {
     return slashCommand.save();                
 }
 
+
+function saveSlackUser(userInfo) {
+    return new Promise((resolve, reject) => {
+        try {
+            Models.SlackUser.update({ user_id: userInfo.id }, 
+            Object.assign({},userInfo.profile,
+            {user_id:userInfo.id,name:userInfo.name}), 
+            { upsert: true }, function (err, raw) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(raw);
+                }
+            });
+        }
+        catch (err) {
+            reject(err);
+        }
+    });
+}
 
  

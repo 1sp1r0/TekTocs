@@ -9,9 +9,14 @@ var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
+var _shortid = require('shortid');
+
+var _shortid2 = _interopRequireDefault(_shortid);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var slackTeamSchema = _mongoose2.default.Schema({
+    _id: { type: String, unique: true, 'default': _shortid2.default.generate },
     ok: Boolean,
     access_token: { type: String, index: true },
     scope: String,
