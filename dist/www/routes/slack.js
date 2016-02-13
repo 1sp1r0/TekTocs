@@ -28,4 +28,12 @@ router.post('/commands/startlive', function (req, res) {
    _routehandlermappings2.default['/slack/commands/startlive'][req.method.toLowerCase()](req, res);
 });
 
+router.post('/commands/start', function (req, res) {
+   _routehandlermappings2.default['/slack/commands/start'][req.method.toLowerCase()](req, res);
+});
+
+router.post('/commands/end', function (req, res) {
+   _routehandlermappings2.default['/slack/commands/end'][req.method.toLowerCase()](req, res);
+});
+
 exports.default = router;

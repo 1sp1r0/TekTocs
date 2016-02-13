@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.start = start;
+exports.end = end;
 exports.startLive = startLive;
 
 var _requestPromise = require('request-promise');
@@ -46,7 +47,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function start(req, res) {
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
-        res.status(200).send('Hello ' + req.body.user_name, 200);
+        res.status(200).send('Hello start' + req.body.user_name, 200);
+    } else {
+        _logger2.default.log('warn', 'unauthorized slash command access');
+    }
+}
+
+function end(req, res) {
+    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
+        res.status(200).send('Hello end' + req.body.user_name, 200);
     } else {
         _logger2.default.log('warn', 'unauthorized slash command access');
     }

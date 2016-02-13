@@ -14,4 +14,12 @@ const router=express.Router();
        handlerMappings['/slack/commands/startlive'][req.method.toLowerCase()](req,res);
     } );
     
+    router.post('/commands/start', function(req,res){
+       handlerMappings['/slack/commands/start'][req.method.toLowerCase()](req,res);
+    } );
+    
+    router.post('/commands/end', function(req,res){
+       handlerMappings['/slack/commands/end'][req.method.toLowerCase()](req,res);
+    } );
+    
     export default router;
