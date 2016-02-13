@@ -31,7 +31,7 @@ export function end(req, res) {
                         user_id: req.body.user_id, pending:true,
                         commandType:'start' },{pending:false,end_ts:endingTs},{sort:{createDate: -1}})
                        .exec();
-                       res.sendStatus(200);
+                       //res.sendStatus(200);
                     }else{
                        winston.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                         res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
@@ -109,7 +109,7 @@ export function startLive(req, res) {
                             let postMessageResponse=yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
                             let postMessage=JSON.parse(postMessageResponse);
                             if(postMessage.ok){
-                                yield saveSlashCommand(req.body,im.channel.id,user._id,postMessage.ts);
+                                yield saveStartSlashCommand(req.body,im.channel.id,user._id,postMessage.ts);
                                 req.app.slackbot.slack.login();
                                 res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
                             }else{
@@ -153,7 +153,7 @@ export function startLive(req, res) {
     }
 }
 
-function saveSlashCommand(body,channelId,userid,startTs) {
+function saveStartSlashCommand(body,channelId,userid,startTs) {
     
     let slashCommand = new Models.SlashCommand({team_id:body.team_id,
                     team_domain: body.team_domain,
@@ -172,7 +172,8 @@ function saveSlashCommand(body,channelId,userid,startTs) {
                             short_id:shortid.generate(),
                             creator:userid,
                             slides:[],
-                            published:false
+                            published:false,
+                            pending:true
                         }
                     },
                     pending:true,

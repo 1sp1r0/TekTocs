@@ -70,7 +70,7 @@ function end(req, res) {
                                 slackTeam = _context.sent;
 
                                 if (!slackTeam) {
-                                    _context.next = 13;
+                                    _context.next = 12;
                                     break;
                                 }
 
@@ -86,31 +86,30 @@ function end(req, res) {
                                     commandType: 'start' }, { pending: false, end_ts: endingTs }, { sort: { createDate: -1 } }).exec();
 
                             case 10:
-                                res.sendStatus(200);
-                                _context.next = 15;
+                                _context.next = 14;
                                 break;
 
-                            case 13:
+                            case 12:
                                 _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                            case 15:
-                                _context.next = 21;
+                            case 14:
+                                _context.next = 20;
                                 break;
 
-                            case 17:
-                                _context.prev = 17;
+                            case 16:
+                                _context.prev = 16;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 21:
+                            case 20:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 17]]);
+                }, _callee, this, [[0, 16]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
@@ -227,7 +226,7 @@ function startLive(req, res) {
                                 }
 
                                 _context2.next = 39;
-                                return saveSlashCommand(req.body, im.channel.id, user._id, postMessage.ts);
+                                return saveStartSlashCommand(req.body, im.channel.id, user._id, postMessage.ts);
 
                             case 39:
                                 req.app.slackbot.slack.login();
@@ -293,7 +292,7 @@ function startLive(req, res) {
     }
 }
 
-function saveSlashCommand(body, channelId, userid, startTs) {
+function saveStartSlashCommand(body, channelId, userid, startTs) {
 
     var slashCommand = new Models.SlashCommand({ team_id: body.team_id,
         team_domain: body.team_domain,
@@ -312,7 +311,8 @@ function saveSlashCommand(body, channelId, userid, startTs) {
                 short_id: _shortid2.default.generate(),
                 creator: userid,
                 slides: [],
-                published: false
+                published: false,
+                pending: true
             }
         },
         pending: true,
