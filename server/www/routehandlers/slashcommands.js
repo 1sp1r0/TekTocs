@@ -104,7 +104,7 @@ function saveSlashCommand(body,channelId,userid) {
                     attachments:{
                         slideshow:{
                             title: body.text,
-                            shortid:shortid.generate(),
+                            short_id:shortid.generate(),
                             creator:userid,
                             slides:[],
                             published:false
@@ -120,7 +120,7 @@ function saveSlackUser(userInfo) {
         try {
             Models.SlackUser.update({ user_id: userInfo.id }, 
             Object.assign({},userInfo.profile,
-            {user_id:userInfo.id,name:userInfo.name,shortid:shortid.generate()}), 
+            {user_id:userInfo.id,name:userInfo.name,short_id:shortid.generate()}), 
             { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);

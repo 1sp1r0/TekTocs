@@ -103,7 +103,7 @@ function oauth(req, res) {
 function saveSlackAuthToken(result) {
     return new Promise(function (resolve, reject) {
         try {
-            result.shortid = _shortid2.default.generate();
+            result.short_id = _shortid2.default.generate();
             Models.SlackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);

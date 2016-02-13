@@ -218,7 +218,7 @@ function saveSlashCommand(body, channelId, userid) {
         attachments: {
             slideshow: {
                 title: body.text,
-                shortid: _shortid2.default.generate(),
+                short_id: _shortid2.default.generate(),
                 creator: userid,
                 slides: [],
                 published: false
@@ -231,7 +231,7 @@ function saveSlashCommand(body, channelId, userid) {
 function saveSlackUser(userInfo) {
     return new Promise(function (resolve, reject) {
         try {
-            Models.SlackUser.update({ user_id: userInfo.id }, Object.assign({}, userInfo.profile, { user_id: userInfo.id, name: userInfo.name, shortid: _shortid2.default.generate() }), { upsert: true }, function (err, raw) {
+            Models.SlackUser.update({ user_id: userInfo.id }, Object.assign({}, userInfo.profile, { user_id: userInfo.id, name: userInfo.name, short_id: _shortid2.default.generate() }), { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);
                 } else {
