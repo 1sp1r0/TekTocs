@@ -26,7 +26,7 @@ let slashCommandSchema = mongoose.Schema({
     response_url:String,
     attachments:{
         slideshow:{
-            id:{type: String,unique: true,'default': shortid.generate()},
+            _id:{type: String,unique: true,'default': shortid.generate()},
             title: {type: String, index: true },
             creator:{type: mongoose.Schema.Types.ObjectId, ref: 'SlackUser'},
             slides:[slideSchema],

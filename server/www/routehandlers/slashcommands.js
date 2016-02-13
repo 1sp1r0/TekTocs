@@ -6,6 +6,7 @@ import * as Models from '../../models/'
 import "babel-polyfill"
 import Slack from 'slack-client'
 import * as slackhelper from '../../helpers/slackhelper'
+import shortid from 'shortid'
 
 export function start(req, res) {
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
@@ -103,6 +104,7 @@ function saveSlashCommand(body,channelId,userid) {
                     attachments:{
                         slideshow:{
                             title: body.text,
+                            _id:shortid.generate(),
                             creator:userid,
                             slides:[],
                             published:false
@@ -118,7 +120,7 @@ function saveSlackUser(userInfo) {
         try {
             Models.SlackUser.update({ user_id: userInfo.id }, 
             Object.assign({},userInfo.profile,
-            {user_id:userInfo.id,name:userInfo.name}), 
+            {user_id:userInfo.id,name:userInfo.name,_id:shortid.generate()}), 
             { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);

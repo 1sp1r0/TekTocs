@@ -36,6 +36,10 @@ var _slackhelper = require('../../helpers/slackhelper');
 
 var slackhelper = _interopRequireWildcard(_slackhelper);
 
+var _shortid = require('shortid');
+
+var _shortid2 = _interopRequireDefault(_shortid);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -214,6 +218,7 @@ function saveSlashCommand(body, channelId, userid) {
         attachments: {
             slideshow: {
                 title: body.text,
+                _id: _shortid2.default.generate(),
                 creator: userid,
                 slides: [],
                 published: false
@@ -226,7 +231,7 @@ function saveSlashCommand(body, channelId, userid) {
 function saveSlackUser(userInfo) {
     return new Promise(function (resolve, reject) {
         try {
-            Models.SlackUser.update({ user_id: userInfo.id }, Object.assign({}, userInfo.profile, { user_id: userInfo.id, name: userInfo.name }), { upsert: true }, function (err, raw) {
+            Models.SlackUser.update({ user_id: userInfo.id }, Object.assign({}, userInfo.profile, { user_id: userInfo.id, name: userInfo.name, _id: _shortid2.default.generate() }), { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);
                 } else {

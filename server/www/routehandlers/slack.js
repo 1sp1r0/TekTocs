@@ -4,7 +4,7 @@ import winston from '../../logger'
 import url from 'url'
 import * as Models from '../../models/'
 import "babel-polyfill"
-
+import shortid from 'shortid'
 
 export function oauth(req, res) {
     try {
@@ -41,6 +41,7 @@ export function oauth(req, res) {
 function saveSlackAuthToken(result) {
     return new Promise((resolve, reject) => {
         try {
+            result._id=shortid.generate();
             Models.SlackTeam.update({ access_token: result.access_token }, result, { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);
