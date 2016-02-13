@@ -38,15 +38,14 @@ export function startLive(req, res) {
                         
                         if(!user){
                             
-                            let userInfo=yield slackhelper.getUserinfo(slackTeam.bot.bot_access_token,req.body.user_id);
+                            let userInfoResponse=yield slackhelper.getUserinfo(slackTeam.bot.bot_access_token,req.body.user_id);
+                            let userInfo=JSON.parse(userInfoResponse);
                             if(userInfo.ok){
-                                res.send('hello');
-                            return;
                                 user=yield saveSlackUser(userInfo.user);
                             }
                             else{
                                 winston.log('error', userInfo.error);
-                                res.status(500).send(userInfo.error);
+                                res.status(500).send('Could not retrieve user info.');
                                 return;
                             }
                         }
