@@ -107,7 +107,7 @@ function startLive(req, res) {
                                 }
 
                                 _context.next = 20;
-                                return slackhelper.getUserinfo(req.app.slackbot.slack.token, req.body.user_id);
+                                return slackhelper.getUserinfo(slackTeam.bot.bot_access_token, req.body.user_id);
 
                             case 20:
                                 userInfo = _context.sent;
@@ -127,7 +127,7 @@ function startLive(req, res) {
 
                             case 27:
                                 _logger2.default.log('error', userInfo.error);
-                                res.status(500).send('Could not retrieve user info.');
+                                res.status(500).send(userInfo.error);
                                 return _context.abrupt('return');
 
                             case 30:
