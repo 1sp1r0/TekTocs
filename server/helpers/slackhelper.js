@@ -136,5 +136,33 @@ function getSnippetText(url,botAccessToken){
           
     });
 }
+
+function getSlideshowEndingTimestamp(message,userId,botAccessToken){
+    return new Promise((resolve, reject) => {
+     co(function* () {
+        try {
+            let imResponse=yield openIm(botAccessToken,userId);
+            let im=JSON.parse(imResponse);
+            if(im.ok){
+                let postMessageResponse=yield postMessageToSlack(botAccessToken,
+                im.channel.id,message);
+                let postMessage=JSON.parse(postMessageResponse);
+                if(postMessage.ok){
+                     resolve(postMessage.ts);
+                }else{
+                     reject(postMessage.error);
+                }
+            }else{
+                reject(im.error);
+            }
+        }catch (err) {
+           reject(err.stack);
+         }
+        }).catch((err) => {
+           reject(err.stack);
+        });
+    });   
     
-export {postMessageToSlack,openIm,getUserinfo,processMessage};
+}
+    
+export {postMessageToSlack,openIm,getUserinfo,processMessage,getSlideshowEndingTimestamp};

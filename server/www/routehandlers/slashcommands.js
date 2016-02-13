@@ -17,12 +17,47 @@ export function start(req, res) {
 }
 
 export function end(req, res) {
-    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
-        res.status(200).send('Hello end' + req.body.user_name, 200);
-    } else {
-        winston.log('warn', 'unauthorized slash command access');
+    try
+    {
+        if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
+            co(function* () {
+                try {
+                    let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
+                    if(slackTeam){
+                        let endingTs=yield slackhelper.getSlideshowEndingTimestamp('Your slideshow is now marked as complete. The next step is to publish it using the command /tektocs-publish.',
+                        req.body.user_id,slackTeam.bot.bot_access_token);
+                        yield Models.SlashCommand.findOneAndUpdate({ 
+                        team_domain: req.body.team_domain, 
+                        user_id: req.body.user_id, pending:true,
+                        commandType:'start' },{pending:false,end_ts:endingTs},{sort:{createDate: -1}})
+                       .exec();
+                       res.sendStatus(200);
+                    }else{
+                       winston.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
+                        res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+                    }
+                    
+
+                }
+                catch (err) {
+                    winston.log('error', err.stack);
+                    res.sendStatus(500);
+                }
+            }).catch((err) => {
+                winston.log('error', err.stack);
+                res.sendStatus(500);
+            });
+        }
+        else {
+            winston.log('warn', 'unauthorized slash command access');
+        }
+    }
+    catch (err) {
+        winston.log('error',err.message);
+        res.sendStatus(500);
     }
 }
+
 
 export function startLive(req, res) {
     try{
@@ -33,7 +68,18 @@ export function startLive(req, res) {
                     res.status(200).send('Every slideshow needs a title. Enter the title after the command - "/tektocs-startlive titleOfYourSlideshow"');
                     return;
                 }
-                
+                /*
+                //see if another slideshow is in progress
+                let slideShowsInProgress=yield Models.SlashCommand.count({ 
+                        team_domain: req.body.team_domain, 
+                        user_id: req.body.user_id, pending:true,
+                        commandType:'start' });
+                if (slideShowsInProgress !=0){
+                    res.status(200).send('You can only work on one slideshow at a time.' +
+                    ' You already have one that was started earlier. If you wish to abandon that ' + 
+                    'and start on a new one enter the slash command - "/tektocs-cleanStart"');
+                    return;
+                } */       
                 let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
                 if(slackTeam){
                     if(req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
@@ -96,7 +142,7 @@ export function startLive(req, res) {
         }).catch((err) => {
             winston.log('error', err.stack);
             res.sendStatus(500);
-        });;
+        });
 
     } else {
         winston.log('warn', 'unauthorized slash command access');

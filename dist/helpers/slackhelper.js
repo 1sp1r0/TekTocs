@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.processMessage = exports.getUserinfo = exports.openIm = exports.postMessageToSlack = undefined;
+exports.getSlideshowEndingTimestamp = exports.processMessage = exports.getUserinfo = exports.openIm = exports.postMessageToSlack = undefined;
 
 var _requestPromise = require('request-promise');
 
@@ -236,7 +236,69 @@ function getSnippetText(url, botAccessToken) {
     });
 }
 
+function getSlideshowEndingTimestamp(message, userId, botAccessToken) {
+    return new Promise(function (resolve, reject) {
+        (0, _co2.default)(regeneratorRuntime.mark(function _callee3() {
+            var imResponse, im, postMessageResponse, postMessage;
+            return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                while (1) {
+                    switch (_context3.prev = _context3.next) {
+                        case 0:
+                            _context3.prev = 0;
+                            _context3.next = 3;
+                            return openIm(botAccessToken, userId);
+
+                        case 3:
+                            imResponse = _context3.sent;
+                            im = JSON.parse(imResponse);
+
+                            if (!im.ok) {
+                                _context3.next = 13;
+                                break;
+                            }
+
+                            _context3.next = 8;
+                            return postMessageToSlack(botAccessToken, im.channel.id, message);
+
+                        case 8:
+                            postMessageResponse = _context3.sent;
+                            postMessage = JSON.parse(postMessageResponse);
+
+                            if (postMessage.ok) {
+                                resolve(postMessage.ts);
+                            } else {
+                                reject(postMessage.error);
+                            }
+                            _context3.next = 14;
+                            break;
+
+                        case 13:
+                            reject(im.error);
+
+                        case 14:
+                            _context3.next = 19;
+                            break;
+
+                        case 16:
+                            _context3.prev = 16;
+                            _context3.t0 = _context3['catch'](0);
+
+                            reject(_context3.t0.stack);
+
+                        case 19:
+                        case 'end':
+                            return _context3.stop();
+                    }
+                }
+            }, _callee3, this, [[0, 16]]);
+        })).catch(function (err) {
+            reject(err.stack);
+        });
+    });
+}
+
 exports.postMessageToSlack = postMessageToSlack;
 exports.openIm = openIm;
 exports.getUserinfo = getUserinfo;
 exports.processMessage = processMessage;
+exports.getSlideshowEndingTimestamp = getSlideshowEndingTimestamp;
