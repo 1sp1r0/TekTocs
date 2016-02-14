@@ -31,7 +31,7 @@ export function end(req, res) {
                         user_id: req.body.user_id, pending:true,
                         commandType:'start' },{pending:false,end_ts:endingTs},{sort:{createDate: -1}})
                        .exec();
-                       //res.sendStatus(200);
+                       res.status(200).send(endingTs);
                     }else{
                        winston.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                         res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');

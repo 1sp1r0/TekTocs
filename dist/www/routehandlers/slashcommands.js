@@ -70,7 +70,7 @@ function end(req, res) {
                                 slackTeam = _context.sent;
 
                                 if (!slackTeam) {
-                                    _context.next = 12;
+                                    _context.next = 13;
                                     break;
                                 }
 
@@ -86,30 +86,31 @@ function end(req, res) {
                                     commandType: 'start' }, { pending: false, end_ts: endingTs }, { sort: { createDate: -1 } }).exec();
 
                             case 10:
-                                _context.next = 14;
+                                res.status(200).send(endingTs);
+                                _context.next = 15;
                                 break;
 
-                            case 12:
+                            case 13:
                                 _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                            case 14:
-                                _context.next = 20;
+                            case 15:
+                                _context.next = 21;
                                 break;
 
-                            case 16:
-                                _context.prev = 16;
+                            case 17:
+                                _context.prev = 17;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 20:
+                            case 21:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 16]]);
+                }, _callee, this, [[0, 17]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
