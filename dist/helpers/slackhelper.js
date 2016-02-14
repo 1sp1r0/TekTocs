@@ -3,7 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getSlideshowEndingTimestamp = exports.processMessage = exports.getUserinfo = exports.openIm = exports.postMessageToSlack = undefined;
+exports.postMessageToSlack = postMessageToSlack;
+exports.openIm = openIm;
+exports.getUserinfo = getUserinfo;
+exports.getMessagesFromSlack = getMessagesFromSlack;
+exports.processMessage = processMessage;
+exports.getSlide = getSlide;
+exports.getSlideshowEndingTimestamp = getSlideshowEndingTimestamp;
 
 var _requestPromise = require('request-promise');
 
@@ -52,79 +58,148 @@ function getUserinfo(token, userId) {
         } });
 }
 
+function getImHistory(token, channel, oldest, count) {
+    return (0, _requestPromise2.default)({
+        url: 'https://slack.com/api/im.history',
+        qs: {
+            "token": token,
+            "channel": channel,
+            "oldest": oldest,
+            "count": count
+        } });
+}
+
+function getMessagesFromSlack(token, channel, startTs, endTs, count, messages) {
+    (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+        var oldest, latest, imHistoryResponse, imHistory;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+                switch (_context.prev = _context.next) {
+                    case 0:
+                        oldest = startTs;
+                        latest = endTs;
+                        _context.prev = 2;
+                        _context.next = 5;
+                        return getImHistory(token, channel, oldest, count);
+
+                    case 5:
+                        imHistoryResponse = _context.sent;
+                        imHistory = JSON.parse(imHistoryResponse);
+
+                        if (!imHistory.ok) {
+                            _context.next = 12;
+                            break;
+                        }
+
+                        imHistory.messages.forEach(function (m) {
+                            if (m.ts != latest) {
+                                messages.push(m);
+                            } else {
+                                return { ok: true, response: messages };
+                            }
+                        });
+                        if (imHistory.has_more) {
+                            getMessagesFromSlack(token, channel, messages[messages.length - 1].ts, latest, count, messages);
+                        }
+                        _context.next = 13;
+                        break;
+
+                    case 12:
+                        return _context.abrupt('return', { ok: false, error: imHistory.error });
+
+                    case 13:
+                        _context.next = 18;
+                        break;
+
+                    case 15:
+                        _context.prev = 15;
+                        _context.t0 = _context['catch'](2);
+                        return _context.abrupt('return', { ok: false, error: _context.t0.stack });
+
+                    case 18:
+                    case 'end':
+                        return _context.stop();
+                }
+            }
+        }, _callee, this, [[2, 15]]);
+    })).catch(function (err) {
+        return { ok: false, error: err.stack };
+    });
+}
+
 function processMessage(message) {
     return new Promise(function (resolve, reject) {
-        (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+        (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
             var slashCommand, team, botAccessToken, slideIndex, slide;
-            return regeneratorRuntime.wrap(function _callee$(_context) {
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
                 while (1) {
-                    switch (_context.prev = _context.next) {
+                    switch (_context2.prev = _context2.next) {
                         case 0:
-                            _context.prev = 0;
-                            _context.next = 3;
+                            _context2.prev = 0;
+                            _context2.next = 3;
                             return Models.SlashCommand.findOne({ channel_id: message.channel,
                                 user_id: message.user, pending: true,
                                 commandType: 'start' }).sort({ createDate: -1 }).limit(1).select('team_id attachments.slideshow').exec();
 
                         case 3:
-                            slashCommand = _context.sent;
+                            slashCommand = _context2.sent;
 
                             if (slashCommand) {
-                                _context.next = 8;
+                                _context2.next = 8;
                                 break;
                             }
 
                             reject('Slideshow has not been started yet.');
-                            _context.next = 24;
+                            _context2.next = 24;
                             break;
 
                         case 8:
-                            _context.next = 10;
+                            _context2.next = 10;
                             return getSlackTeam(slashCommand.team_id);
 
                         case 10:
-                            team = _context.sent;
+                            team = _context2.sent;
                             botAccessToken = team.bot.bot_access_token;
                             slideIndex = getNextSlideindex(slashCommand.attachments.slideshow.slides);
-                            _context.next = 15;
+                            _context2.next = 15;
                             return getSlide(message, slideIndex, botAccessToken);
 
                         case 15:
-                            slide = _context.sent;
+                            slide = _context2.sent;
 
                             if (!slide) {
-                                _context.next = 23;
+                                _context2.next = 23;
                                 break;
                             }
 
                             slashCommand.attachments.slideshow.slides.push(slide);
-                            _context.next = 20;
+                            _context2.next = 20;
                             return slashCommand.attachments.slideshow.save();
 
                         case 20:
                             resolve(slide);
-                            _context.next = 24;
+                            _context2.next = 24;
                             break;
 
                         case 23:
                             reject("error getting slide data");
 
                         case 24:
-                            _context.next = 29;
+                            _context2.next = 29;
                             break;
 
                         case 26:
-                            _context.prev = 26;
-                            _context.t0 = _context['catch'](0);
+                            _context2.prev = 26;
+                            _context2.t0 = _context2['catch'](0);
 
-                            reject(_context.t0.stack);
+                            reject(_context2.t0.stack);
 
                         case 29:
                         case 'end':
-                            return _context.stop();
+                            return _context2.stop();
                     }
                 }
-            }, _callee, this, [[0, 26]]);
+            }, _callee2, this, [[0, 26]]);
         })).catch(function (err) {
             reject(err.stack);
         });
@@ -141,20 +216,20 @@ function getNextSlideindex(slides) {
 
 function getSlide(message, slideIndex, botAccessToken) {
     return new Promise(function (resolve, reject) {
-        (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
+        (0, _co2.default)(regeneratorRuntime.mark(function _callee3() {
             var slideCaption, slideText, slideAssetUrl, slideMode;
-            return regeneratorRuntime.wrap(function _callee2$(_context2) {
+            return regeneratorRuntime.wrap(function _callee3$(_context3) {
                 while (1) {
-                    switch (_context2.prev = _context2.next) {
+                    switch (_context3.prev = _context3.next) {
                         case 0:
-                            _context2.prev = 0;
+                            _context3.prev = 0;
                             slideCaption = '';
                             slideText = '';
                             slideAssetUrl = '';
                             slideMode = '';
 
                             if (!(message.subtype === 'file_share')) {
-                                _context2.next = 16;
+                                _context3.next = 16;
                                 break;
                             }
 
@@ -165,15 +240,15 @@ function getSlide(message, slideIndex, botAccessToken) {
                             }
 
                             if (!(message.file.mode === 'snippet')) {
-                                _context2.next = 13;
+                                _context3.next = 13;
                                 break;
                             }
 
-                            _context2.next = 12;
+                            _context3.next = 12;
                             return getSnippetText(message.file.url_private_download, botAccessToken);
 
                         case 12:
-                            slideText = _context2.sent;
+                            slideText = _context3.sent;
 
                         case 13:
                             resolve(new Models.Slide({
@@ -185,7 +260,7 @@ function getSlide(message, slideIndex, botAccessToken) {
                                 slideMimeType: message.file.mimetype,
                                 slideMode: slideMode
                             }));
-                            _context2.next = 17;
+                            _context3.next = 17;
                             break;
 
                         case 16:
@@ -198,21 +273,21 @@ function getSlide(message, slideIndex, botAccessToken) {
                                 slideMode: '' }));
 
                         case 17:
-                            _context2.next = 22;
+                            _context3.next = 22;
                             break;
 
                         case 19:
-                            _context2.prev = 19;
-                            _context2.t0 = _context2['catch'](0);
+                            _context3.prev = 19;
+                            _context3.t0 = _context3['catch'](0);
 
-                            reject(_context2.t0.stack);
+                            reject(_context3.t0.stack);
 
                         case 22:
                         case 'end':
-                            return _context2.stop();
+                            return _context3.stop();
                     }
                 }
-            }, _callee2, this, [[0, 19]]);
+            }, _callee3, this, [[0, 19]]);
         })).catch(function (err) {
             reject(err.stack);
         });
@@ -238,30 +313,30 @@ function getSnippetText(url, botAccessToken) {
 
 function getSlideshowEndingTimestamp(message, userId, botAccessToken) {
     return new Promise(function (resolve, reject) {
-        (0, _co2.default)(regeneratorRuntime.mark(function _callee3() {
+        (0, _co2.default)(regeneratorRuntime.mark(function _callee4() {
             var imResponse, im, postMessageResponse, postMessage;
-            return regeneratorRuntime.wrap(function _callee3$(_context3) {
+            return regeneratorRuntime.wrap(function _callee4$(_context4) {
                 while (1) {
-                    switch (_context3.prev = _context3.next) {
+                    switch (_context4.prev = _context4.next) {
                         case 0:
-                            _context3.prev = 0;
-                            _context3.next = 3;
+                            _context4.prev = 0;
+                            _context4.next = 3;
                             return openIm(botAccessToken, userId);
 
                         case 3:
-                            imResponse = _context3.sent;
+                            imResponse = _context4.sent;
                             im = JSON.parse(imResponse);
 
                             if (!im.ok) {
-                                _context3.next = 13;
+                                _context4.next = 13;
                                 break;
                             }
 
-                            _context3.next = 8;
+                            _context4.next = 8;
                             return postMessageToSlack(botAccessToken, im.channel.id, message);
 
                         case 8:
-                            postMessageResponse = _context3.sent;
+                            postMessageResponse = _context4.sent;
                             postMessage = JSON.parse(postMessageResponse);
 
                             if (postMessage.ok) {
@@ -269,36 +344,30 @@ function getSlideshowEndingTimestamp(message, userId, botAccessToken) {
                             } else {
                                 reject(postMessage.error);
                             }
-                            _context3.next = 14;
+                            _context4.next = 14;
                             break;
 
                         case 13:
                             reject(im.error);
 
                         case 14:
-                            _context3.next = 19;
+                            _context4.next = 19;
                             break;
 
                         case 16:
-                            _context3.prev = 16;
-                            _context3.t0 = _context3['catch'](0);
+                            _context4.prev = 16;
+                            _context4.t0 = _context4['catch'](0);
 
-                            reject(_context3.t0.stack);
+                            reject(_context4.t0.stack);
 
                         case 19:
                         case 'end':
-                            return _context3.stop();
+                            return _context4.stop();
                     }
                 }
-            }, _callee3, this, [[0, 16]]);
+            }, _callee4, this, [[0, 16]]);
         })).catch(function (err) {
             reject(err.stack);
         });
     });
 }
-
-exports.postMessageToSlack = postMessageToSlack;
-exports.openIm = openIm;
-exports.getUserinfo = getUserinfo;
-exports.processMessage = processMessage;
-exports.getSlideshowEndingTimestamp = getSlideshowEndingTimestamp;

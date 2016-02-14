@@ -16,6 +16,71 @@ export function start(req, res) {
     }
 }
 
+export function publish(req,res){
+    try{
+        if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
+            co(function* () {
+                try{
+                    let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
+                    if(slackTeam){
+                     let slashCommand = yield Models.SlashCommand.findOne({ 
+                        team_domain: req.body.team_domain, 
+                        user_id: req.body.user_id, pending:false,
+                        'attachments.slideshow.published':false,
+                        commandType:'start' },{channel_id:1,'attachments.slideshow':1},{sort:{createDate: -1}})
+                        .exec();
+                        if(!slashCommand){
+                            winston.log('error','Could not find any unpublished slideshows for:' + req.body.team_domain + ',' +  req.body.user_id);
+                            res.status(200).send('Could not find any unpublished slideshows.');
+                        }
+                        else{
+                            let messages=[];
+                            yield slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token,
+                            slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,500,messages);
+                            let slideIndex=1;
+                            messages.forEach(m=>{
+                                    co(function* () {
+                                    try{
+                                        let slide=yield slackhelper.getSlide(m,slideIndex,
+                                        slackTeam.bot.bot_access_token);
+                                        if(slide){
+                                            slashCommand.attachments.slideshow.slides.push(slide);
+                                        }
+                                    }catch (err) {
+                                       winston.log('error', err.stack);
+                                        res.status(500).send('Could not add one or more slides to the slideshow');
+                                    }
+                                    }).catch((err) => {
+                                        winston.log('error', err.stack);
+                                        res.status(500).send('Could not add one or more slides to the slideshow');
+                                    });
+                            });
+                            slashCommand.attachments.slideshow.published=true;
+                            yield slashCommand.attachments.slideshow.save();
+                        }
+                    }else{
+                         winston.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
+                        res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+                    }
+                }
+                catch (err) {
+                    winston.log('error', err.stack);
+                    res.sendStatus(500);
+                }
+            }).catch((err) => {
+                winston.log('error', err.stack);
+                res.sendStatus(500);
+            });
+        }else{
+            winston.log('warn', 'unauthorized slash command access');
+        }
+    }
+    catch (err) {
+        winston.log('error',err.message);
+        res.sendStatus(500);
+    }
+}
+
 export function end(req, res) {
     try
     {

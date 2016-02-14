@@ -2,7 +2,7 @@ import request from 'request-promise'
 import * as Models from '../models/'
 import co from 'co'
 
-function postMessageToSlack(token,channel,msg){
+export function postMessageToSlack(token,channel,msg){
          return  request({
                     url: 'https://slack.com/api/chat.postMessage', 
                     qs: {
@@ -13,7 +13,7 @@ function postMessageToSlack(token,channel,msg){
                         }});
         }
     
-function openIm(token,userId){
+export function openIm(token,userId){
          return  request({
                     url: 'https://slack.com/api/im.open', 
                     qs: {
@@ -22,16 +22,61 @@ function openIm(token,userId){
                         }});
         }
         
-function getUserinfo(token,userId){
+export function getUserinfo(token,userId){
          return  request({
                     url: 'https://slack.com/api/users.info', 
                     qs: {
                         "token": token,
                         "user": userId
                         }});
-        }        
+        }  
         
-function processMessage(message){
+ function getImHistory(token,channel,oldest,count){
+         return  request({
+                    url: 'https://slack.com/api/im.history', 
+                    qs: {
+                        "token": token,
+                        "channel": channel,
+                        "oldest":oldest,
+                        "count":count
+                        }});
+        }  
+        
+ export function getMessagesFromSlack(token,channel,startTs,endTs,count,messages){
+        co(function* (){
+            let oldest=startTs;
+            let latest=endTs;
+            try{
+                let imHistoryResponse=yield getImHistory(token,channel,oldest,count);
+                let imHistory=JSON.parse(imHistoryResponse);
+                if(imHistory.ok){
+                    imHistory.messages.forEach( m=>{
+                        if(m.ts !=latest){
+                            messages.push(m)
+                        }else{
+                            return {ok:true,response:messages};
+                        }
+                    });
+                    if(imHistory.has_more){
+                        getMessagesFromSlack(token,channel,messages[messages.length-1].ts,latest,count,messages);
+                    }
+                }else{
+                    return {ok:false,error:imHistory.error};
+                }
+            }
+            catch (err) {
+                return {ok:false,error:err.stack};
+               
+            }
+        }).catch((err) => {
+            return {ok:false,error:err.stack};
+        });
+   
+ } 
+ 
+                  
+        
+export function processMessage(message){
     return new Promise((resolve, reject) => {
         co(function* () {
         try {
@@ -72,7 +117,7 @@ function getNextSlideindex(slides){
     return slides.length>0?Math.max(...slides.map(slide=>slide.slideIndex)) +1:1;
 }  
 
-function getSlide(message,slideIndex,botAccessToken){
+export function getSlide(message,slideIndex,botAccessToken){
     return new Promise((resolve, reject) => {
      co(function* () {
         try {
@@ -137,7 +182,7 @@ function getSnippetText(url,botAccessToken){
     });
 }
 
-function getSlideshowEndingTimestamp(message,userId,botAccessToken){
+export function getSlideshowEndingTimestamp(message,userId,botAccessToken){
     return new Promise((resolve, reject) => {
      co(function* () {
         try {
@@ -165,4 +210,3 @@ function getSlideshowEndingTimestamp(message,userId,botAccessToken){
     
 }
     
-export {postMessageToSlack,openIm,getUserinfo,processMessage,getSlideshowEndingTimestamp};
