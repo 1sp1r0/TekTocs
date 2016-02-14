@@ -22,4 +22,7 @@ const router=express.Router();
        handlerMappings['/slack/commands/end'][req.method.toLowerCase()](req,res);
     } );
     
+      router.post('/commands/publish', function(req,res){
+       handlerMappings['/slack/commands/publish'][req.method.toLowerCase()](req,res);
+    } );
     export default router;

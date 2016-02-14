@@ -36,4 +36,7 @@ router.post('/commands/end', function (req, res) {
    _routehandlermappings2.default['/slack/commands/end'][req.method.toLowerCase()](req, res);
 });
 
+router.post('/commands/publish', function (req, res) {
+   _routehandlermappings2.default['/slack/commands/publish'][req.method.toLowerCase()](req, res);
+});
 exports.default = router;
