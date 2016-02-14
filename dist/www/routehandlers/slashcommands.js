@@ -115,10 +115,7 @@ function publish(req, res) {
                                                                                     switch (_context2.prev = _context2.next) {
                                                                                         case 0:
                                                                                             messages = [];
-                                                                                            _context2.next = 3;
-                                                                                            return slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token, slashCommand.channel_id, slashCommand.attachments.slideshow.start_ts, slashCommand.attachments.slideshow.end_ts, 500, messages);
 
-                                                                                        case 3:
                                                                                             res.status(200).send(messages.length);
                                                                                             return _context2.abrupt('return', {
                                                                                                 v: {
@@ -127,6 +124,51 @@ function publish(req, res) {
                                                                                                     }
                                                                                                 }
                                                                                             });
+
+                                                                                        case 5:
+                                                                                            slideIndex = 1;
+
+                                                                                            messages.forEach(function (m) {
+                                                                                                (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
+                                                                                                    var slide;
+                                                                                                    return regeneratorRuntime.wrap(function _callee$(_context) {
+                                                                                                        while (1) {
+                                                                                                            switch (_context.prev = _context.next) {
+                                                                                                                case 0:
+                                                                                                                    _context.prev = 0;
+                                                                                                                    _context.next = 3;
+                                                                                                                    return slackhelper.getSlide(m, slideIndex, slackTeam.bot.bot_access_token);
+
+                                                                                                                case 3:
+                                                                                                                    slide = _context.sent;
+
+                                                                                                                    if (slide) {
+                                                                                                                        slashCommand.attachments.slideshow.slides.push(slide);
+                                                                                                                    }
+                                                                                                                    _context.next = 11;
+                                                                                                                    break;
+
+                                                                                                                case 7:
+                                                                                                                    _context.prev = 7;
+                                                                                                                    _context.t0 = _context['catch'](0);
+
+                                                                                                                    _logger2.default.log('error', _context.t0.stack);
+                                                                                                                    res.status(500).send('Could not add one or more slides to the slideshow');
+
+                                                                                                                case 11:
+                                                                                                                case 'end':
+                                                                                                                    return _context.stop();
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }, _callee, this, [[0, 7]]);
+                                                                                                })).catch(function (err) {
+                                                                                                    _logger2.default.log('error', err.stack);
+                                                                                                    res.status(500).send('Could not add one or more slides to the slideshow');
+                                                                                                });
+                                                                                            });
+                                                                                            slashCommand.attachments.slideshow.published = true;
+                                                                                            _context2.next = 10;
+                                                                                            return slashCommand.attachments.slideshow.save();
 
                                                                                         case 10:
                                                                                         case 'end':

@@ -29,10 +29,11 @@ export function publish(req,res){
                         }
                         else{
                             let messages=[];
-                            yield slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token,
-                            slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,500,messages);
                             res.status(200).send(messages.length);
                             return;
+                            yield slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token,
+                            slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,500,messages);
+                            
                             let slideIndex=1;
                             messages.forEach(m=>{
                                     co(function* () {
