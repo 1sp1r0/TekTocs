@@ -86,7 +86,7 @@ function end(req, res) {
                                     commandType: 'start' }, { pending: false, 'attachments.slideshow.end_ts': endingTs }, { sort: { createDate: -1 } }).exec();
 
                             case 10:
-                                res.status(200).send(endingTs);
+                                res.sendStatus(200);
                                 _context.next = 15;
                                 break;
 
