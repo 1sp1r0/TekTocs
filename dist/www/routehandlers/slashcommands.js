@@ -83,7 +83,7 @@ function end(req, res) {
                                 return Models.SlashCommand.findOneAndUpdate({
                                     team_domain: req.body.team_domain,
                                     user_id: req.body.user_id, pending: true,
-                                    commandType: 'start' }, { pending: false, end_ts: endingTs }, { sort: { createDate: -1 } }).exec();
+                                    commandType: 'start' }, { pending: false, 'attachments.slideshow.end_ts': endingTs }, { sort: { createDate: -1 } }).exec();
 
                             case 10:
                                 res.status(200).send(endingTs);
