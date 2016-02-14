@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -53,13 +55,16 @@ function publish(req, res) {
             (0, _co2.default)(regeneratorRuntime.mark(function _callee5() {
                 var _this = this;
 
+                var _ret;
+
                 return regeneratorRuntime.wrap(function _callee5$(_context5) {
                     while (1) {
                         switch (_context5.prev = _context5.next) {
                             case 0:
                                 _context5.prev = 0;
                                 return _context5.delegateYield(regeneratorRuntime.mark(function _callee4() {
-                                    var slackTeam;
+                                    var slackTeam, _ret2;
+
                                     return regeneratorRuntime.wrap(function _callee4$(_context4) {
                                         while (1) {
                                             switch (_context4.prev = _context4.next) {
@@ -71,12 +76,13 @@ function publish(req, res) {
                                                     slackTeam = _context4.sent;
 
                                                     if (!slackTeam) {
-                                                        _context4.next = 7;
+                                                        _context4.next = 10;
                                                         break;
                                                     }
 
                                                     return _context4.delegateYield(regeneratorRuntime.mark(function _callee3() {
-                                                        var slashCommand;
+                                                        var slashCommand, _ret3;
+
                                                         return regeneratorRuntime.wrap(function _callee3$(_context3) {
                                                             while (1) {
                                                                 switch (_context3.prev = _context3.next) {
@@ -98,7 +104,7 @@ function publish(req, res) {
 
                                                                         _logger2.default.log('error', 'Could not find any unpublished slideshows for:' + req.body.team_domain + ',' + req.body.user_id);
                                                                         res.status(200).send('Could not find any unpublished slideshows.');
-                                                                        _context3.next = 9;
+                                                                        _context3.next = 12;
                                                                         break;
 
                                                                     case 8:
@@ -113,51 +119,16 @@ function publish(req, res) {
                                                                                             return slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token, slashCommand.channel_id, slashCommand.attachments.slideshow.start_ts, slashCommand.attachments.slideshow.end_ts, 500, messages);
 
                                                                                         case 3:
-                                                                                            slideIndex = 1;
-
-                                                                                            messages.forEach(function (m) {
-                                                                                                (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-                                                                                                    var slide;
-                                                                                                    return regeneratorRuntime.wrap(function _callee$(_context) {
-                                                                                                        while (1) {
-                                                                                                            switch (_context.prev = _context.next) {
-                                                                                                                case 0:
-                                                                                                                    _context.prev = 0;
-                                                                                                                    _context.next = 3;
-                                                                                                                    return slackhelper.getSlide(m, slideIndex, slackTeam.bot.bot_access_token);
-
-                                                                                                                case 3:
-                                                                                                                    slide = _context.sent;
-
-                                                                                                                    if (slide) {
-                                                                                                                        slashCommand.attachments.slideshow.slides.push(slide);
-                                                                                                                    }
-                                                                                                                    _context.next = 11;
-                                                                                                                    break;
-
-                                                                                                                case 7:
-                                                                                                                    _context.prev = 7;
-                                                                                                                    _context.t0 = _context['catch'](0);
-
-                                                                                                                    _logger2.default.log('error', _context.t0.stack);
-                                                                                                                    res.status(500).send('Could not add one or more slides to the slideshow');
-
-                                                                                                                case 11:
-                                                                                                                case 'end':
-                                                                                                                    return _context.stop();
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }, _callee, this, [[0, 7]]);
-                                                                                                })).catch(function (err) {
-                                                                                                    _logger2.default.log('error', err.stack);
-                                                                                                    res.status(500).send('Could not add one or more slides to the slideshow');
-                                                                                                });
+                                                                                            res.status(200).send(messages.length);
+                                                                                            return _context2.abrupt('return', {
+                                                                                                v: {
+                                                                                                    v: {
+                                                                                                        v: undefined
+                                                                                                    }
+                                                                                                }
                                                                                             });
-                                                                                            slashCommand.attachments.slideshow.published = true;
-                                                                                            _context2.next = 8;
-                                                                                            return slashCommand.attachments.slideshow.save();
 
-                                                                                        case 8:
+                                                                                        case 10:
                                                                                         case 'end':
                                                                                             return _context2.stop();
                                                                                     }
@@ -166,6 +137,16 @@ function publish(req, res) {
                                                                         })(), 't0', 9);
 
                                                                     case 9:
+                                                                        _ret3 = _context3.t0;
+
+                                                                        if (!((typeof _ret3 === 'undefined' ? 'undefined' : _typeof(_ret3)) === "object")) {
+                                                                            _context3.next = 12;
+                                                                            break;
+                                                                        }
+
+                                                                        return _context3.abrupt('return', _ret3.v);
+
+                                                                    case 12:
                                                                     case 'end':
                                                                         return _context3.stop();
                                                                 }
@@ -174,14 +155,24 @@ function publish(req, res) {
                                                     })(), 't0', 5);
 
                                                 case 5:
-                                                    _context4.next = 9;
+                                                    _ret2 = _context4.t0;
+
+                                                    if (!((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object")) {
+                                                        _context4.next = 8;
+                                                        break;
+                                                    }
+
+                                                    return _context4.abrupt('return', _ret2.v);
+
+                                                case 8:
+                                                    _context4.next = 12;
                                                     break;
 
-                                                case 7:
+                                                case 10:
                                                     _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                                     res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                                                case 9:
+                                                case 12:
                                                 case 'end':
                                                     return _context4.stop();
                                             }
@@ -190,22 +181,32 @@ function publish(req, res) {
                                 })(), 't0', 2);
 
                             case 2:
-                                _context5.next = 8;
+                                _ret = _context5.t0;
+
+                                if (!((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object")) {
+                                    _context5.next = 5;
+                                    break;
+                                }
+
+                                return _context5.abrupt('return', _ret.v);
+
+                            case 5:
+                                _context5.next = 11;
                                 break;
 
-                            case 4:
-                                _context5.prev = 4;
+                            case 7:
+                                _context5.prev = 7;
                                 _context5.t1 = _context5['catch'](0);
 
                                 _logger2.default.log('error', _context5.t1.stack);
                                 res.sendStatus(500);
 
-                            case 8:
+                            case 11:
                             case 'end':
                                 return _context5.stop();
                         }
                     }
-                }, _callee5, this, [[0, 4]]);
+                }, _callee5, this, [[0, 7]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
