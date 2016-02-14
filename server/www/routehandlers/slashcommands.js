@@ -8,13 +8,7 @@ import Slack from 'slack-client'
 import * as slackhelper from '../../helpers/slackhelper'
 import shortid from 'shortid'
 
-export function start(req, res) {
-    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
-        res.status(200).send('Hello start' + req.body.user_name, 200);
-    } else {
-        winston.log('warn', 'unauthorized slash command access');
-    }
-}
+
 
 export function publish(req,res){
     try{
@@ -124,7 +118,15 @@ export function end(req, res) {
 }
 
 
+export function start(req,res){
+   startSlideshow(req, res,false);
+}
+
 export function startLive(req, res) {
+    startSlideshow(req, res,true);
+}
+
+export function startSlideshow(req, res,isLive) {
     try{
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
         co(function* () {
@@ -133,21 +135,9 @@ export function startLive(req, res) {
                     res.status(200).send('Every slideshow needs a title. Enter the title after the command - "/tektocs-startlive titleOfYourSlideshow"');
                     return;
                 }
-                /*
-                //see if another slideshow is in progress
-                let slideShowsInProgress=yield Models.SlashCommand.count({ 
-                        team_domain: req.body.team_domain, 
-                        user_id: req.body.user_id, pending:true,
-                        commandType:'start' });
-                if (slideShowsInProgress !=0){
-                    res.status(200).send('You can only work on one slideshow at a time.' +
-                    ' You already have one that was started earlier. If you wish to abandon that ' + 
-                    'and start on a new one enter the slash command - "/tektocs-cleanStart"');
-                    return;
-                } */       
                 let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
                 if(slackTeam){
-                    if(req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
+                    if(isLive && req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
                         req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
                         req.app.slackbot.registerSlackListeners();
                     }

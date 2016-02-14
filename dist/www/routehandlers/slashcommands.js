@@ -3,10 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.start = start;
 exports.publish = publish;
 exports.end = end;
+exports.start = start;
 exports.startLive = startLive;
+exports.startSlideshow = startSlideshow;
 
 var _requestPromise = require('request-promise');
 
@@ -45,14 +46,6 @@ var _shortid2 = _interopRequireDefault(_shortid);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function start(req, res) {
-    if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
-        res.status(200).send('Hello start' + req.body.user_name, 200);
-    } else {
-        _logger2.default.log('warn', 'unauthorized slash command access');
-    }
-}
 
 function publish(req, res) {
     try {
@@ -297,7 +290,15 @@ function end(req, res) {
     }
 }
 
+function start(req, res) {
+    startSlideshow(req, res, false);
+}
+
 function startLive(req, res) {
+    startSlideshow(req, res, true);
+}
+
+function startSlideshow(req, res, isLive) {
     try {
         if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
             (0, _co2.default)(regeneratorRuntime.mark(function _callee7() {
@@ -329,7 +330,7 @@ function startLive(req, res) {
                                     break;
                                 }
 
-                                if (req.app.slackbot.slack.token != _slackTeam.bot.bot_access_token) {
+                                if (isLive && req.app.slackbot.slack.token != _slackTeam.bot.bot_access_token) {
                                     req.app.slackbot.slack = new _slackClient2.default(_slackTeam.bot.bot_access_token, true, true);
                                     req.app.slackbot.registerSlackListeners();
                                 }
