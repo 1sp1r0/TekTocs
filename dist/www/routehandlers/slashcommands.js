@@ -115,7 +115,7 @@ function publish(req, res) {
                                                                                     switch (_context2.prev = _context2.next) {
                                                                                         case 0:
                                                                                             _context2.next = 2;
-                                                                                            return slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token, slashCommand.channel_id, slashCommand.attachments.slideshow.start_ts, slashCommand.attachments.slideshow.end_ts, 500, null);
+                                                                                            return slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token, slashCommand.channel_id, slashCommand.attachments.slideshow.start_ts, slashCommand.attachments.slideshow.end_ts, 1, null);
 
                                                                                         case 2:
                                                                                             messages = _context2.sent;

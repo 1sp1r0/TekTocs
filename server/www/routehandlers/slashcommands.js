@@ -30,7 +30,7 @@ export function publish(req,res){
                         else{
                             
                             let messages=yield slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token,
-                            slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,500,null);
+                            slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,1,null);
                             //let response= yield slackhelper.getImHistory(slackTeam.bot.bot_access_token,slashCommand.attachments.slideshow.start_ts,500);
                             /*if(response.ok){*/
                                 //messages=response.messages;
