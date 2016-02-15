@@ -59,14 +59,16 @@ export function getUserinfo(token,userId){
                 if(imHistory.ok){
                     
                     imHistory.messages.forEach( m=>{
-                        if(m.ts !=latest){
+                        //if(m.ts !=latest){
                             messages.push(m)
-                        }else{
-                            return {ok:true,messages:messages};
-                        }
+                        //}else{
+                            //return {ok:true,messages:messages};
+                        //}
                     });
                     if(imHistory.has_more){
                         getMessagesFromSlack(token,channel,messages[messages.length-1].ts,latest,count,messages);
+                    }else{
+                        return {ok:true,messages:messages};
                     }
                 }else{
                     return {ok:false,error:imHistory.error};

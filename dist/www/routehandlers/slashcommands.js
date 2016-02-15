@@ -109,11 +109,8 @@ function publish(req, res) {
 
                                                                     case 8:
                                                                         messages = [];
-                                                                        //let response=yield slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token,
-                                                                        //slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,500);
-
                                                                         _context3.next = 11;
-                                                                        return slackhelper.getImHistory(slackTeam.bot.bot_access_token, slashCommand.attachments.slideshow.start_ts, 500);
+                                                                        return slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token, slashCommand.channel_id, slashCommand.attachments.slideshow.start_ts, slashCommand.attachments.slideshow.end_ts, 500, null);
 
                                                                     case 11:
                                                                         response = _context3.sent;
