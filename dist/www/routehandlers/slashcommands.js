@@ -170,7 +170,8 @@ function publish(req, res) {
 
                                                                     case 19:
                                                                         _logger2.default.log('error', response);
-                                                                        res.status(500).send('Could not retrieve messages from the Slack channel.');
+                                                                        res.status(500).send(response);
+                                                                        //res.status(500).send('Could not retrieve messages from the Slack channel.');
 
                                                                     case 21:
                                                                     case 'end':
