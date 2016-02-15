@@ -43,7 +43,7 @@ export function getUserinfo(token,userId){
         }  
         
  export function getMessagesFromSlack(token,channel,startTs,endTs,count,messages){
-     
+     return {ok:false,error:'messages'};
         co(function* (){
             if(!messages){
                 messages=[];
@@ -51,7 +51,7 @@ export function getUserinfo(token,userId){
             let oldest=startTs;
             let latest=endTs;
             try{
-                return {ok:false,error:'messages'};
+                
                 let imHistoryResponse=yield getImHistory(token,channel,oldest,count);
                 let imHistory=JSON.parse(imHistoryResponse);
                 if(imHistory.ok){
