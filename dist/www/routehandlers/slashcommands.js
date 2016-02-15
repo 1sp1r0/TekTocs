@@ -109,8 +109,18 @@ function publish(req, res) {
 
                                                                     case 8:
                                                                         messages = [];
+                                                                        //let response=yield slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token,
+                                                                        //slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,500);
+
                                                                         _context3.next = 11;
-                                                                        return slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token, slashCommand.channel_id, slashCommand.attachments.slideshow.start_ts, slashCommand.attachments.slideshow.end_ts, 500);
+                                                                        return (0, _requestPromise2.default)({
+                                                                            url: 'https://slack.com/api/im.history',
+                                                                            qs: {
+                                                                                "token": slackTeam.bot.bot_access_token,
+                                                                                "channel": slashCommand.channel_id,
+                                                                                "oldest": slashCommand.attachments.slideshow.start_ts,
+                                                                                "count": 500
+                                                                            } });
 
                                                                     case 11:
                                                                         response = _context3.sent;
