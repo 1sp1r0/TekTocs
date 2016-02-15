@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -104,7 +106,7 @@ function publish(req, res) {
                                 messages = msgResponse.messages;
                                 slideIndex = 1;
 
-                                res.status(200).send(JSON.parse(messages));
+                                res.status(200).send(typeof messages === 'undefined' ? 'undefined' : _typeof(messages));
                                 return _context.abrupt('return');
 
                             case 26:
