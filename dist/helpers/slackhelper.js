@@ -83,15 +83,15 @@ function getMessagesFromSlack(token, channel, startTs, endTs, count, messages) {
                         _context.prev = 0;
 
                         _ret = function () {
-
+                            return {
+                                v: { ok: false, error: token + channel + startTs + endTs }
+                            };
                             if (!messages) {
                                 messages = [];
                             }
                             var oldest = startTs;
                             var latest = endTs;
-                            return {
-                                v: { ok: false, error: token + channel + startTs + endTs }
-                            };
+
                             /* let imHistoryResponse=yield request({
                                  url: 'https://slack.com/api/im.history', 
                                  qs: {
