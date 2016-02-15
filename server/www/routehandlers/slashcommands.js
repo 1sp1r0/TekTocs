@@ -34,7 +34,7 @@ export function publish(req,res){
                             //let response= yield slackhelper.getImHistory(slackTeam.bot.bot_access_token,slashCommand.attachments.slideshow.start_ts,500);
                             /*if(response.ok){*/
                                 //messages=response.messages;
-                                res.status(200).send(messages.length);
+                                res.status(200).send(messages);
                                 return;
                                 let slideIndex=1;
                                 messages.forEach(m=>{
