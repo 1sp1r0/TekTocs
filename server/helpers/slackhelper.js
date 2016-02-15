@@ -44,6 +44,9 @@ export function getUserinfo(token,userId){
         
  export function getMessagesFromSlack(token,channel,startTs,endTs,count,messages){
         co(function* (){
+            if(!messages){
+                messages=[];
+            }
             let oldest=startTs;
             let latest=endTs;
             try{
@@ -54,7 +57,7 @@ export function getUserinfo(token,userId){
                         if(m.ts !=latest){
                             messages.push(m)
                         }else{
-                            return {ok:true,response:messages};
+                            return {ok:true,messages:messages};
                         }
                     });
                     if(imHistory.has_more){

@@ -29,13 +29,14 @@ export function publish(req,res){
                         }
                         else{
                             let messages=[];
-                            res.status(200).send(messages.length);
-                            return;
-                            yield slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token,
-                            slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,500,messages);
-                            
-                            let slideIndex=1;
-                            messages.forEach(m=>{
+                            let response=yield slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token,
+                            slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,500);
+                            if(response.ok){
+                                messages=response.messages;
+                                res.status(200).send(messages.length);
+                                return;
+                                let slideIndex=1;
+                                messages.forEach(m=>{
                                     co(function* () {
                                     try{
                                         let slide=yield slackhelper.getSlide(m,slideIndex,
@@ -51,9 +52,14 @@ export function publish(req,res){
                                         winston.log('error', err.stack);
                                         res.status(500).send('Could not add one or more slides to the slideshow');
                                     });
-                            });
-                            slashCommand.attachments.slideshow.published=true;
-                            yield slashCommand.attachments.slideshow.save();
+                                });
+                                slashCommand.attachments.slideshow.published=true;
+                                yield slashCommand.attachments.slideshow.save();
+                            }
+                            else{
+                                winston.log('error', response.error);
+                                res.status(500).send('Could not retrieve messages from the Slack channel.');
+                            }
                         }
                     }else{
                          winston.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
