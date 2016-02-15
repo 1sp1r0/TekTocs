@@ -113,14 +113,7 @@ function publish(req, res) {
                                                                         //slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,500);
 
                                                                         _context3.next = 11;
-                                                                        return (0, _requestPromise2.default)({
-                                                                            url: 'https://slack.com/api/im.history',
-                                                                            qs: {
-                                                                                "token": slackTeam.bot.bot_access_token,
-                                                                                "channel": slashCommand.channel_id,
-                                                                                "oldest": slashCommand.attachments.slideshow.start_ts,
-                                                                                "count": 500
-                                                                            } });
+                                                                        return slackhelper.getImHistory(slackTeam.bot.bot_access_token, slashCommand.attachments.slideshow.start_ts, 500);
 
                                                                     case 11:
                                                                         response = _context3.sent;
@@ -169,9 +162,8 @@ function publish(req, res) {
                                                                         break;
 
                                                                     case 19:
-                                                                        _logger2.default.log('error', response);
-                                                                        res.status(500).send(response);
-                                                                        //res.status(500).send('Could not retrieve messages from the Slack channel.');
+                                                                        _logger2.default.log('error', response.error);
+                                                                        res.status(500).send('Could not retrieve messages from the Slack channel.');
 
                                                                     case 21:
                                                                     case 'end':

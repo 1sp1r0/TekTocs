@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.postMessageToSlack = postMessageToSlack;
 exports.openIm = openIm;
 exports.getUserinfo = getUserinfo;
+exports.getImHistory = getImHistory;
 exports.getMessagesFromSlack = getMessagesFromSlack;
 exports.processMessage = processMessage;
 exports.getSlide = getSlide;

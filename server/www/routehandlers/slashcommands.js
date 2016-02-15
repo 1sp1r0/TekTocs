@@ -31,14 +31,7 @@ export function publish(req,res){
                             let messages=[];
                             //let response=yield slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token,
                             //slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,500);
-                            let response= yield request({
-                                url: 'https://slack.com/api/im.history', 
-                                qs: {
-                                    "token": slackTeam.bot.bot_access_token,
-                                    "channel": slashCommand.channel_id,
-                                    "oldest":slashCommand.attachments.slideshow.start_ts,
-                                    "count":500
-                                }});
+                            let response= yield slackhelper.getImHistory(slackTeam.bot.bot_access_token,slashCommand.attachments.slideshow.start_ts,500);
                             if(response.ok){
                                 messages=response.messages;
                                 res.status(200).send(messages.length);
@@ -65,9 +58,8 @@ export function publish(req,res){
                                 yield slashCommand.attachments.slideshow.save();
                             }
                             else{
-                                winston.log('error', response);
-                                res.status(500).send(response);
-                                //res.status(500).send('Could not retrieve messages from the Slack channel.');
+                                winston.log('error', response.error);
+                                res.status(500).send('Could not retrieve messages from the Slack channel.');
                             }
                         }
                     }else{

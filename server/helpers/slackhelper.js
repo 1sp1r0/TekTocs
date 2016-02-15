@@ -31,7 +31,7 @@ export function getUserinfo(token,userId){
                         }});
         }  
         
- function getImHistory(token,channel,oldest,count){
+ export function getImHistory(token,channel,oldest,count){
          return  request({
                     url: 'https://slack.com/api/im.history', 
                     qs: {
