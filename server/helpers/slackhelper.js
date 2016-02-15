@@ -50,10 +50,11 @@ export function getUserinfo(token,userId){
             let oldest=startTs;
             let latest=endTs;
             try{
+                return {ok:false,error:'messages'};
                 let imHistoryResponse=yield getImHistory(token,channel,oldest,count);
                 let imHistory=JSON.parse(imHistoryResponse);
                 if(imHistory.ok){
-                    return {ok:false,error:'messages'};
+                    
                     imHistory.messages.forEach( m=>{
                         if(m.ts !=latest){
                             messages.push(m)
