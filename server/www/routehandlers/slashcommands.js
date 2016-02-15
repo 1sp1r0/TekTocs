@@ -65,7 +65,7 @@ export function publish(req,res){
                                 yield slashCommand.attachments.slideshow.save();
                             }
                             else{
-                                winston.log('error', response.error);
+                                winston.log('error', response);
                                 res.status(500).send('Could not retrieve messages from the Slack channel.');
                             }
                         }

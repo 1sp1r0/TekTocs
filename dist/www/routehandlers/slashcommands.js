@@ -169,7 +169,7 @@ function publish(req, res) {
                                                                         break;
 
                                                                     case 19:
-                                                                        _logger2.default.log('error', response.error);
+                                                                        _logger2.default.log('error', response);
                                                                         res.status(500).send('Could not retrieve messages from the Slack channel.');
 
                                                                     case 21:
