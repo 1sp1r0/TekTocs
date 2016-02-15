@@ -106,7 +106,7 @@ function publish(req, res) {
                                 messages = msgResponse.messages;
                                 slideIndex = 1;
 
-                                res.status(200).send(typeof messages === 'undefined' ? 'undefined' : _typeof(messages));
+                                res.status(200).send(_typeof(Array.from(messages)));
                                 return _context.abrupt('return');
 
                             case 26:
