@@ -94,24 +94,7 @@ function getMessagesFromSlack(token, channel, startTs, endTs, count, messages) {
                             break;
                         }
 
-                        imHistory.messages.forEach(function (m) {
-                            if (m.ts != latest) {
-                                messages.push(m);
-                            } else {
-                                return { ok: true, messages: messages };
-                            }
-                        });
-
-                        if (!imHistory.has_more) {
-                            _context.next = 12;
-                            break;
-                        }
-
-                        return _context.abrupt('return', { ok: true, messages: messages });
-
-                    case 12:
-                        _context.next = 15;
-                        break;
+                        return _context.abrupt('return', { ok: false, error: 'messages' });
 
                     case 14:
                         return _context.abrupt('return', { ok: false, error: imHistory.error });

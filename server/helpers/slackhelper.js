@@ -53,6 +53,7 @@ export function getUserinfo(token,userId){
                 let imHistoryResponse=yield getImHistory(token,channel,oldest,count);
                 let imHistory=JSON.parse(imHistoryResponse);
                 if(imHistory.ok){
+                    return {ok:false,error:'messages'};
                     imHistory.messages.forEach( m=>{
                         if(m.ts !=latest){
                             messages.push(m)
@@ -61,8 +62,7 @@ export function getUserinfo(token,userId){
                         }
                     });
                     if(imHistory.has_more){
-                        //getMessagesFromSlack(token,channel,messages[messages.length-1].ts,latest,count,messages);
-                        return {ok:true,messages:messages};
+                        getMessagesFromSlack(token,channel,messages[messages.length-1].ts,latest,count,messages);
                     }
                 }else{
                     return {ok:false,error:imHistory.error};
