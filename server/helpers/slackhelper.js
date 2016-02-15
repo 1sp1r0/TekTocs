@@ -44,43 +44,59 @@ export function getUserinfo(token,userId){
         
  export function getMessagesFromSlack(token,channel,startTs,endTs,count,messages){
      
-        co(function* (){
-            
+        return new Promise((resolve, reject) => {
             try{
-                
                 if(!messages){
                     messages=[];
                 }
                 let oldest=startTs;
                 let latest=endTs;
-                let imHistoryResponse=yield getImHistory(token,channel,oldest,count);
+                getImHistory(token,channel,oldest,count).then(
+                    function(result){
+                        let imHistory=JSON.parse(result);
+                            imHistory.messages.forEach( m=>{
+                                if(m.ts !=latest){
+                                    messages.push(m)
+                                }else{
+                                    resolve(messages);
+                                }
+                        });
+                        if(imHistory.has_more){
+                            getMessagesFromSlack(token,channel,messages[messages.length-1].ts,latest,count,messages);
+                        }else{
+                            resolve(messages);
+                        }
+                    },
+                    function(error){
+                        reject(error);
+                    }
+                )
                 
-                let imHistory=JSON.parse(imHistoryResponse);
+               /* let imHistory=JSON.parse(imHistoryResponse);
                 if(imHistory.ok){
                     
                     imHistory.messages.forEach( m=>{
-                        //if(m.ts !=latest){
+                        if(m.ts !=latest){
                             messages.push(m)
-                        //}else{
-                            //return {ok:true,messages:messages};
-                        //}
+                        }else{
+                            return {ok:true,messages:messages};
+                        }
                     });
                     if(imHistory.has_more){
                         getMessagesFromSlack(token,channel,messages[messages.length-1].ts,latest,count,messages);
-                    }else{
-                        return {ok:true,messages:messages};
                     }
                 }else{
                     return {ok:false,error:imHistory.error};
-                }
+                }*/
             }
             catch (err) {
-                return {ok:false,error:err.stack};
+                reject(err.stack);
                
             }
-        }).catch((err) => {
-            return {ok:false,error:err.stack};
         });
+        //}).catch((err) => {
+        //    return {ok:false,error:err.stack};
+        //});
    
  } 
  

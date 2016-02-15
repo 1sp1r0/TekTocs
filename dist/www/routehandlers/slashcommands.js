@@ -81,7 +81,7 @@ function publish(req, res) {
                                                     }
 
                                                     return _context4.delegateYield(regeneratorRuntime.mark(function _callee3() {
-                                                        var slashCommand, messages, response, _ret3;
+                                                        var slashCommand, _ret3;
 
                                                         return regeneratorRuntime.wrap(function _callee3$(_context3) {
                                                             while (1) {
@@ -104,29 +104,25 @@ function publish(req, res) {
 
                                                                         _logger2.default.log('error', 'Could not find any unpublished slideshows for:' + req.body.team_domain + ',' + req.body.user_id);
                                                                         res.status(200).send('Could not find any unpublished slideshows.');
-                                                                        _context3.next = 21;
+                                                                        _context3.next = 12;
                                                                         break;
 
                                                                     case 8:
-                                                                        messages = [];
-                                                                        _context3.next = 11;
-                                                                        return slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token, slashCommand.channel_id, slashCommand.attachments.slideshow.start_ts, slashCommand.attachments.slideshow.end_ts, 500, null);
-
-                                                                    case 11:
-                                                                        response = _context3.sent;
-
-                                                                        if (!response.ok) {
-                                                                            _context3.next = 19;
-                                                                            break;
-                                                                        }
-
                                                                         return _context3.delegateYield(regeneratorRuntime.mark(function _callee2() {
-                                                                            var slideIndex;
+                                                                            var messages, slideIndex;
                                                                             return regeneratorRuntime.wrap(function _callee2$(_context2) {
                                                                                 while (1) {
                                                                                     switch (_context2.prev = _context2.next) {
                                                                                         case 0:
-                                                                                            messages = response.messages;
+                                                                                            _context2.next = 2;
+                                                                                            return slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token, slashCommand.channel_id, slashCommand.attachments.slideshow.start_ts, slashCommand.attachments.slideshow.end_ts, 500, null);
+
+                                                                                        case 2:
+                                                                                            messages = _context2.sent;
+
+                                                                                            //let response= yield slackhelper.getImHistory(slackTeam.bot.bot_access_token,slashCommand.attachments.slideshow.start_ts,500);
+                                                                                            /*if(response.ok){*/
+                                                                                            //messages=response.messages;
                                                                                             res.status(200).send(messages.length);
                                                                                             return _context2.abrupt('return', {
                                                                                                 v: {
@@ -136,33 +132,25 @@ function publish(req, res) {
                                                                                                 }
                                                                                             });
 
-                                                                                        case 8:
+                                                                                        case 10:
                                                                                         case 'end':
                                                                                             return _context2.stop();
                                                                                     }
                                                                                 }
                                                                             }, _callee2, _this);
-                                                                        })(), 't0', 14);
+                                                                        })(), 't0', 9);
 
-                                                                    case 14:
+                                                                    case 9:
                                                                         _ret3 = _context3.t0;
 
                                                                         if (!((typeof _ret3 === 'undefined' ? 'undefined' : _typeof(_ret3)) === "object")) {
-                                                                            _context3.next = 17;
+                                                                            _context3.next = 12;
                                                                             break;
                                                                         }
 
                                                                         return _context3.abrupt('return', _ret3.v);
 
-                                                                    case 17:
-                                                                        _context3.next = 21;
-                                                                        break;
-
-                                                                    case 19:
-                                                                        _logger2.default.log('error', response.error);
-                                                                        res.status(500).send('Could not retrieve messages from the Slack channel.');
-
-                                                                    case 21:
+                                                                    case 12:
                                                                     case 'end':
                                                                         return _context3.stop();
                                                                 }
