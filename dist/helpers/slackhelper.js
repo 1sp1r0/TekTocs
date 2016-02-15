@@ -59,13 +59,14 @@ function getUserinfo(token, userId) {
         } });
 }
 
-function getImHistory(token, channel, oldest, count) {
+function getImHistory(token, channel, oldest, latest, count) {
     return (0, _requestPromise2.default)({
         url: 'https://slack.com/api/im.history',
         qs: {
             "token": token,
             "channel": channel,
             "oldest": oldest,
+            "latest": latest,
             "count": count
         } });
 }
@@ -97,31 +98,11 @@ function getMessagesFromSlack(token, channel, startTs, endTs, count, messages) {
                 }, function (error) {
                     reject(error);
                 });
-
-                /* let imHistory=JSON.parse(imHistoryResponse);
-                 if(imHistory.ok){
-                     
-                     imHistory.messages.forEach( m=>{
-                         if(m.ts !=latest){
-                             messages.push(m)
-                         }else{
-                             return {ok:true,messages:messages};
-                         }
-                     });
-                     if(imHistory.has_more){
-                         getMessagesFromSlack(token,channel,messages[messages.length-1].ts,latest,count,messages);
-                     }
-                 }else{
-                     return {ok:false,error:imHistory.error};
-                 }*/
             })();
         } catch (err) {
             reject(err.stack);
         }
     });
-    //}).catch((err) => {
-    //    return {ok:false,error:err.stack};
-    //});
 }
 
 function processMessage(message) {

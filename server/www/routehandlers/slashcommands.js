@@ -28,12 +28,11 @@ export function publish(req,res){
                             res.status(200).send('Could not find any unpublished slideshows.');
                         }
                         else{
-                            
-                            let messages=yield slackhelper.getMessagesFromSlack(slackTeam.bot.bot_access_token,
-                            slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,1,null);
-                            //let response= yield slackhelper.getImHistory(slackTeam.bot.bot_access_token,slashCommand.attachments.slideshow.start_ts,500);
-                            /*if(response.ok){*/
-                                //messages=response.messages;
+                            let response=yield slackhelper.getImHistory(slackTeam.bot.bot_access_token,
+                            slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,1000,null);
+                            let msgResponse=JSON.parse(response);
+                            if(msgResponse.ok){
+                                let messages=msgResponse.messages;
                                 res.status(200).send(messages);
                                 return;
                                 let slideIndex=1;
@@ -56,11 +55,11 @@ export function publish(req,res){
                                 });
                                 slashCommand.attachments.slideshow.published=true;
                                 yield slashCommand.attachments.slideshow.save();
-                            /*}
+                            }
                             else{
                                 winston.log('error', response.error);
                                 res.status(500).send('Could not retrieve messages from the Slack channel.');
-                            }*/
+                            }
                         }
                     }else{
                          winston.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
