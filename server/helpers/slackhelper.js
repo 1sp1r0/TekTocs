@@ -61,7 +61,8 @@ export function getUserinfo(token,userId){
                         }
                     });
                     if(imHistory.has_more){
-                        getMessagesFromSlack(token,channel,messages[messages.length-1].ts,latest,count,messages);
+                        //getMessagesFromSlack(token,channel,messages[messages.length-1].ts,latest,count,messages);
+                        return {ok:true,messages:messages};
                     }
                 }else{
                     return {ok:false,error:imHistory.error};

@@ -90,7 +90,7 @@ function getMessagesFromSlack(token, channel, startTs, endTs, count, messages) {
                         imHistory = JSON.parse(imHistoryResponse);
 
                         if (!imHistory.ok) {
-                            _context.next = 13;
+                            _context.next = 14;
                             break;
                         }
 
@@ -101,30 +101,36 @@ function getMessagesFromSlack(token, channel, startTs, endTs, count, messages) {
                                 return { ok: true, messages: messages };
                             }
                         });
-                        if (imHistory.has_more) {
-                            getMessagesFromSlack(token, channel, messages[messages.length - 1].ts, latest, count, messages);
-                        }
-                        _context.next = 14;
-                        break;
 
-                    case 13:
-                        return _context.abrupt('return', { ok: false, error: imHistory.error });
+                        if (!imHistory.has_more) {
+                            _context.next = 12;
+                            break;
+                        }
+
+                        return _context.abrupt('return', { ok: true, messages: messages });
+
+                    case 12:
+                        _context.next = 15;
+                        break;
 
                     case 14:
-                        _context.next = 19;
+                        return _context.abrupt('return', { ok: false, error: imHistory.error });
+
+                    case 15:
+                        _context.next = 20;
                         break;
 
-                    case 16:
-                        _context.prev = 16;
+                    case 17:
+                        _context.prev = 17;
                         _context.t0 = _context['catch'](3);
                         return _context.abrupt('return', { ok: false, error: _context.t0.stack });
 
-                    case 19:
+                    case 20:
                     case 'end':
                         return _context.stop();
                 }
             }
-        }, _callee, this, [[3, 16]]);
+        }, _callee, this, [[3, 17]]);
     })).catch(function (err) {
         return { ok: false, error: err.stack };
     });
