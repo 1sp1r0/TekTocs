@@ -34,7 +34,7 @@ export function publish(req,res){
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages;
                                 let slideIndex=1;
-                                res.status(200).send(JSON.stringify(messages));
+                                res.status(200).send(JSON.parse(messages));
                                 return;
                                 messages.forEach(m=>{
                                     res.status(200).send(m.type);

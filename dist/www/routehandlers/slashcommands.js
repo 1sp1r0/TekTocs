@@ -104,7 +104,7 @@ function publish(req, res) {
                                 messages = msgResponse.messages;
                                 slideIndex = 1;
 
-                                res.status(200).send(JSON.stringify(messages));
+                                res.status(200).send(JSON.parse(messages));
                                 return _context.abrupt('return');
 
                             case 26:
