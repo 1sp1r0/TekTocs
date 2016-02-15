@@ -105,7 +105,7 @@ function publish(req, res) {
                                 slideIndex = 1;
 
                                 messages.forEach(function (m) {
-                                    res.status(200).send(m);
+                                    res.status(200).send(m.type);
                                     /*co(function* () {
                                     try{
                                         let slide=yield slackhelper.getSlide(m,slideIndex,
