@@ -89,16 +89,28 @@ function getMessagesFromSlack(token, channel, startTs, endTs, count, messages) {
                                 while (1) {
                                     switch (_context.prev = _context.next) {
                                         case 0:
-                                            return _context.abrupt('return', {
-                                                v: { ok: false, error: 'messages' }
-                                            });
 
-                                        case 6:
+                                            if (!messages) {
+                                                messages = [];
+                                            }
+                                            oldest = startTs;
+                                            latest = endTs;
+                                            _context.next = 5;
+                                            return (0, _requestPromise2.default)({
+                                                url: 'https://slack.com/api/im.history',
+                                                qs: {
+                                                    "token": token,
+                                                    "channel": channel,
+                                                    "oldest": oldest,
+                                                    "count": count
+                                                } });
+
+                                        case 5:
                                             imHistoryResponse = _context.sent;
                                             imHistory = JSON.parse(imHistoryResponse);
 
                                             if (!imHistory.ok) {
-                                                _context.next = 13;
+                                                _context.next = 12;
                                                 break;
                                             }
 
@@ -112,15 +124,15 @@ function getMessagesFromSlack(token, channel, startTs, endTs, count, messages) {
                                             if (imHistory.has_more) {
                                                 getMessagesFromSlack(token, channel, messages[messages.length - 1].ts, latest, count, messages);
                                             }
-                                            _context.next = 14;
+                                            _context.next = 13;
                                             break;
 
-                                        case 13:
+                                        case 12:
                                             return _context.abrupt('return', {
                                                 v: { ok: false, error: imHistory.error }
                                             });
 
-                                        case 14:
+                                        case 13:
                                         case 'end':
                                             return _context.stop();
                                     }

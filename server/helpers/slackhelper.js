@@ -47,13 +47,21 @@ export function getUserinfo(token,userId){
         co(function* (){
             
             try{
-                return {ok:false,error:'messages'};
+                
                 if(!messages){
                     messages=[];
                 }
                 let oldest=startTs;
                 let latest=endTs;
-                let imHistoryResponse=yield getImHistory(token,channel,oldest,count);
+                let imHistoryResponse=yield request({
+                    url: 'https://slack.com/api/im.history', 
+                    qs: {
+                        "token": token,
+                        "channel": channel,
+                        "oldest":oldest,
+                        "count":count
+                        }});
+                
                 let imHistory=JSON.parse(imHistoryResponse);
                 if(imHistory.ok){
                     
