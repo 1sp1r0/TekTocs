@@ -7,7 +7,6 @@ exports.postMessageToSlack = postMessageToSlack;
 exports.openIm = openIm;
 exports.getUserinfo = getUserinfo;
 exports.getImHistory = getImHistory;
-exports.getMessagesFromSlack = getMessagesFromSlack;
 exports.processMessage = processMessage;
 exports.getSlide = getSlide;
 exports.getSlideshowEndingTimestamp = getSlideshowEndingTimestamp;
@@ -69,40 +68,6 @@ function getImHistory(token, channel, oldest, latest, count) {
             "latest": latest,
             "count": count
         } });
-}
-
-function getMessagesFromSlack(token, channel, startTs, endTs, count, messages) {
-
-    return new Promise(function (resolve, reject) {
-        try {
-            (function () {
-                if (!messages) {
-                    messages = [];
-                }
-                var oldest = startTs;
-                var latest = endTs;
-                getImHistory(token, channel, oldest, count).then(function (result) {
-                    var imHistory = JSON.parse(result);
-                    imHistory.messages.forEach(function (m) {
-                        if (m.ts != latest) {
-                            messages.push(m);
-                        } else {
-                            resolve(messages);
-                        }
-                    });
-                    if (imHistory.has_more) {
-                        getMessagesFromSlack(token, channel, messages[messages.length - 1].ts, latest, count, messages);
-                    } else {
-                        resolve(messages);
-                    }
-                }, function (error) {
-                    reject(error);
-                });
-            })();
-        } catch (err) {
-            reject(err.stack);
-        }
-    });
 }
 
 function processMessage(message) {

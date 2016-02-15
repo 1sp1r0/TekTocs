@@ -43,46 +43,6 @@ export function getUserinfo(token,userId){
                         }});
         }  
         
- export function getMessagesFromSlack(token,channel,startTs,endTs,count,messages){
- 
-        return new Promise((resolve, reject) => {
-            try{
-                if(!messages){
-                    messages=[];
-                }
-                let oldest=startTs;
-                let latest=endTs;
-                getImHistory(token,channel,oldest,count).then(
-                    function(result){
-                        let imHistory=JSON.parse(result);
-                            imHistory.messages.forEach( m=>{
-                                if(m.ts !=latest){
-                                    messages.push(m)
-                                }else{
-                                    resolve(messages);
-                                }
-                        });
-                        if(imHistory.has_more){
-                            getMessagesFromSlack(token,channel,messages[messages.length-1].ts,latest,count,messages);
-                        }else{
-                            resolve(messages);
-                        }
-                    },
-                    function(error){
-                        reject(error);
-                    }
-                )
-            }
-            catch (err) {
-                reject(err.stack);
-               
-            }
-        });
-        
-   
- } 
- 
-                  
         
 export function processMessage(message){
     return new Promise((resolve, reject) => {
