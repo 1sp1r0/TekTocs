@@ -33,7 +33,7 @@ export function publish(req,res){
                             let msgResponse=JSON.parse(response);
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages;
-                                res.status(200).send(messages);
+                                res.status(200).send(messages.length);
                                 return;
                                 let slideIndex=1;
                                 messages.forEach(m=>{

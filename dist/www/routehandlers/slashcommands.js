@@ -128,7 +128,7 @@ function publish(req, res) {
                                                                                         case 0:
                                                                                             messages = msgResponse.messages;
 
-                                                                                            res.status(200).send(messages);
+                                                                                            res.status(200).send(messages.length);
                                                                                             return _context2.abrupt('return', {
                                                                                                 v: {
                                                                                                     v: {
