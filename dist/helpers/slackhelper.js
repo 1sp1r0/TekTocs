@@ -80,69 +80,23 @@ function getMessagesFromSlack(token, channel, startTs, endTs, count, messages) {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
-                        _context.prev = 0;
+                        return _context.abrupt('return', { ok: false, error: token + channel + startTs + endTs });
 
-                        _ret = function () {
-                            return {
-                                v: { ok: false, error: token + channel + startTs + endTs }
-                            };
-                            if (!messages) {
-                                messages = [];
-                            }
-                            var oldest = startTs;
-                            var latest = endTs;
-
-                            /* let imHistoryResponse=yield request({
-                                 url: 'https://slack.com/api/im.history', 
-                                 qs: {
-                                     "token": token,
-                                     "channel": channel,
-                                     "oldest":oldest,
-                                     "count":count
-                                     }});*/
-
-                            var imHistory = JSON.parse(imHistoryResponse);
-                            if (imHistory.ok) {
-
-                                imHistory.messages.forEach(function (m) {
-                                    if (m.ts != latest) {
-                                        messages.push(m);
-                                    } else {
-                                        return { ok: true, messages: messages };
-                                    }
-                                });
-                                if (imHistory.has_more) {
-                                    getMessagesFromSlack(token, channel, messages[messages.length - 1].ts, latest, count, messages);
-                                }
-                            } else {
-                                return {
-                                    v: { ok: false, error: imHistory.error }
-                                };
-                            }
-                        }();
-
-                        if (!((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object")) {
-                            _context.next = 4;
-                            break;
-                        }
-
-                        return _context.abrupt('return', _ret.v);
-
-                    case 4:
-                        _context.next = 9;
+                    case 5:
+                        _context.next = 10;
                         break;
 
-                    case 6:
-                        _context.prev = 6;
-                        _context.t0 = _context['catch'](0);
+                    case 7:
+                        _context.prev = 7;
+                        _context.t0 = _context['catch'](1);
                         return _context.abrupt('return', { ok: false, error: _context.t0.stack });
 
-                    case 9:
+                    case 10:
                     case 'end':
                         return _context.stop();
                 }
             }
-        }, _callee, this, [[0, 6]]);
+        }, _callee, this, [[1, 7]]);
     })).catch(function (err) {
         return { ok: false, error: err.stack };
     });
