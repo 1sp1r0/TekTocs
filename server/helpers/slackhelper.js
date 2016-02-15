@@ -43,8 +43,9 @@ export function getUserinfo(token,userId){
         }  
         
  export function getMessagesFromSlack(token,channel,startTs,endTs,count,messages){
-     return {ok:false,error:'messages'};
+     
         co(function* (){
+            return {ok:false,error:'messages'};
             if(!messages){
                 messages=[];
             }
