@@ -34,7 +34,7 @@ export function publish(req,res){
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages;
                                 let slideIndex=1;
-                                messages.forEach(m=>{
+                                for(let m of messages.values()){
                                     res.status(200).send(m.type);
                                     /*co(function* () {
                                     try{
@@ -51,7 +51,7 @@ export function publish(req,res){
                                         winston.log('error', err.stack);
                                         res.status(500).send('Could not add one or more slides to the slideshow');
                                     });*/
-                                });
+                                }
                                 slashCommand.attachments.slideshow.published=true;
                                 yield slashCommand.attachments.slideshow.save();
                             }
