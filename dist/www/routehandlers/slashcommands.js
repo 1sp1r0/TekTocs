@@ -101,31 +101,10 @@ function publish(req, res) {
 
                                     setImmediate(processMessages(messages, slashCommand, slackTeam.bot.bot_access_token));
                                     res.status(200).send('Slideshow has been published.');
-                                    /*let slideIndex=1;
-                                    messages.forEach(m=>{
-                                        co(function* () {
-                                        try{
-                                            let slide=yield slackhelper.getSlide(m,slideIndex,
-                                            slackTeam.bot.bot_access_token);
-                                            if(slide){
-                                                slashCommand.attachments.slideshow.slides.push(slide);
-                                            }
-                                        }catch (err) {
-                                           winston.log('error', err.stack);
-                                            res.status(500).send('Could not add one or more slides to the slideshow');
-                                        }
-                                        }).catch((err) => {
-                                            winston.log('error', err.stack);
-                                            res.status(500).send('Could not add one or more slides to the slideshow');
-                                        });
-                                        slideIndex=slideIndex+1;
-                                    });
-                                    slashCommand.attachments.slideshow.published=true;
-                                    yield slashCommand.attachments.slideshow.save();*/
                                 } else {
-                                        _logger2.default.log('error', response.error);
-                                        res.status(500).send('Could not retrieve messages from the Slack channel.');
-                                    }
+                                    _logger2.default.log('error', response.error);
+                                    res.status(500).send('Could not retrieve messages from the Slack channel.');
+                                }
 
                             case 18:
                                 _context.next = 22;

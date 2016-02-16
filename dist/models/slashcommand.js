@@ -13,6 +13,8 @@ var _shortid = require('shortid');
 
 var _shortid2 = _interopRequireDefault(_shortid);
 
+var _slackuser = require('./slackuser');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var slideSchema = _mongoose2.default.Schema({

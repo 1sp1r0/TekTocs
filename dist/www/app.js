@@ -28,6 +28,10 @@ var _slack = require('./routes/slack');
 
 var _slack2 = _interopRequireDefault(_slack);
 
+var _api = require('./routes/api');
+
+var _api2 = _interopRequireDefault(_api);
+
 var _slideshows = require('./routes/slideshows');
 
 var _slideshows2 = _interopRequireDefault(_slideshows);
@@ -151,6 +155,7 @@ function ensureAuthenticated(req, res, next) {
 app.use('/', _home2.default);
 app.use('/slack', _slack2.default);
 app.use('/slideshows', _slideshows2.default);
+app.use('/api', _api2.default);
 
 //connect to database
 _db2.default.connect();

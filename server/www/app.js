@@ -5,6 +5,7 @@
     import csrf from 'csurf';
     import home  from  './routes/home';
     import slack from './routes/slack';
+    import api from './routes/api';
     import slideshows from './routes/slideshows';
     import helmet from 'helmet';
     import passport from 'passport';
@@ -106,6 +107,7 @@
     app.use('/', home);  
     app.use('/slack', slack); 
     app.use('/slideshows', slideshows); 
+    app.use('/api', api); 
 
     //connect to database
     DbConnection.connect();

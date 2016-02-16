@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import shortid from 'shortid'
+import {SlackUser} from './slackuser'
 
 
 let slideSchema = mongoose.Schema({
