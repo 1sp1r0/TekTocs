@@ -493,7 +493,7 @@ function saveStartSlashCommand(body, channelId, userid, startTs) {
         response_url: body.response_url,
         attachments: {
             slideshow: {
-                end_ts: '',
+                end_ts: userid,
                 start_ts: startTs,
                 title: body.text,
                 short_id: _shortid2.default.generate(),
