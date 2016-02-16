@@ -401,7 +401,7 @@ function startSlideshow(req, res, isLive) {
                                     break;
                                 }
 
-                                res.send(user._id);
+                                res.status.send(user._id);
                                 _context6.next = 35;
                                 return slackhelper.postMessageToSlack(_slackTeam2.bot.bot_access_token, im.channel.id, 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
 
