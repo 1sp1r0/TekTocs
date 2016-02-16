@@ -388,7 +388,7 @@ function startSlideshow(req, res, isLive) {
                             case 25:
                                 _user = _context6.sent;
 
-                                res.send(_user);
+                                res.send(_user.upserted[0]._id);
                                 _context6.next = 32;
                                 break;
 
