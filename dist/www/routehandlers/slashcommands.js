@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -50,25 +52,28 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function publish(req, res) {
     try {
         if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
-            (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-                var slackTeam, slashCommand, response, msgResponse, messages, slideIndex;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
+            (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
+                var _this = this;
+
+                var slackTeam, slashCommand, response, msgResponse, _ret;
+
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
                     while (1) {
-                        switch (_context.prev = _context.next) {
+                        switch (_context2.prev = _context2.next) {
                             case 0:
-                                _context.prev = 0;
-                                _context.next = 3;
+                                _context2.prev = 0;
+                                _context2.next = 3;
                                 return Models.SlackTeam.findOne({ team_id: req.body.team_id });
 
                             case 3:
-                                slackTeam = _context.sent;
+                                slackTeam = _context2.sent;
 
                                 if (!slackTeam) {
-                                    _context.next = 32;
+                                    _context2.next = 28;
                                     break;
                                 }
 
-                                _context.next = 7;
+                                _context2.next = 7;
                                 return Models.SlashCommand.findOne({
                                     team_domain: req.body.team_domain,
                                     user_id: req.body.user_id, pending: false,
@@ -76,70 +81,115 @@ function publish(req, res) {
                                     commandType: 'start' }, { channel_id: 1, 'attachments.slideshow': 1 }, { sort: { createDate: -1 } }).exec();
 
                             case 7:
-                                slashCommand = _context.sent;
+                                slashCommand = _context2.sent;
 
                                 if (slashCommand) {
-                                    _context.next = 13;
+                                    _context2.next = 13;
                                     break;
                                 }
 
                                 _logger2.default.log('error', 'Could not find any unpublished slideshows for:' + req.body.team_domain + ',' + req.body.user_id);
                                 res.status(200).send('Could not find any unpublished slideshows.');
-                                _context.next = 30;
+                                _context2.next = 26;
                                 break;
 
                             case 13:
-                                _context.next = 15;
+                                _context2.next = 15;
                                 return slackhelper.getImHistory(slackTeam.bot.bot_access_token, slashCommand.channel_id, slashCommand.attachments.slideshow.start_ts, slashCommand.attachments.slideshow.end_ts, 1000, null);
 
                             case 15:
-                                response = _context.sent;
+                                response = _context2.sent;
                                 msgResponse = JSON.parse(response);
 
                                 if (!msgResponse.ok) {
-                                    _context.next = 28;
+                                    _context2.next = 24;
                                     break;
                                 }
 
-                                messages = msgResponse.messages;
-                                slideIndex = 1;
+                                return _context2.delegateYield(regeneratorRuntime.mark(function _callee() {
+                                    var messages, slideIndex, temp;
+                                    return regeneratorRuntime.wrap(function _callee$(_context) {
+                                        while (1) {
+                                            switch (_context.prev = _context.next) {
+                                                case 0:
+                                                    messages = msgResponse.messages;
+                                                    slideIndex = 1;
+                                                    temp = '';
 
-                                res.status(200).send(Array.isArray(messages));
-                                return _context.abrupt('return');
+                                                    messages.forEach(function (m) {
+                                                        temp = temp + m.text + "|";
+                                                        /*co(function* () {
+                                                        try{
+                                                            let slide=yield slackhelper.getSlide(m,slideIndex,
+                                                            slackTeam.bot.bot_access_token);
+                                                            if(slide){
+                                                                slashCommand.attachments.slideshow.slides.push(slide);
+                                                            }
+                                                        }catch (err) {
+                                                           winston.log('error', err.stack);
+                                                            res.status(500).send('Could not add one or more slides to the slideshow');
+                                                        }
+                                                        }).catch((err) => {
+                                                            winston.log('error', err.stack);
+                                                            res.status(500).send('Could not add one or more slides to the slideshow');
+                                                        });*/
+                                                    });
+                                                    res.status(200).send(temp);
+                                                    return _context.abrupt('return', {
+                                                        v: undefined
+                                                    });
 
-                            case 26:
-                                _context.next = 30;
+                                                case 9:
+                                                case 'end':
+                                                    return _context.stop();
+                                            }
+                                        }
+                                    }, _callee, _this);
+                                })(), 't0', 19);
+
+                            case 19:
+                                _ret = _context2.t0;
+
+                                if (!((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object")) {
+                                    _context2.next = 22;
+                                    break;
+                                }
+
+                                return _context2.abrupt('return', _ret.v);
+
+                            case 22:
+                                _context2.next = 26;
                                 break;
 
-                            case 28:
+                            case 24:
                                 _logger2.default.log('error', response.error);
                                 res.status(500).send('Could not retrieve messages from the Slack channel.');
 
-                            case 30:
-                                _context.next = 34;
+                            case 26:
+                                _context2.next = 30;
                                 break;
 
-                            case 32:
+                            case 28:
                                 _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                            case 34:
-                                _context.next = 40;
+                            case 30:
+                                _context2.next = 36;
                                 break;
 
-                            case 36:
-                                _context.prev = 36;
-                                _context.t0 = _context['catch'](0);
+                            case 32:
+                                _context2.prev = 32;
+                                _context2.t1 = _context2['catch'](0);
 
-                                _logger2.default.log('error', _context.t0.stack);
+                                _logger2.default.log('error', _context2.t1.stack);
                                 res.sendStatus(500);
 
-                            case 40:
+                            case 36:
                             case 'end':
-                                return _context.stop();
+                                return _context2.stop();
                         }
                     }
-                }, _callee, this, [[0, 36]]);
+                }, _callee2, this, [[0, 32]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
@@ -156,31 +206,31 @@ function publish(req, res) {
 function end(req, res) {
     try {
         if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
-            (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
+            (0, _co2.default)(regeneratorRuntime.mark(function _callee3() {
                 var _slackTeam, endingTs;
 
-                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
                     while (1) {
-                        switch (_context2.prev = _context2.next) {
+                        switch (_context3.prev = _context3.next) {
                             case 0:
-                                _context2.prev = 0;
-                                _context2.next = 3;
+                                _context3.prev = 0;
+                                _context3.next = 3;
                                 return Models.SlackTeam.findOne({ team_id: req.body.team_id });
 
                             case 3:
-                                _slackTeam = _context2.sent;
+                                _slackTeam = _context3.sent;
 
                                 if (!_slackTeam) {
-                                    _context2.next = 13;
+                                    _context3.next = 13;
                                     break;
                                 }
 
-                                _context2.next = 7;
+                                _context3.next = 7;
                                 return slackhelper.getSlideshowEndingTimestamp('Your slideshow is now marked as complete. The next step is to publish it using the command /tektocs-publish.', req.body.user_id, _slackTeam.bot.bot_access_token);
 
                             case 7:
-                                endingTs = _context2.sent;
-                                _context2.next = 10;
+                                endingTs = _context3.sent;
+                                _context3.next = 10;
                                 return Models.SlashCommand.findOneAndUpdate({
                                     team_domain: req.body.team_domain,
                                     user_id: req.body.user_id, pending: true,
@@ -188,7 +238,7 @@ function end(req, res) {
 
                             case 10:
                                 res.sendStatus(200);
-                                _context2.next = 15;
+                                _context3.next = 15;
                                 break;
 
                             case 13:
@@ -196,22 +246,22 @@ function end(req, res) {
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
                             case 15:
-                                _context2.next = 21;
+                                _context3.next = 21;
                                 break;
 
                             case 17:
-                                _context2.prev = 17;
-                                _context2.t0 = _context2['catch'](0);
+                                _context3.prev = 17;
+                                _context3.t0 = _context3['catch'](0);
 
-                                _logger2.default.log('error', _context2.t0.stack);
+                                _logger2.default.log('error', _context3.t0.stack);
                                 res.sendStatus(500);
 
                             case 21:
                             case 'end':
-                                return _context2.stop();
+                                return _context3.stop();
                         }
                     }
-                }, _callee2, this, [[0, 17]]);
+                }, _callee3, this, [[0, 17]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
@@ -236,32 +286,32 @@ function startLive(req, res) {
 function startSlideshow(req, res, isLive) {
     try {
         if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
-            (0, _co2.default)(regeneratorRuntime.mark(function _callee3() {
+            (0, _co2.default)(regeneratorRuntime.mark(function _callee4() {
                 var _slackTeam2, imResponse, im, user, userInfoResponse, userInfo, postMessageResponse, postMessage;
 
-                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
                     while (1) {
-                        switch (_context3.prev = _context3.next) {
+                        switch (_context4.prev = _context4.next) {
                             case 0:
-                                _context3.prev = 0;
+                                _context4.prev = 0;
 
                                 if (!(req.body.text.trim() === '')) {
-                                    _context3.next = 4;
+                                    _context4.next = 4;
                                     break;
                                 }
 
                                 res.status(200).send('Every slideshow needs a title. Enter the title after the command - "/tektocs-startlive titleOfYourSlideshow"');
-                                return _context3.abrupt('return');
+                                return _context4.abrupt('return');
 
                             case 4:
-                                _context3.next = 6;
+                                _context4.next = 6;
                                 return Models.SlackTeam.findOne({ team_id: req.body.team_id });
 
                             case 6:
-                                _slackTeam2 = _context3.sent;
+                                _slackTeam2 = _context4.sent;
 
                                 if (!_slackTeam2) {
-                                    _context3.next = 55;
+                                    _context4.next = 55;
                                     break;
                                 }
 
@@ -269,79 +319,79 @@ function startSlideshow(req, res, isLive) {
                                     req.app.slackbot.slack = new _slackClient2.default(_slackTeam2.bot.bot_access_token, true, true);
                                     req.app.slackbot.registerSlackListeners();
                                 }
-                                _context3.next = 11;
+                                _context4.next = 11;
                                 return slackhelper.openIm(_slackTeam2.bot.bot_access_token, req.body.user_id);
 
                             case 11:
-                                imResponse = _context3.sent;
+                                imResponse = _context4.sent;
                                 im = JSON.parse(imResponse);
 
                                 if (!im.ok) {
-                                    _context3.next = 51;
+                                    _context4.next = 51;
                                     break;
                                 }
 
-                                _context3.next = 16;
+                                _context4.next = 16;
                                 return Models.SlackUser.findOne({ user_id: req.body.user_id });
 
                             case 16:
-                                user = _context3.sent;
+                                user = _context4.sent;
 
                                 if (user) {
-                                    _context3.next = 31;
+                                    _context4.next = 31;
                                     break;
                                 }
 
-                                _context3.next = 20;
+                                _context4.next = 20;
                                 return slackhelper.getUserinfo(_slackTeam2.bot.bot_access_token, req.body.user_id);
 
                             case 20:
-                                userInfoResponse = _context3.sent;
+                                userInfoResponse = _context4.sent;
                                 userInfo = JSON.parse(userInfoResponse);
 
                                 if (!userInfo.ok) {
-                                    _context3.next = 28;
+                                    _context4.next = 28;
                                     break;
                                 }
 
-                                _context3.next = 25;
+                                _context4.next = 25;
                                 return saveSlackUser(userInfo.user);
 
                             case 25:
-                                user = _context3.sent;
-                                _context3.next = 31;
+                                user = _context4.sent;
+                                _context4.next = 31;
                                 break;
 
                             case 28:
                                 _logger2.default.log('error', userInfo.error);
                                 res.status(500).send('Could not retrieve user info.');
-                                return _context3.abrupt('return');
+                                return _context4.abrupt('return');
 
                             case 31:
                                 if (!user) {
-                                    _context3.next = 47;
+                                    _context4.next = 47;
                                     break;
                                 }
 
-                                _context3.next = 34;
+                                _context4.next = 34;
                                 return slackhelper.postMessageToSlack(_slackTeam2.bot.bot_access_token, im.channel.id, 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
 
                             case 34:
-                                postMessageResponse = _context3.sent;
+                                postMessageResponse = _context4.sent;
                                 postMessage = JSON.parse(postMessageResponse);
 
                                 if (!postMessage.ok) {
-                                    _context3.next = 43;
+                                    _context4.next = 43;
                                     break;
                                 }
 
-                                _context3.next = 39;
+                                _context4.next = 39;
                                 return saveStartSlashCommand(req.body, im.channel.id, user._id, postMessage.ts);
 
                             case 39:
                                 req.app.slackbot.slack.login();
                                 res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
-                                _context3.next = 45;
+                                _context4.next = 45;
                                 break;
 
                             case 43:
@@ -349,7 +399,7 @@ function startSlideshow(req, res, isLive) {
                                 res.status(500).send('Sorry, we had trouble waking up our bot, Tektocs.');
 
                             case 45:
-                                _context3.next = 49;
+                                _context4.next = 49;
                                 break;
 
                             case 47:
@@ -357,7 +407,7 @@ function startSlideshow(req, res, isLive) {
                                 res.status(500).send('Could not retrieve user info.');
 
                             case 49:
-                                _context3.next = 53;
+                                _context4.next = 53;
                                 break;
 
                             case 51:
@@ -365,7 +415,7 @@ function startSlideshow(req, res, isLive) {
                                 res.status(500).send('Could not open direct message channel with our bot, tektocs');
 
                             case 53:
-                                _context3.next = 57;
+                                _context4.next = 57;
                                 break;
 
                             case 55:
@@ -373,22 +423,22 @@ function startSlideshow(req, res, isLive) {
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
                             case 57:
-                                _context3.next = 63;
+                                _context4.next = 63;
                                 break;
 
                             case 59:
-                                _context3.prev = 59;
-                                _context3.t0 = _context3['catch'](0);
+                                _context4.prev = 59;
+                                _context4.t0 = _context4['catch'](0);
 
-                                _logger2.default.log('error', _context3.t0.stack);
+                                _logger2.default.log('error', _context4.t0.stack);
                                 res.sendStatus(500);
 
                             case 63:
                             case 'end':
-                                return _context3.stop();
+                                return _context4.stop();
                         }
                     }
-                }, _callee3, this, [[0, 59]]);
+                }, _callee4, this, [[0, 59]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);

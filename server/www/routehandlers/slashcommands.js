@@ -34,10 +34,9 @@ export function publish(req,res){
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages;
                                 let slideIndex=1;
-                                res.status(200).send(Array.isArray(messages));
-                                return;
+                                let temp='';
                                 messages.forEach(m=>{
-                                    res.status(200).send(m.type);
+                                    temp=temp + m.text + "|";
                                     /*co(function* () {
                                     try{
                                         let slide=yield slackhelper.getSlide(m,slideIndex,
@@ -54,6 +53,8 @@ export function publish(req,res){
                                         res.status(500).send('Could not add one or more slides to the slideshow');
                                     });*/
                                 });
+                                res.status(200).send(temp);
+                                return;
                                 slashCommand.attachments.slideshow.published=true;
                                 yield slashCommand.attachments.slideshow.save();
                             }
