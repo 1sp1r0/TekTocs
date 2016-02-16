@@ -65,4 +65,4 @@ slashCommandSchema.index({ channel_id: 1, user_id: 1, commandType:1 });
 let SlackUser = mongoose.model('SlackUser', slackUserSchema);
 let SlashCommand = mongoose.model('SlashCommand', slashCommandSchema);
 
-export  {SlashCommand,Slide};
+export  {SlackUser,SlashCommand,Slide};

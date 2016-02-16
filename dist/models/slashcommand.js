@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Slide = exports.SlashCommand = undefined;
+exports.Slide = exports.SlashCommand = exports.SlackUser = undefined;
 
 var _mongoose = require('mongoose');
 
@@ -73,5 +73,6 @@ slashCommandSchema.index({ channel_id: 1, user_id: 1, commandType: 1 });
 var SlackUser = _mongoose2.default.model('SlackUser', slackUserSchema);
 var SlashCommand = _mongoose2.default.model('SlashCommand', slashCommandSchema);
 
+exports.SlackUser = SlackUser;
 exports.SlashCommand = SlashCommand;
 exports.Slide = Slide;
