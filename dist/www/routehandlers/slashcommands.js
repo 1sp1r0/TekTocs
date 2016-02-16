@@ -315,7 +315,7 @@ function startSlideshow(req, res, isLive) {
     try {
         if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
             (0, _co2.default)(regeneratorRuntime.mark(function _callee6() {
-                var _slackTeam2, imResponse, im, user, userInfoResponse, userInfo, postMessageResponse, postMessage;
+                var _slackTeam2, imResponse, im, user, userInfoResponse, userInfo, _user, postMessageResponse, postMessage;
 
                 return regeneratorRuntime.wrap(function _callee6$(_context6) {
                     while (1) {
@@ -386,9 +386,9 @@ function startSlideshow(req, res, isLive) {
                                 return saveSlackUser(userInfo.user);
 
                             case 25:
-                                user = _context6.sent;
+                                _user = _context6.sent;
 
-                                res.send(user);
+                                res.send(_user.upserted._id);
                                 _context6.next = 32;
                                 break;
 

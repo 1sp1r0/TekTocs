@@ -175,8 +175,8 @@ export function startSlideshow(req, res,isLive) {
                             let userInfoResponse=yield slackhelper.getUserinfo(slackTeam.bot.bot_access_token,req.body.user_id);
                             let userInfo=JSON.parse(userInfoResponse);
                             if(userInfo.ok){
-                                user=yield saveSlackUser(userInfo.user);
-                                res.send(user);
+                                let user=yield saveSlackUser(userInfo.user);
+                                res.send(user.upserted._id);
                             }
                             else{
                                 winston.log('error', userInfo.error);
