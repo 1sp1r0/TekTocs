@@ -511,7 +511,8 @@ function saveStartSlashCommand(body, channelId, userid, startTs) {
 function saveSlackUser(userInfo) {
     return new Promise(function (resolve, reject) {
         try {
-            Models.SlackUser.update({ user_id: userInfo.id }, Object.assign({}, userInfo.profile, { user_id: userInfo.id, name: userInfo.name, short_id: _shortid2.default.generate() }), { upsert: true }, function (err, raw) {
+            var short_id = _shortid2.default.generate();
+            Models.SlackUser.update({ user_id: userInfo.id }, Object.assign({}, userInfo.profile, { user_id: userInfo.id, name: userInfo.name, _id: short_id, short_id: short_id }), { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);
                 } else {

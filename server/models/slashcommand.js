@@ -31,7 +31,7 @@ let slashCommandSchema = mongoose.Schema({
             end_ts:String,
             short_id:{ type: String, index: true },
             title: {type: String, index: true },
-            creator:{type: mongoose.Schema.Types.ObjectId, ref: 'SlackUser'},
+            creator:{type: String, ref: 'SlackUser'},
             slides:[slideSchema],
             published:Boolean
         }
