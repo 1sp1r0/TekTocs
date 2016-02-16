@@ -168,6 +168,7 @@ export function startSlideshow(req, res,isLive) {
                     let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
                     let im=JSON.parse(imResponse);
                     if(im.ok){
+                        let userDbId='';
                         let user=yield Models.SlackUser.findOne({user_id:req.body.user_id});
                         
                         if(!user){
@@ -176,19 +177,21 @@ export function startSlideshow(req, res,isLive) {
                             let userInfo=JSON.parse(userInfoResponse);
                             if(userInfo.ok){
                                 let user=yield saveSlackUser(userInfo.user);
-                                res.send(user.upserted[0]._id);
+                                userDbId=user.upserted[0]._id;
                             }
                             else{
                                 winston.log('error', userInfo.error);
                                 res.status(500).send('Could not retrieve user info.');
                                 return;
                             }
+                        }else{
+                            userDbId=user._id;
                         }
-                        if(user){
+                        if(userDbId !=''){
                             let postMessageResponse=yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
                             let postMessage=JSON.parse(postMessageResponse);
                             if(postMessage.ok){
-                                yield saveStartSlashCommand(req.body,im.channel.id,user._id,postMessage.ts);
+                                yield saveStartSlashCommand(req.body,im.channel.id,userDbId,postMessage.ts);
                                 req.app.slackbot.slack.login();
                                 res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
                             }else{
@@ -267,7 +270,7 @@ function saveSlackUser(userInfo) {
             let short_id=shortid.generate();
             Models.SlackUser.update({ user_id: userInfo.id }, 
             Object.assign({},userInfo.profile,
-            {user_id:userInfo.id,name:userInfo.name,_id:short_id,short_id:short_id}), 
+            {user_id:userInfo.id,name:userInfo.name,_id:short_id}), 
             { upsert: true }, function (err, raw) {
                 if (err) {
                     reject(err);
