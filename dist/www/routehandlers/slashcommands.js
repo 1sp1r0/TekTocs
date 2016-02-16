@@ -104,7 +104,7 @@ function publish(req, res) {
                                 messages = msgResponse.messages;
                                 slideIndex = 1;
 
-                                res.status(200).send(messages[1].ts);
+                                res.status(200).send(Array.isArray(messages));
                                 return _context.abrupt('return');
 
                             case 26:

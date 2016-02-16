@@ -34,7 +34,7 @@ export function publish(req,res){
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages;
                                 let slideIndex=1;
-                                res.status(200).send(messages[1].ts);
+                                res.status(200).send(Array.isArray(messages));
                                 return;
                                 messages.forEach(m=>{
                                     res.status(200).send(m.type);
