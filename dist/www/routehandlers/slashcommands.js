@@ -339,7 +339,7 @@ function startSlideshow(req, res, isLive) {
                                 _slackTeam2 = _context6.sent;
 
                                 if (!_slackTeam2) {
-                                    _context6.next = 55;
+                                    _context6.next = 56;
                                     break;
                                 }
 
@@ -355,7 +355,7 @@ function startSlideshow(req, res, isLive) {
                                 im = JSON.parse(imResponse);
 
                                 if (!im.ok) {
-                                    _context6.next = 51;
+                                    _context6.next = 52;
                                     break;
                                 }
 
@@ -397,76 +397,77 @@ function startSlideshow(req, res, isLive) {
 
                             case 31:
                                 if (!user) {
-                                    _context6.next = 47;
+                                    _context6.next = 48;
                                     break;
                                 }
 
-                                _context6.next = 34;
+                                res.send(user._id);
+                                _context6.next = 35;
                                 return slackhelper.postMessageToSlack(_slackTeam2.bot.bot_access_token, im.channel.id, 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
 
-                            case 34:
+                            case 35:
                                 postMessageResponse = _context6.sent;
                                 postMessage = JSON.parse(postMessageResponse);
 
                                 if (!postMessage.ok) {
-                                    _context6.next = 43;
+                                    _context6.next = 44;
                                     break;
                                 }
 
-                                _context6.next = 39;
+                                _context6.next = 40;
                                 return saveStartSlashCommand(req.body, im.channel.id, user._id, postMessage.ts);
 
-                            case 39:
+                            case 40:
                                 req.app.slackbot.slack.login();
                                 res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
-                                _context6.next = 45;
+                                _context6.next = 46;
                                 break;
 
-                            case 43:
+                            case 44:
                                 _logger2.default.log('error', postMessage.error);
                                 res.status(500).send('Sorry, we had trouble waking up our bot, Tektocs.');
 
-                            case 45:
-                                _context6.next = 49;
+                            case 46:
+                                _context6.next = 50;
                                 break;
 
-                            case 47:
+                            case 48:
                                 _logger2.default.log('error', 'Could not retrieve user info.');
                                 res.status(500).send('Could not retrieve user info.');
 
-                            case 49:
-                                _context6.next = 53;
+                            case 50:
+                                _context6.next = 54;
                                 break;
 
-                            case 51:
+                            case 52:
                                 _logger2.default.log('error', im.error);
                                 res.status(500).send('Could not open direct message channel with our bot, tektocs');
 
-                            case 53:
-                                _context6.next = 57;
+                            case 54:
+                                _context6.next = 58;
                                 break;
 
-                            case 55:
+                            case 56:
                                 _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                            case 57:
-                                _context6.next = 63;
+                            case 58:
+                                _context6.next = 64;
                                 break;
 
-                            case 59:
-                                _context6.prev = 59;
+                            case 60:
+                                _context6.prev = 60;
                                 _context6.t0 = _context6['catch'](0);
 
                                 _logger2.default.log('error', _context6.t0.stack);
                                 res.sendStatus(500);
 
-                            case 63:
+                            case 64:
                             case 'end':
                                 return _context6.stop();
                         }
                     }
-                }, _callee6, this, [[0, 59]]);
+                }, _callee6, this, [[0, 60]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);

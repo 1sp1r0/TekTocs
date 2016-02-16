@@ -1,4 +1,3 @@
-/*
 import mongoose from 'mongoose'
 import shortid from 'shortid'
 
@@ -23,4 +22,3 @@ let slackUserSchema = mongoose.Schema({
 let SlackUser = mongoose.model('SlackUser', slackUserSchema);
 
 export  {SlackUser};
-*/
