@@ -13,8 +13,6 @@ var _shortid = require('shortid');
 
 var _shortid2 = _interopRequireDefault(_shortid);
 
-var _slackuser = require('./slackuser');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var slideSchema = _mongoose2.default.Schema({
@@ -28,6 +26,22 @@ var slideSchema = _mongoose2.default.Schema({
 });
 
 var Slide = _mongoose2.default.model('Slide', slideSchema);
+
+var slackUserSchema = _mongoose2.default.Schema({
+    _id: String,
+    short_id: { type: String, index: true },
+    user_id: { type: String, index: true },
+    name: String,
+    first_name: String,
+    last_name: String,
+    real_name: String,
+    email: String,
+    image_24: String,
+    image_32: String,
+    image_48: String,
+    image_72: String,
+    image_192: String
+});
 
 var slashCommandSchema = _mongoose2.default.Schema({
     team_id: String,
@@ -56,6 +70,7 @@ var slashCommandSchema = _mongoose2.default.Schema({
 
 slashCommandSchema.index({ channel_id: 1, user_id: 1, commandType: 1 });
 
+var SlackUser = _mongoose2.default.model('SlackUser', slackUserSchema);
 var SlashCommand = _mongoose2.default.model('SlashCommand', slashCommandSchema);
 
 exports.SlashCommand = SlashCommand;
