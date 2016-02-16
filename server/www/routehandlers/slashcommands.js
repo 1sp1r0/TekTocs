@@ -176,6 +176,7 @@ export function startSlideshow(req, res,isLive) {
                             let userInfo=JSON.parse(userInfoResponse);
                             if(userInfo.ok){
                                 user=yield saveSlackUser(userInfo.user);
+                                res.send(user);
                             }
                             else{
                                 winston.log('error', userInfo.error);
@@ -244,7 +245,7 @@ function saveStartSlashCommand(body,channelId,userid,startTs) {
                     response_url:body.response_url,
                     attachments:{
                         slideshow:{
-                            end_ts:userid,
+                            end_ts:'',
                             start_ts:startTs,
                             title: body.text,
                             short_id:shortid.generate(),
