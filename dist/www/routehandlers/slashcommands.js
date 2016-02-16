@@ -112,7 +112,7 @@ function publish(req, res) {
                                         while (1) {
                                             switch (_context.prev = _context.next) {
                                                 case 0:
-                                                    messages = msgResponse.messages;
+                                                    messages = msgResponse.messages.reverse();
                                                     slideIndex = 1;
                                                     temp = '';
 

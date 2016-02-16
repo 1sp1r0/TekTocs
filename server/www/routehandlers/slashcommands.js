@@ -32,7 +32,7 @@ export function publish(req,res){
                             slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,1000,null);
                             let msgResponse=JSON.parse(response);
                             if(msgResponse.ok){
-                                let messages=msgResponse.messages;
+                                let messages=msgResponse.messages.reverse();
                                 let slideIndex=1;
                                 let temp='';
                                 messages.forEach(m=>{
