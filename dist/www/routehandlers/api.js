@@ -33,8 +33,8 @@ function getUserSlideshow(req, res) {
                     switch (_context.prev = _context.next) {
                         case 0:
                             _context.prev = 0;
-                            userid = req.params.user;
-                            slideshowid = req.params.slideshow;
+                            userid = req.params.userid;
+                            slideshowid = req.params.slideshowid;
                             _context.next = 5;
                             return Models.SlashCommand.findOne({
                                 'attachments.slideshow.published': true,
@@ -81,7 +81,7 @@ function getUserSlideshows(req, res) {
                     switch (_context2.prev = _context2.next) {
                         case 0:
                             _context2.prev = 0;
-                            _userid = req.params.user;
+                            _userid = req.params.userid;
                             _context2.next = 4;
                             return Models.SlashCommand.find({
                                 'attachments.slideshow.published': true,

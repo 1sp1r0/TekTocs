@@ -9,8 +9,8 @@ export function getUserSlideshow (req,res){
     try{
         co(function* () {
            try{
-                let userid=req.params.user;
-                let slideshowid=req.params.slideshow;
+                let userid=req.params.userid;
+                let slideshowid=req.params.slideshowid;
                 let slideshow = yield Models.SlashCommand.findOne({ 
                         'attachments.slideshow.published':true,
                         'attachments.slideshow.creator': userid, 
@@ -36,7 +36,7 @@ export function getUserSlideshows (req,res){
     try{
         co(function* () {
            try{
-                let userid=req.params.user;
+                let userid=req.params.userid;
                 let slideshows = yield Models.SlashCommand.find({ 
                         'attachments.slideshow.published':true,
                         'attachments.slideshow.creator': userid},{'attachments.slideshow':1})

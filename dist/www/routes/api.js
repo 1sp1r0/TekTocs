@@ -16,12 +16,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
-router.get('/:user/:slideshow', function (req, res) {
-       _routehandlermappings2.default['/api/:user/:slideshow'][req.method.toLowerCase()](req, res);
+router.get('/:userid/:slideshowid', function (req, res) {
+       _routehandlermappings2.default['/api/:userid/:slideshowid'][req.method.toLowerCase()](req, res);
 });
 
-router.get('/:user', function (req, res) {
-       _routehandlermappings2.default['/api/:user'][req.method.toLowerCase()](req, res);
+router.get('/:userid', function (req, res) {
+       _routehandlermappings2.default['/api/:userid'][req.method.toLowerCase()](req, res);
 });
 
 exports.default = router;
