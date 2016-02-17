@@ -21,4 +21,5 @@ routeHandlerMappings["/slack/commands/end"] = { post: handlers.end };
 routeHandlerMappings["/slack/commands/publish"] = { post: handlers.publish };
 routeHandlerMappings["/slideshows/:user"] = { get: handlers.userSlideshows };
 routeHandlerMappings["/slideshows/:user/:slideshow"] = { get: handlers.userSlideshow };
+routeHandlerMappings["/api/:user/:slideshow"] = { get: handlers.getUserSlideshow };
 exports.default = routeHandlerMappings;
