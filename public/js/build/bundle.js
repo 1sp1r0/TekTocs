@@ -19770,8 +19770,8 @@ var ReactRenderers =
 	  }
 
 	  _createClass(Slideshow, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
 	      var self = this;
 	      _jquery2.default.ajax({
 	        url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,

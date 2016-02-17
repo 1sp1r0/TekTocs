@@ -9,7 +9,7 @@ export default class Slideshow extends React.Component{
     super(props);
     this.state = {data: []};
   }
-  componentDidMount() {
+  componentWillMount() {
     var self=this;  
     $.ajax({
       url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
