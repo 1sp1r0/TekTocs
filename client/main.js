@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import ReactDOM from  'react-dom';
 import Slideshow from './components/slideshow.jsx';
@@ -9,4 +10,4 @@ export function renderSlideshow(targetElementId,userid,slideshowid) {
 }
 if(module.hot){
     module.hot.accept();
-}
+}*/
