@@ -1,18 +1,11 @@
-/*import React from 'react';
+import React from 'react';
 import ReactDOM from  'react-dom';
-import Hello from './component.jsx';
-import CommentBox  from './commentbox.jsx';
-
-main();
+import Slideshow from './components/slideshow.jsx';
 
 
-function main() {
-    let data = [{id: 1, author: "Pete Hunt", text: "This is one comment"},
-                {id: 2, author: "Jordan Walke", text: "This is *another* comment"}
-               ];
-
-    ReactDOM.render(<CommentBox url="/api/comments" />, document.getElementById('app'));
+function renderSlideshow(targetElementId,userid,slideshowid) {
+    ReactDOM.render(<Slideshow userid={userid} slideshowid={slideshowid} />, document.getElementById(targetElementId));
 }
 if(module.hot){
     module.hot.accept();
-}*/
+}

@@ -1,9 +1,9 @@
 function userSlideshows (req,res){
-    res.render('slideshows/user',{team:req.params.team,user:req.params.user});
+    res.render('slideshows/user',{userid:req.params.userid});
 }
 
 function userSlideshow (req,res){
-    res.render('slideshows/slideshow',{team:req.params.team,user:req.params.user,slideshow:req.params.slideshow});
+    res.render('slideshows/slideshow',{userid:req.params.userid,slideshowid:req.params.slideshowid});
 }
 
 export {userSlideshows,userSlideshow};

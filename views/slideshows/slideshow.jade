@@ -1,7 +1,9 @@
 extends ../layout.jade
 block content
     .container(style='padding-top: 150px;') 
-        
+        div.row
+            div.col-md-12
+                div#test
         div.row
             div.col-md-6
                 div.jumbotron(style="background-color:#ecf0f1")
@@ -9,7 +11,7 @@ block content
                         img(src="http://bootflat.github.io/img/Jumbotron.jpg")
                     div.jumbotron-contents
                         
-                        h3 This particular #{slideshow}
+                        h3 This particular #{slideshowid}
                         p(style="font-size:18px;line-height:35px;")
                             |If email signup is enabled for your team, new members will be able to create an account on their own. Team Owners can manage this option under Team Sign Up Mode on the Team Settings page.
                             |For security, only those with access to an email address at the domains specified by the team's Owner will be able to sign up. We'll send a validation link to each new team member's email address to verify their identity before they can create an account.     
@@ -68,6 +70,7 @@ block content
                 $('.carousel').carousel({
                     interval: false
                 });
+                renderSlideshow('test','#{userid}','#{slideshowid}');
             });
             var socket = io();
             socket.on('DisplaySlackMessage', function(msg){
