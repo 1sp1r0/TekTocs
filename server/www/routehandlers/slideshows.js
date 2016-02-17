@@ -10,8 +10,7 @@ function userSlideshow (req,res){
     let SlideShowComponent = React.createFactory(Slideshow);
     res.render('slideshows/slideshow',
     {
-    react: ReactDOM.renderToString(SlideShowComponent({userid: req.params.userid,
-    slideshowid:req.params.slideshowid}))
+    react: 'Hello'
   });
 }
 

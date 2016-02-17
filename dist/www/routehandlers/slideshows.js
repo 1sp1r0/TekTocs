@@ -26,8 +26,7 @@ function userSlideshows(req, res) {
 function userSlideshow(req, res) {
     var SlideShowComponent = _react2.default.createFactory(_slideshow2.default);
     res.render('slideshows/slideshow', {
-        react: _server2.default.renderToString(SlideShowComponent({ userid: req.params.userid,
-            slideshowid: req.params.slideshowid }))
+        react: 'Hello'
     });
 }
 
