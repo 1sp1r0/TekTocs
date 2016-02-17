@@ -12,4 +12,5 @@ routeHandlerMappings["/slack/commands/publish"]={post:handlers.publish};
 routeHandlerMappings["/slideshows/:user"]={get:handlers.userSlideshows};
 routeHandlerMappings["/slideshows/:user/:slideshow"]={get:handlers.userSlideshow};
 routeHandlerMappings["/api/:user/:slideshow"]={get:handlers.getUserSlideshow};
+routeHandlerMappings["/api/:user/"]={get:handlers.getUserSlideshows};
 export default routeHandlerMappings;

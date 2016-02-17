@@ -16,9 +16,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
-// define the home page route
 router.get('/:user/:slideshow', function (req, res) {
        _routehandlermappings2.default['/api/:user/:slideshow'][req.method.toLowerCase()](req, res);
+});
+
+router.get('/:user', function (req, res) {
+       _routehandlermappings2.default['/api/:user'][req.method.toLowerCase()](req, res);
 });
 
 exports.default = router;
