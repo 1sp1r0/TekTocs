@@ -68,6 +68,8 @@ var ReactRenderers =
 	    return obj && obj.__esModule ? obj : { default: obj };
 	}
 
+	renderSlideshow('test', '4yCptPn5e', 'VJZqsdTcg');
+
 	function renderSlideshow(targetElementId, userid, slideshowid) {
 	    _reactDom2.default.render(_react2.default.createElement(_slideshow2.default, { userid: userid, slideshowid: slideshowid }), document.getElementById(targetElementId));
 	}
