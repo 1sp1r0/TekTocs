@@ -188,12 +188,12 @@ export function startSlideshow(req, res,isLive) {
                             userDbId=user._id;
                         }
                         if(userDbId !=''){
-                            let postMessageResponse=yield slackhelper.postMessageToSlack(slackTeam.access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
+                            let postMessageResponse=yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
                             let postMessage=JSON.parse(postMessageResponse);
                             if(postMessage.ok){
                                 yield saveStartSlashCommand(req.body,im.channel.id,userDbId,postMessage.ts);
                                 req.app.slackbot.slack.login();
-                                res.status(200).send('Got it! Our friendly bot, tektocs, has instructions for you on how to create your slideshow. Check tektoc\'s direct message channel.');
+                                res.status(200).send('You are now ready to add slides to your slideshow. First, change over to our bot, Tektocs\', direct messaging channel. Every message you post in that channel will be a single slide.  Happy creating!');
                             }else{
                                 winston.log('error', postMessage.error);
                                 res.status(500).send('Sorry, we had trouble waking up our bot, Tektocs.');
