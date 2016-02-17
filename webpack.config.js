@@ -6,8 +6,8 @@ module.exports= {
         path: path.resolve(__dirname, 'public/js/build'),
         publicPath:'/js/build/',
         filename: 'bundle.js'
-        /*,libraryTarget: 'var',
-        library: 'ReactRenderers'*/
+        ,libraryTarget: 'var',
+        library: 'ReactRenderers'
     },
     module: {
         loaders: [
