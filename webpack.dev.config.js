@@ -9,6 +9,8 @@ module.exports= {
         path: "/", //in memory build in dev environment
         publicPath:'/js/build/',
         filename: 'bundle.js',
+        libraryTarget: 'var',
+        library: 'ReactRenderers'
     },
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),

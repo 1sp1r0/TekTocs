@@ -71,7 +71,7 @@ block content
                 $('.carousel').carousel({
                     interval: false
                 });
-                //renderSlideshow('test','#{userid}','#{slideshowid}');
+                ReactRenderers.renderSlideshow('test','#{userid}','#{slideshowid}');
             });
             var socket = io();
             socket.on('DisplaySlackMessage', function(msg){
