@@ -50,7 +50,10 @@ var Slideshow = function (_React$Component) {
   _createClass(Slideshow, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      this.setState({ data: getUserSlideshow() });
+      var result = getUserSlideshow();
+      if (result.ok) {
+        this.setState({ data: result.data });
+      }
       /*$.ajax({
         url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
         dataType: 'json',
@@ -72,7 +75,7 @@ var Slideshow = function (_React$Component) {
         _react2.default.createElement(
           'h1',
           null,
-          this.state.data.attachments.slideshow.title
+          'Hello'
         )
       );
     }

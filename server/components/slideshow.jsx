@@ -15,7 +15,10 @@ export default class Slideshow extends React.Component{
     this.state = {data: {}};
   }
   componentWillMount() {
-    this.setState({data: getUserSlideshow()}); 
+      let result=getUserSlideshow();
+      if(result.ok){
+        this.setState({data: result.data}); 
+      }
     /*$.ajax({
       url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
       dataType: 'json',
@@ -30,7 +33,7 @@ export default class Slideshow extends React.Component{
   }
     render() {
         return <div className='commentBox'>
-                    <h1>{this.state.data.attachments.slideshow.title}</h1>
+                    <h1>Hello</h1>
                     
                     
                </div>
