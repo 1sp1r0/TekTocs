@@ -62,9 +62,10 @@ block content
                                     span.sr-only
                                         |Next
   
-    script(src="/socket.io/socket.io.js")
-    script(src='/js/build/bundle.js')   
+      
  block pagescripts 
+        script(src="/socket.io/socket.io.js")
+        script(src='/js/build/bundle.js') 
         script.
             $().ready(function() {
                 $('.carousel').carousel({
