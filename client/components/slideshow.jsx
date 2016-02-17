@@ -10,17 +10,17 @@ export default class Slideshow extends React.Component{
     this.state = {data: []};
   }
   componentDidMount() {
-    //var self=this;  
+    var self=this;  
     $.ajax({
       url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
       dataType: 'json',
       cache: false,
       success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
+        self.setState({data: data});
+      },
       error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
+        console.error(self.props.url, status, err.toString());
+      }
     });
   }
     render() {

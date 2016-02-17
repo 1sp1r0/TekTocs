@@ -1,4 +1,3 @@
-var ReactRenderers =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -46,11 +45,6 @@ var ReactRenderers =
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.renderSlideshow = renderSlideshow;
 
 	var _react = __webpack_require__(1);
 
@@ -19774,17 +19768,17 @@ var ReactRenderers =
 	  _createClass(Slideshow, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      //var self=this; 
+	      var self = this;
 	      _jquery2.default.ajax({
 	        url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
 	        dataType: 'json',
 	        cache: false,
-	        success: function (data) {
-	          this.setState({ data: data });
-	        }.bind(this),
-	        error: function (xhr, status, err) {
-	          console.error(this.props.url, status, err.toString());
-	        }.bind(this)
+	        success: function success(data) {
+	          self.setState({ data: data });
+	        },
+	        error: function error(xhr, status, err) {
+	          console.error(self.props.url, status, err.toString());
+	        }
 	      });
 	    }
 	  }, {
