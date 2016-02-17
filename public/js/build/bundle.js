@@ -46,11 +46,6 @@
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.renderSlideshow = renderSlideshow;
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -66,6 +61,8 @@
 	function _interopRequireDefault(obj) {
 	    return obj && obj.__esModule ? obj : { default: obj };
 	}
+
+	renderSlideshow('test', '#{userid}', '#{slideshowid}');
 
 	function renderSlideshow(targetElementId, userid, slideshowid) {
 	    _reactDom2.default.render(_react2.default.createElement(_slideshow2.default, { userid: userid, slideshowid: slideshowid }), document.getElementById(targetElementId));
