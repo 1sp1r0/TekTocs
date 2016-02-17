@@ -19774,7 +19774,7 @@ var ReactRenderers =
 	    value: function componentDidMount() {
 	      var self = this;
 	      _jquery2.default.ajax({
-	        url: 'https://tektocs.herokuapp.com/api/' + this.props.userid + '/' + this.props.slideshowid, //this.props.url,
+	        url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
 	        dataType: 'json',
 	        cache: false,
 	        success: function success(data) {
