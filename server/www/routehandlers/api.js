@@ -11,12 +11,38 @@ export function getUserSlideshow (req,res){
            try{
                 let userid=req.params.user;
                 let slideshowid=req.params.slideshow;
-                let slashCommand = yield Models.SlashCommand.findOne({ 
+                let slideshow = yield Models.SlashCommand.findOne({ 
+                        'attachments.slideshow.published':true,
                         'attachments.slideshow.creator': userid, 
                         'attachments.slideshow.short_id':slideshowid},{'attachments.slideshow':1})
                         .populate('attachments.slideshow.creator')
                         .exec();
-                res.status(200).send(slashCommand);
+                res.status(200).send(slideshow);
+             }catch (err) {
+                    winston.log('error', err.stack);
+                    res.sendStatus(500);
+             }
+       }).catch((err) => {
+            winston.log('error', err.stack);
+            res.sendStatus(500);
+      });
+    }catch (err) {
+        winston.log('error',err.message);
+        res.sendStatus(500);
+    }
+}
+
+export function getUserSlideshows (req,res){
+    try{
+        co(function* () {
+           try{
+                let userid=req.params.user;
+                let slideshows = yield Models.SlashCommand.find({ 
+                        'attachments.slideshow.published':true,
+                        'attachments.slideshow.creator': userid},{'attachments.slideshow':1})
+                        .populate('attachments.slideshow.creator')
+                        .exec();
+                res.status(200).send(slideshows);
              }catch (err) {
                     winston.log('error', err.stack);
                     res.sendStatus(500);

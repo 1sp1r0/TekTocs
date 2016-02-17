@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.getUserSlideshow = getUserSlideshow;
+exports.getUserSlideshows = getUserSlideshows;
 
 var _co = require('co');
 
@@ -26,7 +27,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function getUserSlideshow(req, res) {
     try {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-            var userid, slideshowid, slashCommand;
+            var userid, slideshowid, slideshow;
             return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
@@ -36,13 +37,14 @@ function getUserSlideshow(req, res) {
                             slideshowid = req.params.slideshow;
                             _context.next = 5;
                             return Models.SlashCommand.findOne({
+                                'attachments.slideshow.published': true,
                                 'attachments.slideshow.creator': userid,
                                 'attachments.slideshow.short_id': slideshowid }, { 'attachments.slideshow': 1 }).populate('attachments.slideshow.creator').exec();
 
                         case 5:
-                            slashCommand = _context.sent;
+                            slideshow = _context.sent;
 
-                            res.status(200).send(slashCommand);
+                            res.status(200).send(slideshow);
                             _context.next = 13;
                             break;
 
@@ -59,6 +61,52 @@ function getUserSlideshow(req, res) {
                     }
                 }
             }, _callee, this, [[0, 9]]);
+        })).catch(function (err) {
+            _logger2.default.log('error', err.stack);
+            res.sendStatus(500);
+        });
+    } catch (err) {
+        _logger2.default.log('error', err.message);
+        res.sendStatus(500);
+    }
+}
+
+function getUserSlideshows(req, res) {
+    try {
+        (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
+            var _userid, slideshows;
+
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            _context2.prev = 0;
+                            _userid = req.params.user;
+                            _context2.next = 4;
+                            return Models.SlashCommand.find({
+                                'attachments.slideshow.published': true,
+                                'attachments.slideshow.creator': _userid }, { 'attachments.slideshow': 1 }).populate('attachments.slideshow.creator').exec();
+
+                        case 4:
+                            slideshows = _context2.sent;
+
+                            res.status(200).send(slideshows);
+                            _context2.next = 12;
+                            break;
+
+                        case 8:
+                            _context2.prev = 8;
+                            _context2.t0 = _context2['catch'](0);
+
+                            _logger2.default.log('error', _context2.t0.stack);
+                            res.sendStatus(500);
+
+                        case 12:
+                        case 'end':
+                            return _context2.stop();
+                    }
+                }
+            }, _callee2, this, [[0, 8]]);
         })).catch(function (err) {
             _logger2.default.log('error', err.stack);
             res.sendStatus(500);
