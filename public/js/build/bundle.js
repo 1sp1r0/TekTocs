@@ -19765,7 +19765,7 @@ var ReactRenderers =
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Slideshow).call(this, props));
 
-	    _this.state = { data: [] };
+	    _this.state = { data: {} };
 	    return _this;
 	  }
 
@@ -19794,7 +19794,7 @@ var ReactRenderers =
 	        _react2.default.createElement(
 	          'h1',
 	          null,
-	          this.state.data.attachments.slideshow.title
+	          'Hello'
 	        )
 	      );
 	    }

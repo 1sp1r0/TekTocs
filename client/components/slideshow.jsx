@@ -7,7 +7,7 @@ export default class Slideshow extends React.Component{
     
   constructor(props) {
     super(props);
-    this.state = {data: []};
+    this.state = {data: {}};
   }
   componentDidMount() {
     var self=this;  
@@ -25,7 +25,7 @@ export default class Slideshow extends React.Component{
   }
     render() {
         return <div className='commentBox'>
-                    <h1>{this.state.data.attachments.slideshow.title}</h1>
+                    <h1>Hello</h1>
                     
                     
                </div>
