@@ -13,7 +13,7 @@ var _server = require('react-dom/server');
 
 var _server2 = _interopRequireDefault(_server);
 
-var _slideshow = require('../../components/slideshow.jsx');
+var _slideshow = require('../../components/slideshow');
 
 var _slideshow2 = _interopRequireDefault(_slideshow);
 
@@ -25,10 +25,14 @@ function userSlideshows(req, res) {
 
 function userSlideshow(req, res) {
     var SlideShowComponent = _react2.default.createFactory(_slideshow2.default);
-    res.render('slideshows/slideshow', {
-        react: 'Hello'
-    });
+    res.render('slideshows/slideshow', { userid: req.params.userid,
+        slideshowid: req.params.slideshowid });
+    //{
+    //react: ReactDOM.renderToString(SlideShowComponent({userid: req.params.userid,
+    //slideshowid:req.params.slideshowid}))
 }
+//);
+//}
 
 exports.userSlideshows = userSlideshows;
 exports.userSlideshow = userSlideshow;

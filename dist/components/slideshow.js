@@ -10,21 +10,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _co = require('co');
+var _jquery = require('jquery');
 
-var _co2 = _interopRequireDefault(_co);
-
-var _logger = require('../../logger');
-
-var _logger2 = _interopRequireDefault(_logger);
-
-var _models = require('../../models/');
-
-var Models = _interopRequireWildcard(_models);
-
-require('babel-polyfill');
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _jquery2 = _interopRequireDefault(_jquery);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33,7 +21,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-//import $ from 'jquery';
+
+//import co from 'co'
+//import winston from '../logger'
+
+//import * as Models from '../models/'
+//import "babel-polyfill"
 
 var Slideshow = function (_React$Component) {
   _inherits(Slideshow, _React$Component);
@@ -50,10 +43,17 @@ var Slideshow = function (_React$Component) {
   _createClass(Slideshow, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      var result = getUserSlideshow();
-      if (result.ok) {
-        this.setState({ data: result.data });
-      }
+      console.log('componentWillMount');
+      /* let result=this.getUserSlideshow().then(
+           function(result){
+               console.log(result.attachments.slideshow);
+               this.setState({data: result}); 
+           },
+           function(error){
+               console.log(error);
+               winston.log('error', error);
+           });*/
+
       /*$.ajax({
         url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
         dataType: 'json',
@@ -67,63 +67,66 @@ var Slideshow = function (_React$Component) {
       });*/
     }
   }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: 'commentBox' },
-        _react2.default.createElement(
-          'h1',
-          null,
-          'Hello'
-        )
-      );
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var self = this;
+      console.log('componentDidMount');
+      _jquery2.default.ajax({
+        url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
+        dataType: 'json',
+        cache: false,
+        success: function success(data) {
+          self.setState({ data: data });
+        },
+        error: function error(xhr, status, err) {
+          console.error(self.props.url, status, err.toString());
+        }
+      });
     }
   }, {
-    key: 'getUserSlideshow',
-    value: function getUserSlideshow() {
-      try {
-        (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-          var userid, slideshowid, slideshow;
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  _context.prev = 0;
-                  userid = this.props.userid;
-                  slideshowid = this.props.slideshowid;
-                  _context.next = 5;
-                  return Models.SlashCommand.findOne({
-                    'attachments.slideshow.published': true,
-                    'attachments.slideshow.creator': userid,
-                    'attachments.slideshow.short_id': slideshowid }, { 'attachments.slideshow': 1 }).populate('attachments.slideshow.creator').exec();
-
-                case 5:
-                  slideshow = _context.sent;
-                  return _context.abrupt('return', { ok: true, data: slideshow });
-
-                case 9:
-                  _context.prev = 9;
-                  _context.t0 = _context['catch'](0);
-
-                  _logger2.default.log('error', _context.t0.stack);
-                  return _context.abrupt('return', { ok: false });
-
-                case 13:
-                case 'end':
-                  return _context.stop();
-              }
-            }
-          }, _callee, this, [[0, 9]]);
-        })).catch(function (err) {
-          _logger2.default.log('error', err.stack);
-          return { ok: false };
-        });
-      } catch (err) {
-        _logger2.default.log('error', err.message);
-        return { ok: false };
+    key: 'render',
+    value: function render() {
+      console.log('render:' + this.state.data);
+      if (this.state.data.attachments) {
+        return _react2.default.createElement(
+          'div',
+          { className: 'commentBox' },
+          _react2.default.createElement(
+            'h1',
+            null,
+            this.state.data.attachments.slideshow.title
+          )
+        );
       }
     }
+
+    /*  getUserSlideshow(){
+      return new Promise((resolve, reject) => {    
+      try{
+          let self=this;
+          co(function* () {
+             try{
+                  let userid=self.props.userid;
+                  let slideshowid=self.props.slideshowid;
+                  let slideshow = yield Models.SlashCommand.findOne({ 
+                          'attachments.slideshow.published':true,
+                          'attachments.slideshow.creator': userid, 
+                          'attachments.slideshow.short_id':slideshowid},{'attachments.slideshow':1})
+                          .populate('attachments.slideshow.creator')
+                          .exec();
+                          resolve(slideshow);
+               }catch (err) {
+                    reject(err.stack);
+               }
+         }).catch((err) => {
+              reject(err.stack);
+        });
+      }catch (err) {
+          reject(err.message);
+      }
+      });
+    }*/
+
   }]);
 
   return Slideshow;

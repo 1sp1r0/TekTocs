@@ -1,13 +1,13 @@
-/*
+
 import React from 'react';
 import ReactDOM from  'react-dom';
-import Slideshow from './components/slideshow.jsx';
-
-
+import Slideshow from '../server/components/slideshow.jsx';
 
 export function renderSlideshow(targetElementId,userid,slideshowid) {
-    ReactDOM.render(<Slideshow userid={userid} slideshowid={slideshowid} />, document.getElementById(targetElementId));
+    let SlideShowComponent = React.createFactory(Slideshow);
+    ReactDOM.render(SlideShowComponent({userid:userid,slideshowid:slideshowid}), 
+    document.getElementById(targetElementId));
 }
 if(module.hot){
     module.hot.accept();
-}*/
+}

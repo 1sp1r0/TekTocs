@@ -4,6 +4,7 @@ block content
         div.row
             div.col-md-12
                 div#react-root!= react
+                    
         div.row
             div.col-md-6
                 div.jumbotron(style="background-color:#ecf0f1")
@@ -71,7 +72,7 @@ block content
                 $('.carousel').carousel({
                     interval: false
                 });
-                ReactRenderers.renderSlideshow('test','#{userid}','#{slideshowid}');
+                ReactRenderers.renderSlideshow('react-root','#{userid}','#{slideshowid}');
             });
             var socket = io();
             socket.on('DisplaySlackMessage', function(msg){
