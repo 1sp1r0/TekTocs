@@ -73,6 +73,9 @@ block content
                     interval: false
                 });
                 ReactRenderers.renderSlideshow('react-root','#{userid}','#{slideshowid}');
+                //ReactDOM.render(<Slideshow userid='#{userid}' slideshowid='#{slideshowid}' />,
+                //    document.getElementById('react-root')
+                //);
             });
             var socket = io();
             socket.on('DisplaySlackMessage', function(msg){
