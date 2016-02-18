@@ -19833,6 +19833,12 @@ var ReactRenderers =
 	            this.state.data.attachments.slideshow.title
 	          )
 	        );
+	      } else {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'commentBox' },
+	          _react2.default.createElement('h1', null)
+	        );
 	      }
 	    }
 

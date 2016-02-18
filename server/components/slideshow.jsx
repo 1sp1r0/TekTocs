@@ -60,6 +60,12 @@ export default class Slideshow extends React.Component{
                     
                     
                </div>
+        }else {
+            return <div className='commentBox' >
+                    <h1></h1>
+                    
+                    
+               </div>
         }
         
     }

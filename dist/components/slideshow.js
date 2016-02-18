@@ -97,6 +97,12 @@ var Slideshow = function (_React$Component) {
             this.state.data.attachments.slideshow.title
           )
         );
+      } else {
+        return _react2.default.createElement(
+          'div',
+          { className: 'commentBox' },
+          _react2.default.createElement('h1', null)
+        );
       }
     }
 
