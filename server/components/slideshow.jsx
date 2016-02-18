@@ -45,7 +45,7 @@ export default class Slideshow extends React.Component{
        let self=this;
        console.log('componentDidMount');
        $.ajax({
-      url: 'http://localhost:5000/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
+      url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
       dataType: 'json',
       cache: false,
       success: function(data) {
