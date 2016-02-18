@@ -10,10 +10,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _jquery = require('jquery');
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22,6 +18,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+//import $ from 'jquery';
+//import * as slackhelper from '../helpers/slackhelper'
 //import co from 'co'
 //import winston from '../logger'
 
@@ -43,16 +41,17 @@ var Slideshow = function (_React$Component) {
   _createClass(Slideshow, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      console.log('componentWillMount');
-      /* let result=this.getUserSlideshow().then(
-           function(result){
-               console.log(result.attachments.slideshow);
-               this.setState({data: result}); 
-           },
-           function(error){
-               console.log(error);
-               winston.log('error', error);
-           });*/
+      /* this.setState({data:{"_id":"56c48c712e72031300da30ad","attachments":{"slideshow":{"end_ts":"1455721625.000064","start_ts":"1455721584.000058","title":"test123qwqwqwq","short_id":"VJZqsdTcg","creator":{"_id":"4yCptPn5e","user_id":"U02HT4JUU","name":"murali","image_192":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=192&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png","image_72":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=72&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png","image_48":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png","image_32":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=32&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png","image_24":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=24&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png","email":"murali@agateconsulting.com","real_name":"Murali Narasimhan","last_name":"Narasimhan","first_name":"Murali"},"published":true,"slides":[{"_id":"56c48c9f8179df240033aeea","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test123","slideIndex":1},{"_id":"56c48c9f8179df240033aeeb","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test456","slideIndex":2},{"_id":"56c48c9f8179df240033aeec","slideMode":"hosted","slideMimeType":"image/jpeg","slideTitle":"bg1.jpg","slideAssetUrl":"https://files.slack.com/files-pri/T02HT4JUQ-F0MNY1Z52/download/bg1.jpg","slideCaption":"","slideText":"","slideIndex":3},{"_id":"56c48c9f8179df240033aeed","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test789","slideIndex":4}]}}}});*/
+      /*console.log('componentWillMount');
+      let result=slackhelper.getUserSlideshow(this.props.userid,this.props.slideshowid).then(
+          function(result){
+              console.log(result.attachments.slideshow);
+              this.setState({data: result}); 
+          },
+          function(error){
+              console.log(error);
+              winston.log('error', error);
+          });*/
 
       /*$.ajax({
         url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
@@ -69,10 +68,11 @@ var Slideshow = function (_React$Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
+
       var self = this;
       console.log('componentDidMount');
-      _jquery2.default.ajax({
-        url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
+      $.ajax({
+        url: 'http://localhost:5000/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
         dataType: 'json',
         cache: false,
         success: function success(data) {
@@ -86,7 +86,7 @@ var Slideshow = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log('render:' + this.state.data);
+
       if (this.state.data.attachments) {
         return _react2.default.createElement(
           'div',

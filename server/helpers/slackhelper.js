@@ -177,4 +177,30 @@ export function getSlideshowEndingTimestamp(message,userId,botAccessToken){
     });   
     
 }
+
+export function getUserSlideshow(userid,slideshowid){
+    return new Promise((resolve, reject) => {    
+    try{
+        
+        co(function* () {
+           try{
+                
+                let slideshow = yield Models.SlashCommand.findOne({ 
+                        'attachments.slideshow.published':true,
+                        'attachments.slideshow.creator': userid, 
+                        'attachments.slideshow.short_id':slideshowid},{'attachments.slideshow':1})
+                        .populate('attachments.slideshow.creator')
+                        .exec();
+                        resolve(slideshow);
+             }catch (err) {
+                  reject(err.stack);
+             }
+       }).catch((err) => {
+            reject(err.stack);
+      });
+    }catch (err) {
+        reject(err.message);
+    }
+    });
+}
     

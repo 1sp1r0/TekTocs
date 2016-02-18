@@ -25,14 +25,14 @@ function userSlideshows(req, res) {
 
 function userSlideshow(req, res) {
     var SlideShowComponent = _react2.default.createFactory(_slideshow2.default);
-    res.render('slideshows/slideshow', { userid: req.params.userid,
-        slideshowid: req.params.slideshowid });
-    //{
-    //react: ReactDOM.renderToString(SlideShowComponent({userid: req.params.userid,
-    //slideshowid:req.params.slideshowid}))
+    //res.render('slideshows/slideshow',{userid: req.params.userid,
+    //slideshowid:req.params.slideshowid});
+
+    res.render('slideshows/slideshow', { userid: req.params.userid, slideshowid: req.params.slideshowid,
+        react: _server2.default.renderToString(SlideShowComponent({ userid: req.params.userid,
+            slideshowid: req.params.slideshowid }))
+    });
 }
-//);
-//}
 
 exports.userSlideshows = userSlideshows;
 exports.userSlideshow = userSlideshow;

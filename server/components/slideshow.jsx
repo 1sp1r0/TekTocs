@@ -1,5 +1,6 @@
 import React from 'react';
-import $ from 'jquery';
+//import $ from 'jquery';
+//import * as slackhelper from '../helpers/slackhelper'
 //import co from 'co'
 //import winston from '../logger'
 
@@ -14,8 +15,9 @@ export default class Slideshow extends React.Component{
     this.state = {data: {}};
   }
   componentWillMount() {
-      console.log('componentWillMount');
-     /* let result=this.getUserSlideshow().then(
+     /* this.setState({data:{"_id":"56c48c712e72031300da30ad","attachments":{"slideshow":{"end_ts":"1455721625.000064","start_ts":"1455721584.000058","title":"test123qwqwqwq","short_id":"VJZqsdTcg","creator":{"_id":"4yCptPn5e","user_id":"U02HT4JUU","name":"murali","image_192":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=192&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png","image_72":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=72&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png","image_48":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png","image_32":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=32&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png","image_24":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=24&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png","email":"murali@agateconsulting.com","real_name":"Murali Narasimhan","last_name":"Narasimhan","first_name":"Murali"},"published":true,"slides":[{"_id":"56c48c9f8179df240033aeea","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test123","slideIndex":1},{"_id":"56c48c9f8179df240033aeeb","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test456","slideIndex":2},{"_id":"56c48c9f8179df240033aeec","slideMode":"hosted","slideMimeType":"image/jpeg","slideTitle":"bg1.jpg","slideAssetUrl":"https://files.slack.com/files-pri/T02HT4JUQ-F0MNY1Z52/download/bg1.jpg","slideCaption":"","slideText":"","slideIndex":3},{"_id":"56c48c9f8179df240033aeed","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test789","slideIndex":4}]}}}});*/
+      /*console.log('componentWillMount');
+      let result=slackhelper.getUserSlideshow(this.props.userid,this.props.slideshowid).then(
           function(result){
               console.log(result.attachments.slideshow);
               this.setState({data: result}); 
@@ -37,11 +39,13 @@ export default class Slideshow extends React.Component{
       }
     });*/
   }
+  
    componentDidMount() {
+       
        let self=this;
        console.log('componentDidMount');
        $.ajax({
-      url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
+      url: 'http://localhost:5000/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -52,17 +56,21 @@ export default class Slideshow extends React.Component{
       }
     });
    }
+   
+   
     render() {
-        console.log('render:' + this.state.data);
+        
         if(this.state.data.attachments){
         return <div className='commentBox' >
                     <h1>{this.state.data.attachments.slideshow.title}</h1>
+                    
                     
                     
                </div>
         }else {
             return <div className='commentBox' >
                     <h1></h1>
+                    
                     
                     
                </div>

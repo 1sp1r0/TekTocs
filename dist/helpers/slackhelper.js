@@ -10,6 +10,7 @@ exports.getImHistory = getImHistory;
 exports.processMessage = processMessage;
 exports.getSlide = getSlide;
 exports.getSlideshowEndingTimestamp = getSlideshowEndingTimestamp;
+exports.getUserSlideshow = getUserSlideshow;
 
 var _requestPromise = require('request-promise');
 
@@ -312,5 +313,50 @@ function getSlideshowEndingTimestamp(message, userId, botAccessToken) {
         })).catch(function (err) {
             reject(err.stack);
         });
+    });
+}
+
+function getUserSlideshow(userid, slideshowid) {
+    return new Promise(function (resolve, reject) {
+        try {
+
+            (0, _co2.default)(regeneratorRuntime.mark(function _callee4() {
+                var slideshow;
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                _context4.prev = 0;
+                                _context4.next = 3;
+                                return Models.SlashCommand.findOne({
+                                    'attachments.slideshow.published': true,
+                                    'attachments.slideshow.creator': userid,
+                                    'attachments.slideshow.short_id': slideshowid }, { 'attachments.slideshow': 1 }).populate('attachments.slideshow.creator').exec();
+
+                            case 3:
+                                slideshow = _context4.sent;
+
+                                resolve(slideshow);
+                                _context4.next = 10;
+                                break;
+
+                            case 7:
+                                _context4.prev = 7;
+                                _context4.t0 = _context4['catch'](0);
+
+                                reject(_context4.t0.stack);
+
+                            case 10:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this, [[0, 7]]);
+            })).catch(function (err) {
+                reject(err.stack);
+            });
+        } catch (err) {
+            reject(err.message);
+        }
     });
 }
