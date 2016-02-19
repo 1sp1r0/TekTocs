@@ -11,6 +11,7 @@ exports.processMessage = processMessage;
 exports.getSlide = getSlide;
 exports.getSlideshowEndingTimestamp = getSlideshowEndingTimestamp;
 exports.getUserSlideshow = getUserSlideshow;
+exports.getCoverSlide = getCoverSlide;
 
 var _requestPromise = require('request-promise');
 
@@ -23,6 +24,10 @@ var Models = _interopRequireWildcard(_models);
 var _co = require('co');
 
 var _co2 = _interopRequireDefault(_co);
+
+var _logger = require('../logger');
+
+var _logger2 = _interopRequireDefault(_logger);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -356,6 +361,72 @@ function getUserSlideshow(userid, slideshowid) {
                 reject(err.stack);
             });
         } catch (err) {
+            reject(err.message);
+        }
+    });
+}
+
+function getCoverSlide(slide, teamId) {
+    return new Promise(function (resolve, reject) {
+        try {
+            (0, _co2.default)(regeneratorRuntime.mark(function _callee5() {
+                var slackTeam;
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                    while (1) {
+                        switch (_context5.prev = _context5.next) {
+                            case 0:
+                                _context5.prev = 0;
+
+                                if (!(slide.slideAssetUrl != '' && slide.slideMode != 'snippet')) {
+                                    _context5.next = 8;
+                                    break;
+                                }
+
+                                _context5.next = 4;
+                                return Models.SlackTeam.findOne({ team_id: teamId });
+
+                            case 4:
+                                slackTeam = _context5.sent;
+
+                                if (slackTeam) {
+                                    (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + slackTeam.bot.bot_access_token }, encoding: null, url: slide.slideAssetUrl }).then(function (res) {
+                                        resolve({ isImage: true, base64: res.toString('base64') });
+                                    }, function (error) {
+                                        _logger2.default.log('error', error);
+                                        reject(error);
+                                    });
+                                } else {
+                                    _logger2.default.log('error', 'Could not find a record for team_id:' + teamId);
+                                    reject('Could not find a record for team_id:' + teamId);
+                                }
+
+                                _context5.next = 9;
+                                break;
+
+                            case 8:
+                                resolve({ isImage: false, text: slide.slideText });
+
+                            case 9:
+                                _context5.next = 14;
+                                break;
+
+                            case 11:
+                                _context5.prev = 11;
+                                _context5.t0 = _context5['catch'](0);
+
+                                reject(_context5.t0.stack);
+
+                            case 14:
+                            case 'end':
+                                return _context5.stop();
+                        }
+                    }
+                }, _callee5, this, [[0, 11]]);
+            })).catch(function (err) {
+                reject(err.stack);
+            });
+        } catch (err) {
+            _logger2.default.log('error', err.message);
             reject(err.message);
         }
     });

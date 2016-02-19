@@ -14,6 +14,10 @@ var _logger = require('../../logger');
 
 var _logger2 = _interopRequireDefault(_logger);
 
+var _slackhelper = require('../../helpers/slackhelper');
+
+var slackhelper = _interopRequireWildcard(_slackhelper);
+
 var _models = require('../../models/');
 
 var Models = _interopRequireWildcard(_models);
@@ -27,7 +31,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function getUserSlideshow(req, res) {
     try {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-            var userid, slideshowid, slideshow;
+            var userid, slideshowid, slideshow, name, mimeType, coverSlide;
             return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
@@ -39,28 +43,51 @@ function getUserSlideshow(req, res) {
                             return Models.SlashCommand.findOne({
                                 'attachments.slideshow.published': true,
                                 'attachments.slideshow.creator': userid,
-                                'attachments.slideshow.short_id': slideshowid }, { 'attachments.slideshow': 1 }).populate('attachments.slideshow.creator').exec();
+                                'attachments.slideshow.short_id': slideshowid }, { team_id: 1, 'attachments.slideshow': 1 }).populate('attachments.slideshow.creator').exec();
 
                         case 5:
                             slideshow = _context.sent;
 
-                            res.status(200).send(slideshow);
-                            _context.next = 13;
+                            if (!slideshow.attachments) {
+                                _context.next = 14;
+                                break;
+                            }
+
+                            name = slideshow.attachments.slideshow.creator.real_name ? slideshow.attachments.slideshow.creator.real_name : slideshow.attachments.slideshow.creator.name ? slideshow.attachments.slideshow.creator.name : '';
+
+                            if (!(slideshow.attachments.slideshow.slides.length > 0)) {
+                                _context.next = 14;
+                                break;
+                            }
+
+                            mimeType = slideshow.attachments.slideshow.slides[0].slideMimeType;
+                            _context.next = 12;
+                            return slackhelper.getCoverSlide(slideshow.attachments.slideshow.slides[0], slideshow.team_id);
+
+                        case 12:
+                            coverSlide = _context.sent;
+
+                            res.status(200).send({ name: name, coverslide: coverSlide, mimeType: mimeType,
+                                slideshow: { title: slideshow.attachments.slideshow.title } });
+
+                        case 14:
+                            res.status(500).send('no data');
+                            _context.next = 21;
                             break;
 
-                        case 9:
-                            _context.prev = 9;
+                        case 17:
+                            _context.prev = 17;
                             _context.t0 = _context['catch'](0);
 
                             _logger2.default.log('error', _context.t0.stack);
                             res.sendStatus(500);
 
-                        case 13:
+                        case 21:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 9]]);
+            }, _callee, this, [[0, 17]]);
         })).catch(function (err) {
             _logger2.default.log('error', err.stack);
             res.sendStatus(500);

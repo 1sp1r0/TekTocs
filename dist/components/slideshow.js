@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 Object.defineProperty(exports, "__esModule", {
@@ -41,29 +43,29 @@ var Slideshow = function (_React$Component) {
     _createClass(Slideshow, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            /* this.setState({data:{"_id":"56c48c712e72031300da30ad","attachments":{"slideshow":{"end_ts":"1455721625.000064","start_ts":"1455721584.000058","title":"test123qwqwqwq","short_id":"VJZqsdTcg","creator":{"_id":"4yCptPn5e","user_id":"U02HT4JUU","name":"murali","image_192":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=192&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png","image_72":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=72&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png","image_48":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png","image_32":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=32&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png","image_24":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=24&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png","email":"murali@agateconsulting.com","real_name":"Murali Narasimhan","last_name":"Narasimhan","first_name":"Murali"},"published":true,"slides":[{"_id":"56c48c9f8179df240033aeea","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test123","slideIndex":1},{"_id":"56c48c9f8179df240033aeeb","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test456","slideIndex":2},{"_id":"56c48c9f8179df240033aeec","slideMode":"hosted","slideMimeType":"image/jpeg","slideTitle":"bg1.jpg","slideAssetUrl":"https://files.slack.com/files-pri/T02HT4JUQ-F0MNY1Z52/download/bg1.jpg","slideCaption":"","slideText":"","slideIndex":3},{"_id":"56c48c9f8179df240033aeed","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test789","slideIndex":4}]}}}});*/
+            /*self.setState({data:{"_id":"56c48c712e72031300da30ad","attachments":{"slideshow":{"end_ts":"1455721625.000064","start_ts":"1455721584.000058","title":"test123qwqwqwq","short_id":"VJZqsdTcg","creator":{"_id":"4yCptPn5e","user_id":"U02HT4JUU","name":"murali","image_192":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=192&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png","image_72":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=72&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png","image_48":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png","image_32":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=32&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png","image_24":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=24&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png","email":"murali@agateconsulting.com","real_name":"Murali Narasimhan","last_name":"Narasimhan","first_name":"Murali"},"published":true,"slides":[{"_id":"56c48c9f8179df240033aeea","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test123","slideIndex":1},{"_id":"56c48c9f8179df240033aeeb","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test456","slideIndex":2},{"_id":"56c48c9f8179df240033aeec","slideMode":"hosted","slideMimeType":"image/jpeg","slideTitle":"bg1.jpg","slideAssetUrl":"https://files.slack.com/files-pri/T02HT4JUQ-F0MNY1Z52/download/bg1.jpg","slideCaption":"","slideText":"","slideIndex":3},{"_id":"56c48c9f8179df240033aeed","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test789","slideIndex":4}]}}}});*/
 
-            /*  console.log('componentWillMount');
-              
-              var self=this;
-              
-                    
-                    let result=slackhelper.getUserSlideshow(this.props.userid,this.props.slideshowid).then(
-                        function(result){
-                            console.log(result.attachments.slideshow);
-                            self.setState({data: result}); 
-                        },
-                        function(error){
-                            console.log(error);
-                            winston.log('error', error);
-                        });
-              */
+            console.log('componentWillMount');
 
+            /*   var self=this;
+               
+                     
+                     let result=slackhelper.getUserSlideshow(this.props.userid,this.props.slideshowid).then(
+                         function(result){
+                             console.log(result.attachments.slideshow);
+                             self.setState({data: result}); 
+                             
+                         },
+                         function(error){
+                             console.log(error);
+                             winston.log('error', error);
+                         });
+               */
         }
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-
+            return;
             var self = this;
             console.log('componentDidMount');
             $.ajax({
@@ -81,23 +83,103 @@ var Slideshow = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
 
             if (this.state.data.attachments) {
-                return _react2.default.createElement(
-                    'div',
-                    { className: 'commentBox' },
-                    _react2.default.createElement(
-                        'h1',
-                        null,
-                        this.state.data.attachments.slideshow.title
-                    )
-                );
+                var _ret = function () {
+                    var name = _this2.state.data.attachments.slideshow.creator.real_name ? _this2.state.data.attachments.slideshow.creator.real_name : _this2.state.data.attachments.slideshow.creator.name ? _this2.state.data.attachments.slideshow.creator.name : '';
+                    var coverSlide = _react2.default.createElement('div', null);
+
+                    //the first slide is the cover slide/title slide.Retrieve the cover slide
+                    if (_this2.state.data.attachments.slideshow.slides.length > 0) {
+                        var mimeType = _this2.state.data.attachments.slideshow.slides[0].slideMimeType;
+                        slackhelper.getCoverSlide(_this2.state.data.attachments.slideshow.slides[0], _this2.state.data.team_id).then(function (result) {
+                            if (result.isImage) {
+                                coverSlide = _react2.default.createElement(
+                                    'div',
+                                    { 'class': 'item active' },
+                                    _react2.default.createElement('img', { src: 'data:{mimeType};base64,{result.base64}' })
+                                );
+                                console.log(coverSlide);
+                            } else {
+                                coverSlide = _react2.default.createElement(
+                                    'div',
+                                    { className: 'item active slideContainer' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'slide' },
+                                        result.text
+                                    )
+                                );
+                                console.log(coverSlide);
+                            }
+                        });
+                    }
+                    return {
+                        v: _react2.default.createElement(
+                            'div',
+                            { className: 'jumbotron' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'jumbotron-contents' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'row' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'col-md-12' },
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'floatLeft' },
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'avatar-container' },
+                                                _react2.default.createElement(
+                                                    'a',
+                                                    { className: 'avatar' },
+                                                    _react2.default.createElement('img', { className: 'avatar-image', src: _this2.state.data.attachments.slideshow.creator.image_32 })
+                                                )
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'userinfo' },
+                                                _react2.default.createElement(
+                                                    'a',
+                                                    null,
+                                                    name
+                                                ),
+                                                _react2.default.createElement(
+                                                    'span',
+                                                    { className: 'userinfo-extra' },
+                                                    'created on ',
+                                                    12 / 23 / 2015
+                                                )
+                                            )
+                                        )
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'slideshow-title' },
+                                    _this2.state.data.attachments.slideshow.title
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'carousel', id: 'slideshow-carousel' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'carousel-inner', role: 'listbox' },
+                                    coverSlide
+                                )
+                            )
+                        )
+                    };
+                }();
+
+                if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
             } else {
-                return _react2.default.createElement(
-                    'div',
-                    { className: 'commentBox' },
-                    _react2.default.createElement('h1', null)
-                );
+                return _react2.default.createElement('div', null);
             }
         }
 

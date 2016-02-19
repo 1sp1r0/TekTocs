@@ -1,6 +1,7 @@
 import request from 'request-promise'
 import * as Models from '../models/'
 import co from 'co'
+import winston from '../logger'
 
 export function postMessageToSlack(token,channel,msg){
          return  request({
@@ -203,4 +204,43 @@ export function getUserSlideshow(userid,slideshowid){
     }
     });
 }
+
+export function getCoverSlide(slide,teamId){
+    return new Promise((resolve, reject) => {    
+    try{
+        co(function* () {
+           try{
+         if (slide.slideAssetUrl !='' && slide.slideMode != 'snippet'){
+             let slackTeam=yield Models.SlackTeam.findOne({team_id:teamId});
+             if(slackTeam){
+                 request({headers: {'Authorization': 'Bearer ' + slackTeam.bot.bot_access_token},encoding:null,url:slide.slideAssetUrl})
+                    .then(
+                     function(res){
+                                resolve({isImage:true,base64:res.toString('base64')});
+                     },function(error){
+                         winston.log('error', error);
+                         reject(error);
+                     });
+             }else{
+                  winston.log('error', 'Could not find a record for team_id:' + teamId );
+                  reject('Could not find a record for team_id:' + teamId);
+             }
+             
+          }
+          else{
+                  resolve({isImage:false,text:slide.slideText});
+              }
+              }catch (err) {
+                  reject(err.stack);
+             }
+       }).catch((err) => {
+            reject(err.stack);
+      });
+    }catch (err) {
+        winston.log('error', err.message);
+        reject(err.message);
+    }
+  });
+ }
+
     
