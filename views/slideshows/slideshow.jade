@@ -76,7 +76,7 @@ block content
                 //ReactDOM.render(<Slideshow userid='#{userid}' slideshowid='#{slideshowid}' />,
                 //    document.getElementById('react-root')
                 //);
-                
+            });
             var socket = io();
             socket.on('DisplaySlackMessage', function(msg){
                 $('.carousel  div.item').removeClass('active');

@@ -12,23 +12,24 @@ export function getUserSlideshow (req,res){
                
                 let userid=req.params.userid;
                 let slideshowid=req.params.slideshowid;
-                let slideshow = yield Models.SlashCommand.findOne({ 
+                let slashCommand = yield Models.SlashCommand.findOne({ 
                         'attachments.slideshow.published':true,
                         'attachments.slideshow.creator': userid, 
                         'attachments.slideshow.short_id':slideshowid},{team_id:1,'attachments.slideshow':1})
                         .populate('attachments.slideshow.creator')
                         .exec();
-                        if(slideshow.attachments){
-                           let name=(slideshow.attachments.slideshow.creator.real_name?
-                                slideshow.attachments.slideshow.creator.real_name:
-                                (slideshow.attachments.slideshow.creator.name?
-                                slideshow.attachments.slideshow.creator.name:''));
-                           if(slideshow.attachments.slideshow.slides.length>0){  
-                                  let mimeType=slideshow.attachments.slideshow.slides[0].slideMimeType;
+                        if(slashCommand.attachments){
+                           let name=(slashCommand.attachments.slideshow.creator.real_name?
+                                slashCommand.attachments.slideshow.creator.real_name:
+                                (slashCommand.attachments.slideshow.creator.name?
+                                slashCommand.attachments.slideshow.creator.name:''));
+                           if(slashCommand.attachments.slideshow.slides.length>0){  
+                                  let mimeType=slashCommand.attachments.slideshow.slides[0].slideMimeType;
                                     let coverSlide= yield slackhelper.getCoverSlide(
-                                        slideshow.attachments.slideshow.slides[0],slideshow.team_id);
+                                        slashCommand.attachments.slideshow.slides[0],slashCommand.team_id);
                                  res.status(200).send({name:name,coverslide:coverSlide,mimeType:mimeType,
-                                        slideshow:{title:slideshow.attachments.slideshow.title}});       
+                                        slideshow:{title:slashCommand.attachments.slideshow.title,
+                                        creator:slashCommand.attachments.slideshow.creator}});       
                            }
                            
                         }

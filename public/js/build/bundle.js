@@ -19684,8 +19684,6 @@ var ReactRenderers =
 
 	'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
@@ -19749,7 +19747,6 @@ var ReactRenderers =
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            return;
 	            var self = this;
 	            console.log('componentDidMount');
 	            $.ajax({
@@ -19767,101 +19764,110 @@ var ReactRenderers =
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
 
-	            if (this.state.data.attachments) {
-	                var _ret = function () {
-	                    var name = _this2.state.data.attachments.slideshow.creator.real_name ? _this2.state.data.attachments.slideshow.creator.real_name : _this2.state.data.attachments.slideshow.creator.name ? _this2.state.data.attachments.slideshow.creator.name : '';
-	                    var coverSlide = _react2.default.createElement('div', null);
+	            if (this.state.data.slideshow) {
+	                //let name=(this.state.data.attachments.slideshow.creator.real_name?
+	                //      this.state.data.attachments.slideshow.creator.real_name:
+	                //      (this.state.data.attachments.slideshow.creator.name?
+	                //      this.state.data.attachments.slideshow.creator.name:''));
+	                var coverSlide = _react2.default.createElement('div', null);
 
-	                    //the first slide is the cover slide/title slide.Retrieve the cover slide
-	                    if (_this2.state.data.attachments.slideshow.slides.length > 0) {
-	                        var mimeType = _this2.state.data.attachments.slideshow.slides[0].slideMimeType;
-	                        slackhelper.getCoverSlide(_this2.state.data.attachments.slideshow.slides[0], _this2.state.data.team_id).then(function (result) {
-	                            if (result.isImage) {
-	                                coverSlide = _react2.default.createElement(
-	                                    'div',
-	                                    { 'class': 'item active' },
-	                                    _react2.default.createElement('img', { src: 'data:{mimeType};base64,{result.base64}' })
-	                                );
-	                                console.log(coverSlide);
-	                            } else {
-	                                coverSlide = _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'item active slideContainer' },
-	                                    _react2.default.createElement(
-	                                        'div',
-	                                        { className: 'slide' },
-	                                        result.text
-	                                    )
-	                                );
-	                                console.log(coverSlide);
+	                //the first slide is the cover slide/title slide.Retrieve the cover slide
+	                /* if(this.state.data.attachments.slideshow.slides.length>0){
+	                     let mimeType=this.state.data.attachments.slideshow.slides[0].slideMimeType;
+	                     slackhelper.getCoverSlide(this.state.data.attachments.slideshow.slides[0],
+	                     this.state.data.team_id).then(
+	                         function(result){
+	                            if(result.isImage){
+	                              coverSlide=(<div class='item active'>
+	                                               <img src='data:{mimeType};base64,{result.base64}'/>
+	                                          </div>);  
+	                              console.log(coverSlide);            
+	                            }else{
+	                                coverSlide=(<div className="item active slideContainer">
+	                                               <div className="slide">{result.text}</div>
+	                                            </div>);
+	                                console.log(coverSlide);            
 	                            }
-	                        });
-	                    }
-	                    return {
-	                        v: _react2.default.createElement(
+	                         }
+	                     );
+	                 } */
+	                if (this.state.data.coverslide.isImage) {
+	                    var imgSrc = 'data:' + this.state.data.mimeType + ';base64,' + this.state.data.coverslide.base64;
+	                    coverSlide = _react2.default.createElement(
+	                        'div',
+	                        { className: 'item active' },
+	                        _react2.default.createElement('img', { src: imgSrc })
+	                    );
+	                } else {
+	                    coverSlide = _react2.default.createElement(
+	                        'div',
+	                        { className: 'item active slideContainer' },
+	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'jumbotron' },
+	                            { className: 'slide' },
+	                            this.state.data.coverslide.text
+	                        )
+	                    );
+	                }
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'jumbotron' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'jumbotron-contents' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'row' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'jumbotron-contents' },
+	                                { className: 'col-md-12' },
 	                                _react2.default.createElement(
 	                                    'div',
-	                                    { className: 'row' },
+	                                    { className: 'floatLeft' },
 	                                    _react2.default.createElement(
 	                                        'div',
-	                                        { className: 'col-md-12' },
+	                                        { className: 'avatar-container' },
 	                                        _react2.default.createElement(
-	                                            'div',
-	                                            { className: 'floatLeft' },
-	                                            _react2.default.createElement(
-	                                                'div',
-	                                                { className: 'avatar-container' },
-	                                                _react2.default.createElement(
-	                                                    'a',
-	                                                    { className: 'avatar' },
-	                                                    _react2.default.createElement('img', { className: 'avatar-image', src: _this2.state.data.attachments.slideshow.creator.image_32 })
-	                                                )
-	                                            ),
-	                                            _react2.default.createElement(
-	                                                'div',
-	                                                { className: 'userinfo' },
-	                                                _react2.default.createElement(
-	                                                    'a',
-	                                                    null,
-	                                                    name
-	                                                ),
-	                                                _react2.default.createElement(
-	                                                    'span',
-	                                                    { className: 'userinfo-extra' },
-	                                                    'created on ',
-	                                                    12 / 23 / 2015
-	                                                )
-	                                            )
+	                                            'a',
+	                                            { className: 'avatar' },
+	                                            _react2.default.createElement('img', { className: 'avatar-image', src: this.state.data.slideshow.creator.image_32 })
+	                                        )
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'userinfo' },
+	                                        _react2.default.createElement(
+	                                            'a',
+	                                            null,
+	                                            this.state.data.name
+	                                        ),
+	                                        _react2.default.createElement(
+	                                            'span',
+	                                            { className: 'userinfo-extra' },
+	                                            'created on ',
+	                                            12 / 23 / 2015
 	                                        )
 	                                    )
-	                                ),
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'slideshow-title' },
-	                                    _this2.state.data.attachments.slideshow.title
-	                                )
-	                            ),
-	                            _react2.default.createElement(
-	                                'div',
-	                                { className: 'carousel', id: 'slideshow-carousel' },
-	                                _react2.default.createElement(
-	                                    'div',
-	                                    { className: 'carousel-inner', role: 'listbox' },
-	                                    coverSlide
 	                                )
 	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'slideshow-title' },
+	                            this.state.data.slideshow.title
 	                        )
-	                    };
-	                }();
-
-	                if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'carousel', id: 'slideshow-carousel' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'carousel-inner', role: 'listbox' },
+	                            coverSlide
+	                        )
+	                    )
+	                );
 	            } else {
 	                return _react2.default.createElement('div', null);
 	            }

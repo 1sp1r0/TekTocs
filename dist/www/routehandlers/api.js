@@ -31,7 +31,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function getUserSlideshow(req, res) {
     try {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-            var userid, slideshowid, slideshow, name, mimeType, coverSlide;
+            var userid, slideshowid, slashCommand, name, mimeType, coverSlide;
             return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
@@ -46,29 +46,30 @@ function getUserSlideshow(req, res) {
                                 'attachments.slideshow.short_id': slideshowid }, { team_id: 1, 'attachments.slideshow': 1 }).populate('attachments.slideshow.creator').exec();
 
                         case 5:
-                            slideshow = _context.sent;
+                            slashCommand = _context.sent;
 
-                            if (!slideshow.attachments) {
+                            if (!slashCommand.attachments) {
                                 _context.next = 14;
                                 break;
                             }
 
-                            name = slideshow.attachments.slideshow.creator.real_name ? slideshow.attachments.slideshow.creator.real_name : slideshow.attachments.slideshow.creator.name ? slideshow.attachments.slideshow.creator.name : '';
+                            name = slashCommand.attachments.slideshow.creator.real_name ? slashCommand.attachments.slideshow.creator.real_name : slashCommand.attachments.slideshow.creator.name ? slashCommand.attachments.slideshow.creator.name : '';
 
-                            if (!(slideshow.attachments.slideshow.slides.length > 0)) {
+                            if (!(slashCommand.attachments.slideshow.slides.length > 0)) {
                                 _context.next = 14;
                                 break;
                             }
 
-                            mimeType = slideshow.attachments.slideshow.slides[0].slideMimeType;
+                            mimeType = slashCommand.attachments.slideshow.slides[0].slideMimeType;
                             _context.next = 12;
-                            return slackhelper.getCoverSlide(slideshow.attachments.slideshow.slides[0], slideshow.team_id);
+                            return slackhelper.getCoverSlide(slashCommand.attachments.slideshow.slides[0], slashCommand.team_id);
 
                         case 12:
                             coverSlide = _context.sent;
 
                             res.status(200).send({ name: name, coverslide: coverSlide, mimeType: mimeType,
-                                slideshow: { title: slideshow.attachments.slideshow.title } });
+                                slideshow: { title: slashCommand.attachments.slideshow.title,
+                                    creator: slashCommand.attachments.slideshow.creator } });
 
                         case 14:
                             res.status(500).send('no data');

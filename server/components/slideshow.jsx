@@ -37,7 +37,6 @@ export default class Slideshow extends React.Component{
   }
   
    componentDidMount() {
-       return;
        let self=this;
        console.log('componentDidMount');
        $.ajax({
@@ -57,15 +56,15 @@ export default class Slideshow extends React.Component{
    
     render() {
         
-        if(this.state.data.attachments){
-            let name=(this.state.data.attachments.slideshow.creator.real_name?
-                  this.state.data.attachments.slideshow.creator.real_name:
-                  (this.state.data.attachments.slideshow.creator.name?
-                  this.state.data.attachments.slideshow.creator.name:''));
+        if(this.state.data.slideshow){
+            //let name=(this.state.data.attachments.slideshow.creator.real_name?
+            //      this.state.data.attachments.slideshow.creator.real_name:
+            //      (this.state.data.attachments.slideshow.creator.name?
+            //      this.state.data.attachments.slideshow.creator.name:''));
              let coverSlide=<div/>;
              
               //the first slide is the cover slide/title slide.Retrieve the cover slide
-              if(this.state.data.attachments.slideshow.slides.length>0){
+             /* if(this.state.data.attachments.slideshow.slides.length>0){
                   let mimeType=this.state.data.attachments.slideshow.slides[0].slideMimeType;
                   slackhelper.getCoverSlide(this.state.data.attachments.slideshow.slides[0],
                   this.state.data.team_id).then(
@@ -83,7 +82,17 @@ export default class Slideshow extends React.Component{
                          }
                       }
                   );
-              }   
+              } */  
+              if(this.state.data.coverslide.isImage){
+                  let imgSrc='data:' + this.state.data.mimeType + ';base64,' + this.state.data.coverslide.base64;
+                 coverSlide=(<div className='item active'>
+                                <img src={imgSrc} />
+                             </div>);  
+              }else{
+                coverSlide=(<div className="item active slideContainer">
+                                <div className="slide">{this.state.data.coverslide.text}</div>
+                            </div>);
+               }
             return <div className='jumbotron'>
                         <div className='jumbotron-contents'>
                             <div className='row'>
@@ -91,17 +100,17 @@ export default class Slideshow extends React.Component{
                                     <div className='floatLeft'>
                                         <div className='avatar-container'>
                                             <a className='avatar'>
-                                                <img className='avatar-image' src={this.state.data.attachments.slideshow.creator.image_32} />
+                                                <img className='avatar-image' src={this.state.data.slideshow.creator.image_32} />
                                             </a>
                                         </div>    
                                         <div className='userinfo'>
-                                             <a>{name}</a>
+                                             <a>{this.state.data.name}</a>
                                              <span className='userinfo-extra'>created on {12/23/2015}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className='slideshow-title'>{this.state.data.attachments.slideshow.title}</div> 
+                            <div className='slideshow-title'>{this.state.data.slideshow.title}</div> 
                         </div>
                         <div className='carousel' id='slideshow-carousel'>
                              <div className='carousel-inner' role='listbox'>
