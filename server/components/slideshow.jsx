@@ -15,6 +15,11 @@ export default class Slideshow extends React.Component{
     this.state = {data: {}};
   }
   componentWillMount() {
+      this.setState({data:{name:'',
+      coverslide:{isImage:true},
+      'mimeType':'image/jpeg',createDateText:'',
+      slideshow:{title:'',creator:{image_32:''}}
+      }});
       /*self.setState({data:{"_id":"56c48c712e72031300da30ad","attachments":{"slideshow":{"end_ts":"1455721625.000064","start_ts":"1455721584.000058","title":"test123qwqwqwq","short_id":"VJZqsdTcg","creator":{"_id":"4yCptPn5e","user_id":"U02HT4JUU","name":"murali","image_192":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=192&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F7fa9%2Fimg%2Favatars%2Fava_0000-192.png","image_72":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=72&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-72.png","image_48":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=48&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-48.png","image_32":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=32&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-32.png","image_24":"https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=24&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-24.png","email":"murali@agateconsulting.com","real_name":"Murali Narasimhan","last_name":"Narasimhan","first_name":"Murali"},"published":true,"slides":[{"_id":"56c48c9f8179df240033aeea","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test123","slideIndex":1},{"_id":"56c48c9f8179df240033aeeb","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test456","slideIndex":2},{"_id":"56c48c9f8179df240033aeec","slideMode":"hosted","slideMimeType":"image/jpeg","slideTitle":"bg1.jpg","slideAssetUrl":"https://files.slack.com/files-pri/T02HT4JUQ-F0MNY1Z52/download/bg1.jpg","slideCaption":"","slideText":"","slideIndex":3},{"_id":"56c48c9f8179df240033aeed","slideMode":"","slideMimeType":"","slideTitle":"","slideAssetUrl":"","slideCaption":"","slideText":"test789","slideIndex":4}]}}}});*/
        
       console.log('componentWillMount');
@@ -61,7 +66,7 @@ export default class Slideshow extends React.Component{
             //      this.state.data.attachments.slideshow.creator.real_name:
             //      (this.state.data.attachments.slideshow.creator.name?
             //      this.state.data.attachments.slideshow.creator.name:''));
-             let coverSlide=<div/>;
+             let coverSlide=<div className='tux-loading-indicator text-center'/>;
              
               //the first slide is the cover slide/title slide.Retrieve the cover slide
              /* if(this.state.data.attachments.slideshow.slides.length>0){
@@ -84,10 +89,12 @@ export default class Slideshow extends React.Component{
                   );
               } */  
               if(this.state.data.coverslide.isImage){
-                  let imgSrc='data:' + this.state.data.mimeType + ';base64,' + this.state.data.coverslide.base64;
-                 coverSlide=(<div className='item active'>
+                  if(this.state.data.coverslide.base64){
+                      let imgSrc='data:' + this.state.data.mimeType + ';base64,' + this.state.data.coverslide.base64;
+                      coverSlide=(<div className='item active'>
                                 <img src={imgSrc} />
-                             </div>);  
+                             </div>); 
+                  }
               }else{
                 coverSlide=(<div className="item active slideContainer">
                                 <div className="slide">{this.state.data.coverslide.text}</div>
@@ -105,7 +112,7 @@ export default class Slideshow extends React.Component{
                                         </div>    
                                         <div className='userinfo'>
                                              <a>{this.state.data.name}</a>
-                                             <span className='userinfo-extra'>created on {12/23/2015}</span>
+                                             <span className='userinfo-extra'>{this.state.data.createDateText}</span>
                                         </div>
                                     </div>
                                 </div>

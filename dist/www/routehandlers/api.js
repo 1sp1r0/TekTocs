@@ -43,13 +43,13 @@ function getUserSlideshow(req, res) {
                             return Models.SlashCommand.findOne({
                                 'attachments.slideshow.published': true,
                                 'attachments.slideshow.creator': userid,
-                                'attachments.slideshow.short_id': slideshowid }, { team_id: 1, 'attachments.slideshow': 1 }).populate('attachments.slideshow.creator').exec();
+                                'attachments.slideshow.short_id': slideshowid }, { createDate: 1, team_id: 1, 'attachments.slideshow': 1 }).populate('attachments.slideshow.creator').exec();
 
                         case 5:
                             slashCommand = _context.sent;
 
                             if (!slashCommand.attachments) {
-                                _context.next = 14;
+                                _context.next = 16;
                                 break;
                             }
 
@@ -68,27 +68,34 @@ function getUserSlideshow(req, res) {
                             coverSlide = _context.sent;
 
                             res.status(200).send({ name: name, coverslide: coverSlide, mimeType: mimeType,
+                                createDateText: 'created on ' + slashCommand.createDate,
                                 slideshow: { title: slashCommand.attachments.slideshow.title,
                                     creator: slashCommand.attachments.slideshow.creator } });
 
                         case 14:
-                            res.status(500).send('no data');
-                            _context.next = 21;
+                            _context.next = 17;
                             break;
 
+                        case 16:
+                            res.status(500).send('no data');
+
                         case 17:
-                            _context.prev = 17;
+                            _context.next = 23;
+                            break;
+
+                        case 19:
+                            _context.prev = 19;
                             _context.t0 = _context['catch'](0);
 
                             _logger2.default.log('error', _context.t0.stack);
                             res.sendStatus(500);
 
-                        case 21:
+                        case 23:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 17]]);
+            }, _callee, this, [[0, 19]]);
         })).catch(function (err) {
             _logger2.default.log('error', err.stack);
             res.sendStatus(500);

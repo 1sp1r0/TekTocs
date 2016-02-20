@@ -15,7 +15,7 @@ export function getUserSlideshow (req,res){
                 let slashCommand = yield Models.SlashCommand.findOne({ 
                         'attachments.slideshow.published':true,
                         'attachments.slideshow.creator': userid, 
-                        'attachments.slideshow.short_id':slideshowid},{team_id:1,'attachments.slideshow':1})
+                        'attachments.slideshow.short_id':slideshowid},{createDate:1,team_id:1,'attachments.slideshow':1})
                         .populate('attachments.slideshow.creator')
                         .exec();
                         if(slashCommand.attachments){
@@ -28,12 +28,14 @@ export function getUserSlideshow (req,res){
                                     let coverSlide= yield slackhelper.getCoverSlide(
                                         slashCommand.attachments.slideshow.slides[0],slashCommand.team_id);
                                  res.status(200).send({name:name,coverslide:coverSlide,mimeType:mimeType,
+                                        createDateText:'created on ' + slashCommand.createDate,
                                         slideshow:{title:slashCommand.attachments.slideshow.title,
                                         creator:slashCommand.attachments.slideshow.creator}});       
                            }
                            
+                        }else{
+                            res.status(500).send('no data');
                         }
-                res.status(500).send('no data');
              }catch (err) {
                     winston.log('error', err.stack);
                     res.sendStatus(500);
