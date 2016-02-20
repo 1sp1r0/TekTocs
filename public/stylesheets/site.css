@@ -38,6 +38,7 @@ body{
 }
 
 .tux-loading-indicator {
+    text-align: center;
 	float: center;
 	background: transparent url(Loading_fallback.gif) right bottom no-repeat;
 	background-image: -webkit-linear-gradient(transparent, transparent), url(Loading.svg);
