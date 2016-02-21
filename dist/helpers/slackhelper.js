@@ -29,6 +29,10 @@ var _logger = require('../logger');
 
 var _logger2 = _interopRequireDefault(_logger);
 
+var _awsSdk = require('aws-sdk');
+
+var _awsSdk2 = _interopRequireDefault(_awsSdk);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -166,7 +170,7 @@ function getNextSlideindex(slides) {
 function getSlide(message, slideIndex, botAccessToken) {
     return new Promise(function (resolve, reject) {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
-            var slideCaption, slideText, slideAssetUrl, slideMode;
+            var slideCaption, slideText, slideAssetUrl, slideMode, body;
             return regeneratorRuntime.wrap(function _callee2$(_context2) {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
@@ -178,7 +182,7 @@ function getSlide(message, slideIndex, botAccessToken) {
                             slideMode = '';
 
                             if (!(message.subtype === 'file_share')) {
-                                _context2.next = 16;
+                                _context2.next = 24;
                                 break;
                             }
 
@@ -189,7 +193,7 @@ function getSlide(message, slideIndex, botAccessToken) {
                             }
 
                             if (!(message.file.mode === 'snippet')) {
-                                _context2.next = 13;
+                                _context2.next = 15;
                                 break;
                             }
 
@@ -198,8 +202,22 @@ function getSlide(message, slideIndex, botAccessToken) {
 
                         case 12:
                             slideText = _context2.sent;
+                            _context2.next = 21;
+                            break;
 
-                        case 13:
+                        case 15:
+                            _context2.next = 17;
+                            return (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + botAccessToken }, encoding: null, url: slideAssetUrl });
+
+                        case 17:
+                            body = _context2.sent;
+                            _context2.next = 20;
+                            return saveImageToS3(body, 'public/' + message.file.name);
+
+                        case 20:
+                            slideAssetUrl = _context2.sent;
+
+                        case 21:
                             resolve(new Models.Slide({
                                 slideIndex: slideIndex,
                                 slideText: slideText,
@@ -209,10 +227,10 @@ function getSlide(message, slideIndex, botAccessToken) {
                                 slideMimeType: message.file.mimetype,
                                 slideMode: slideMode
                             }));
-                            _context2.next = 17;
+                            _context2.next = 25;
                             break;
 
-                        case 16:
+                        case 24:
                             resolve(new Models.Slide({ slideIndex: slideIndex,
                                 slideText: message.text,
                                 slideCaption: '',
@@ -221,22 +239,22 @@ function getSlide(message, slideIndex, botAccessToken) {
                                 slideMimeType: '',
                                 slideMode: '' }));
 
-                        case 17:
-                            _context2.next = 22;
+                        case 25:
+                            _context2.next = 30;
                             break;
 
-                        case 19:
-                            _context2.prev = 19;
+                        case 27:
+                            _context2.prev = 27;
                             _context2.t0 = _context2['catch'](0);
 
                             reject(_context2.t0.stack);
 
-                        case 22:
+                        case 30:
                         case 'end':
                             return _context2.stop();
                     }
                 }
-            }, _callee2, this, [[0, 19]]);
+            }, _callee2, this, [[0, 27]]);
         })).catch(function (err) {
             reject(err.stack);
         });
@@ -429,5 +447,24 @@ function getCoverSlide(slide, teamId) {
             _logger2.default.log('error', err.message);
             reject(err.message);
         }
+    });
+}
+
+function saveImageToS3(body, path) {
+
+    return new Promise(function (resolve, reject) {
+        var s3 = new _awsSdk2.default.S3();
+        s3.putObject({
+            Body: body,
+            Key: path,
+            Bucket: process.env.AWS_BUCKET_NAME
+        }, function (err, data) {
+            if (err) {
+                _logger2.default.log('error', err);
+                reject(err);
+            } else {
+                resolve(process.env.AWS_S3_URL + '/' + process.env.AWS_BUCKET_NAME + '/' + path);
+            }
+        });
     });
 }

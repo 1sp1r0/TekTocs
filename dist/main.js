@@ -18,7 +18,11 @@ pm2.connect(function() {
       "SLACK_TEAM_ACCESS_TOKEN":"xoxp-2605154976-2605154980-20366174116-297e0ed68c",
       "SLACK_CLIENT_ID":'2605154976.20361890802',
       "SLACK_CLIENT_SECRET":'5467921f878c4f13496d11b41623a221',
-      "MONGOLAB_URI" : 'mongodb://heroku_pxgrqk35:u45fmu7pharj20eiemaet23mj7@ds059205.mongolab.com:59205/heroku_pxgrqk35'
+      "MONGOLAB_URI" : 'mongodb://heroku_pxgrqk35:u45fmu7pharj20eiemaet23mj7@ds059205.mongolab.com:59205/heroku_pxgrqk35',
+      "AWS_ACCESS_KEY_ID": 'AKIAI5OLC46GOPIPC3ZQ',
+      "AWS_SECRET_ACCESS_KEY":'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',
+      "AWS_BUCKET_NAME":'tektocs',
+      "AWS_S3_URL":'https://s3.amazonaws.com'
     },
   }, function(err) {
     if (err) return console.error('Error while launching applications', err.stack || err);

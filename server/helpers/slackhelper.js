@@ -2,6 +2,10 @@ import request from 'request-promise'
 import * as Models from '../models/'
 import co from 'co'
 import winston from '../logger'
+import AWS from 'aws-sdk'
+
+
+
 
 export function postMessageToSlack(token,channel,msg){
          return  request({
@@ -102,6 +106,9 @@ export function getSlide(message,slideIndex,botAccessToken){
            }
            if(message.file.mode==='snippet'){
                  slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
+           }else{
+              let body=yield request({headers: {'Authorization': 'Bearer ' + botAccessToken},encoding:null,url:slideAssetUrl});
+              slideAssetUrl=yield saveImageToS3(body,`public/${message.file.name}`);
            }
          resolve (new Models.Slide({
              slideIndex:slideIndex,
@@ -244,3 +251,22 @@ export function getCoverSlide(slide,teamId){
  }
 
     
+function saveImageToS3(body,path){
+   
+    return new Promise((resolve, reject) => { 
+        let s3 = new AWS.S3(); 
+        s3.putObject({
+                Body: body,
+                Key: path,
+                Bucket: process.env.AWS_BUCKET_NAME
+            }, function(err, data) {
+                if (err) {   
+                    winston.log('error', err);   
+                    reject(err)   
+                }  
+                else{
+                    resolve(`${process.env.AWS_S3_URL}/${process.env.AWS_BUCKET_NAME}/${path}`);   
+                }       
+        });
+    });
+}
