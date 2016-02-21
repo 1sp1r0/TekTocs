@@ -68,6 +68,7 @@ export function publish(req,res){
 function processMessages(messages, slashCommand, botAcessToken) {
     co(function* () {
         try {
+            winston.log('info', messages.length);
             let slideIndex = 1;
             messages.forEach(m=> {
                 co(function* () {

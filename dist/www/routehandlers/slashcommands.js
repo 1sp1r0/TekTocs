@@ -159,6 +159,7 @@ function processMessages(messages, slashCommand, botAcessToken) {
                                 while (1) {
                                     switch (_context3.prev = _context3.next) {
                                         case 0:
+                                            _logger2.default.log('info', messages.length);
                                             slideIndex = 1;
 
                                             messages.forEach(function (m) {
@@ -199,10 +200,10 @@ function processMessages(messages, slashCommand, botAcessToken) {
                                                 slideIndex = slideIndex + 1;
                                             });
                                             slashCommand.attachments.slideshow.published = true;
-                                            _context3.next = 5;
+                                            _context3.next = 6;
                                             return slashCommand.attachments.slideshow.save();
 
-                                        case 5:
+                                        case 6:
                                         case 'end':
                                             return _context3.stop();
                                     }
