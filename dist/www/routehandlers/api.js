@@ -31,7 +31,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function getUserSlideshow(req, res) {
     try {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-            var userid, slideshowid, slashCommand, name, mimeType, coverSlide;
+            var userid, slideshowid, slashCommand, name, coverSlide, slide, mimeType;
             return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
@@ -48,54 +48,46 @@ function getUserSlideshow(req, res) {
                         case 5:
                             slashCommand = _context.sent;
 
-                            if (!slashCommand.attachments) {
-                                _context.next = 16;
-                                break;
+                            if (slashCommand.attachments) {
+                                name = slashCommand.attachments.slideshow.creator.real_name ? slashCommand.attachments.slideshow.creator.real_name : slashCommand.attachments.slideshow.creator.name ? slashCommand.attachments.slideshow.creator.name : '';
+
+                                if (slashCommand.attachments.slideshow.slides.length > 0) {
+                                    coverSlide = {};
+                                    slide = slashCommand.attachments.slideshow.slides[0];
+                                    mimeType = slide.slideMimeType;
+
+                                    if (slide.slideAssetUrl != '' && slide.slideMode != 'snippet') {
+                                        coverSlide = { isImage: true, src: slide.slideAssetUrl };
+                                    } else {
+                                        coverSlide = { isImage: false, text: slide.slideText };
+                                    }
+
+                                    // let coverSlide= yield slackhelper.getCoverSlide(
+                                    //    slashCommand.attachments.slideshow.slides[0],slashCommand.team_id);
+                                    res.status(200).send({ name: name, coverslide: coverSlide, mimeType: mimeType,
+                                        createDateText: 'created on ' + slashCommand.createDate,
+                                        slideshow: { title: slashCommand.attachments.slideshow.title,
+                                            creator: slashCommand.attachments.slideshow.creator } });
+                                }
+                            } else {
+                                res.status(500).send('no data');
                             }
-
-                            name = slashCommand.attachments.slideshow.creator.real_name ? slashCommand.attachments.slideshow.creator.real_name : slashCommand.attachments.slideshow.creator.name ? slashCommand.attachments.slideshow.creator.name : '';
-
-                            if (!(slashCommand.attachments.slideshow.slides.length > 0)) {
-                                _context.next = 14;
-                                break;
-                            }
-
-                            mimeType = slashCommand.attachments.slideshow.slides[0].slideMimeType;
-                            _context.next = 12;
-                            return slackhelper.getCoverSlide(slashCommand.attachments.slideshow.slides[0], slashCommand.team_id);
-
-                        case 12:
-                            coverSlide = _context.sent;
-
-                            res.status(200).send({ name: name, coverslide: coverSlide, mimeType: mimeType,
-                                createDateText: 'created on ' + slashCommand.createDate,
-                                slideshow: { title: slashCommand.attachments.slideshow.title,
-                                    creator: slashCommand.attachments.slideshow.creator } });
-
-                        case 14:
-                            _context.next = 17;
+                            _context.next = 13;
                             break;
 
-                        case 16:
-                            res.status(500).send('no data');
-
-                        case 17:
-                            _context.next = 23;
-                            break;
-
-                        case 19:
-                            _context.prev = 19;
+                        case 9:
+                            _context.prev = 9;
                             _context.t0 = _context['catch'](0);
 
                             _logger2.default.log('error', _context.t0.stack);
                             res.sendStatus(500);
 
-                        case 23:
+                        case 13:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 19]]);
+            }, _callee, this, [[0, 9]]);
         })).catch(function (err) {
             _logger2.default.log('error', err.stack);
             res.sendStatus(500);

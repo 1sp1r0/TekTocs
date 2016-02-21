@@ -73,7 +73,7 @@ function processMessages(messages, slashCommand, botAcessToken) {
                 co(function* () {
                     try {
                         let slide = yield slackhelper.getSlide(m, slideIndex,
-                            botAcessToken);
+                            botAcessToken,slashCommand.slideshow.short_id);
                         if (slide) {
                             slashCommand.attachments.slideshow.slides.push(slide);
                         }

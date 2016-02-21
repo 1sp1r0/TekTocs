@@ -23,10 +23,19 @@ export function getUserSlideshow (req,res){
                                 slashCommand.attachments.slideshow.creator.real_name:
                                 (slashCommand.attachments.slideshow.creator.name?
                                 slashCommand.attachments.slideshow.creator.name:''));
+                           
                            if(slashCommand.attachments.slideshow.slides.length>0){  
-                                  let mimeType=slashCommand.attachments.slideshow.slides[0].slideMimeType;
-                                    let coverSlide= yield slackhelper.getCoverSlide(
-                                        slashCommand.attachments.slideshow.slides[0],slashCommand.team_id);
+                                  let coverSlide={};
+                                  let slide=slashCommand.attachments.slideshow.slides[0];
+                                  let mimeType=slide.slideMimeType;
+                                  if (slide.slideAssetUrl !='' && slide.slideMode != 'snippet'){
+                                      coverSlide={isImage:true,src:slide.slideAssetUrl};
+                                  }else{
+                                      coverSlide={isImage:false,text:slide.slideText};
+                                  }
+                                  
+                                   // let coverSlide= yield slackhelper.getCoverSlide(
+                                    //    slashCommand.attachments.slideshow.slides[0],slashCommand.team_id);
                                  res.status(200).send({name:name,coverslide:coverSlide,mimeType:mimeType,
                                         createDateText:'created on ' + slashCommand.createDate,
                                         slideshow:{title:slashCommand.attachments.slideshow.title,

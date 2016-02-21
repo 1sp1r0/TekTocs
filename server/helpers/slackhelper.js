@@ -65,7 +65,7 @@ export function processMessage(message){
                 let team = yield getSlackTeam(slashCommand.team_id);
                 let botAccessToken=team.bot.bot_access_token;
                 let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
-                let slide=yield getSlide(message,slideIndex,botAccessToken);
+                let slide=yield getSlide(message,slideIndex,botAccessToken,slashCommand.slideshow.short_id);
                 if(slide){
                             slashCommand.attachments.slideshow.slides.push(slide);
                             yield slashCommand.attachments.slideshow.save();
@@ -90,7 +90,7 @@ function getNextSlideindex(slides){
     return slides.length>0?Math.max(...slides.map(slide=>slide.slideIndex)) +1:1;
 }  
 
-export function getSlide(message,slideIndex,botAccessToken){
+export function getSlide(message,slideIndex,botAccessToken,slideshowId){
     return new Promise((resolve, reject) => {
      co(function* () {
         try {
@@ -108,7 +108,7 @@ export function getSlide(message,slideIndex,botAccessToken){
                  slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
            }else{
               let body=yield request({headers: {'Authorization': 'Bearer ' + botAccessToken},encoding:null,url:slideAssetUrl});
-              slideAssetUrl=yield saveImageToS3(body,`public/${message.file.name}`);
+              slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
            }
          resolve (new Models.Slide({
              slideIndex:slideIndex,

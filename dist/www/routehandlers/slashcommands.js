@@ -170,7 +170,7 @@ function processMessages(messages, slashCommand, botAcessToken) {
                                                                 case 0:
                                                                     _context2.prev = 0;
                                                                     _context2.next = 3;
-                                                                    return slackhelper.getSlide(m, slideIndex, botAcessToken);
+                                                                    return slackhelper.getSlide(m, slideIndex, botAcessToken, slashCommand.slideshow.short_id);
 
                                                                 case 3:
                                                                     slide = _context2.sent;

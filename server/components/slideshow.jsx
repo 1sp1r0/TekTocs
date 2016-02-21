@@ -89,10 +89,10 @@ export default class Slideshow extends React.Component{
                   );
               } */  
               if(this.state.data.coverslide.isImage){
-                  if(this.state.data.coverslide.base64){
-                      let imgSrc='data:' + this.state.data.mimeType + ';base64,' + this.state.data.coverslide.base64;
+                  if(this.state.data.coverslide.src){
+                      //let imgSrc='data:' + this.state.data.mimeType + ';base64,' + this.state.data.coverslide.base64;
                       coverSlide=(<div className='item active'>
-                                <img src={imgSrc} />
+                                <img src={this.state.data.coverslide.src} />
                              </div>); 
                   }
               }else{

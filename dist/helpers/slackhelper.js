@@ -115,7 +115,7 @@ function processMessage(message) {
                             botAccessToken = team.bot.bot_access_token;
                             slideIndex = getNextSlideindex(slashCommand.attachments.slideshow.slides);
                             _context.next = 15;
-                            return getSlide(message, slideIndex, botAccessToken);
+                            return getSlide(message, slideIndex, botAccessToken, slashCommand.slideshow.short_id);
 
                         case 15:
                             slide = _context.sent;
@@ -167,7 +167,7 @@ function getNextSlideindex(slides) {
     }))) + 1 : 1;
 }
 
-function getSlide(message, slideIndex, botAccessToken) {
+function getSlide(message, slideIndex, botAccessToken, slideshowId) {
     return new Promise(function (resolve, reject) {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
             var slideCaption, slideText, slideAssetUrl, slideMode, body;
@@ -212,7 +212,7 @@ function getSlide(message, slideIndex, botAccessToken) {
                         case 17:
                             body = _context2.sent;
                             _context2.next = 20;
-                            return saveImageToS3(body, 'public/' + message.file.name);
+                            return saveImageToS3(body, 'public/' + slideshowId + '/' + message.file.name);
 
                         case 20:
                             slideAssetUrl = _context2.sent;

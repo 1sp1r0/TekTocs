@@ -112,12 +112,12 @@ var Slideshow = function (_React$Component) {
                      );
                  } */
                 if (this.state.data.coverslide.isImage) {
-                    if (this.state.data.coverslide.base64) {
-                        var imgSrc = 'data:' + this.state.data.mimeType + ';base64,' + this.state.data.coverslide.base64;
+                    if (this.state.data.coverslide.src) {
+                        //let imgSrc='data:' + this.state.data.mimeType + ';base64,' + this.state.data.coverslide.base64;
                         coverSlide = _react2.default.createElement(
                             'div',
                             { className: 'item active' },
-                            _react2.default.createElement('img', { src: imgSrc })
+                            _react2.default.createElement('img', { src: this.state.data.coverslide.src })
                         );
                     }
                 } else {
