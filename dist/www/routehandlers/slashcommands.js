@@ -99,6 +99,7 @@ function publish(req, res) {
                                 if (msgResponse.ok) {
                                     messages = msgResponse.messages.reverse();
 
+                                    _logger2.default.log('info', messages.length);
                                     setImmediate(processMessages(messages, slashCommand, slackTeam.bot.bot_access_token));
                                     res.status(200).send('Slideshow has been published.');
                                 } else {
@@ -159,7 +160,6 @@ function processMessages(messages, slashCommand, botAcessToken) {
                                 while (1) {
                                     switch (_context3.prev = _context3.next) {
                                         case 0:
-                                            _logger2.default.log('info', messages.length);
                                             slideIndex = 1;
 
                                             messages.forEach(function (m) {
@@ -200,10 +200,10 @@ function processMessages(messages, slashCommand, botAcessToken) {
                                                 slideIndex = slideIndex + 1;
                                             });
                                             slashCommand.attachments.slideshow.published = true;
-                                            _context3.next = 6;
+                                            _context3.next = 5;
                                             return slashCommand.attachments.slideshow.save();
 
-                                        case 6:
+                                        case 5:
                                         case 'end':
                                             return _context3.stop();
                                     }

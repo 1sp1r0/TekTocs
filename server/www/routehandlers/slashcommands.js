@@ -33,6 +33,7 @@ export function publish(req,res){
                             let msgResponse=JSON.parse(response);
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages.reverse();
+                                winston.log('info', messages.length);
                                 setImmediate(processMessages(messages,slashCommand,slackTeam.bot.bot_access_token));
                                 res.status(200).send('Slideshow has been published.');
                             }
@@ -68,7 +69,7 @@ export function publish(req,res){
 function processMessages(messages, slashCommand, botAcessToken) {
     co(function* () {
         try {
-            winston.log('info', messages.length);
+            
             let slideIndex = 1;
             messages.forEach(m=> {
                 co(function* () {
