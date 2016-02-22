@@ -109,9 +109,8 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
                  slideAssetUrl='';
            }else{
                
-              let body = yield request({headers: {'Authorization': 'Bearer ' + botAccessToken},
-              encoding:null,url:slideAssetUrl});
-              slideAssetUrl=body.toString('base64');
+              let body = yield getSlideAsset(slideAssetUrl,botAccessToken); 
+              //slideAssetUrl=body.toString('base64');
               //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
            }
          resolve (new Models.Slide({
@@ -256,6 +255,19 @@ export function getCoverSlide(slide,teamId){
   });
  }
 
+function getSlideAsset(assetUrl,botAccessToken){
+    return new Promise((resolve, reject) => { 
+        request({headers: {'Authorization': 'Bearer ' + botAccessToken},
+        encoding:null,url:assetUrl})
+                    .then(
+                     function(res){
+                                resolve(res);
+                     },function(error){
+                         winston.log('error', error);
+                         reject(error);
+                     });
+    });
+}
     
 function saveImageToS3(body,path){
    
