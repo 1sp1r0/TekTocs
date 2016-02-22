@@ -107,13 +107,7 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
            if(message.file.mode==='snippet'){
                  slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
                  slideAssetUrl='';
-           }else{
-               
-              let body = yield getSlideAsset(slideAssetUrl,botAccessToken); 
-              //slideAssetUrl=body.toString('base64');
-              //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
-           }
-         resolve (new Models.Slide({
+                 resolve (new Models.Slide({
              slideIndex:slideIndex,
              slideText:slideText,
              slideCaption:slideCaption,
@@ -122,6 +116,26 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
              slideMimeType:message.file.mimetype,
              slideMode:slideMode
          }));
+           }else{
+               
+              getSlideAsset(slideAssetUrl,botAccessToken)
+              .then(function(body){
+                  slideAssetUrl=body.toString('base64');
+                  resolve (new Models.Slide({
+             slideIndex:slideIndex,
+             slideText:slideText,
+             slideCaption:slideCaption,
+             slideAssetUrl:slideAssetUrl,
+             slideTitle:message.file.title,
+             slideMimeType:message.file.mimetype,
+             slideMode:slideMode}));
+              },function(error){
+                  winston.log('error',error);
+              }); 
+              //slideAssetUrl=body.toString('base64');
+              //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
+           }
+         
      }else{
          resolve(new Models.Slide({slideIndex:slideIndex,
                 slideText:message.text,
@@ -134,25 +148,13 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
     }
         catch (err) {
            winston.log('error',err.stack);
-           //reject(err.stack);
-           resolve(new Models.Slide({slideIndex:slideIndex,
-                slideText:err.stack,
-                slideCaption:'',
-                slideAssetUrl:'',
-                slideTitle:'',
-                slideMimeType:'',
-                slideMode:''}));
+           reject(err.stack);
+           
          }
         }).catch((err) => {
             winston.log('error',err.stack);
            //reject(err.stack);
-           resolve(new Models.Slide({slideIndex:slideIndex,
-                slideText:err.stack,
-                slideCaption:'',
-                slideAssetUrl:'',
-                slideTitle:'',
-                slideMimeType:'',
-                slideMode:''}));
+          
         });
     });          
 }
