@@ -108,19 +108,10 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
                  slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
                  slideAssetUrl='';
            }else{
-               slideAssetUrl=`public/${slideshowId}_${message.file.name}`;
-              request({headers: {'Authorization': 'Bearer ' + botAccessToken},
-              encoding:null,url:slideAssetUrl}).then(
-                     function(res){
-                          co(function* () {
-                            slideAssetUrl=yield saveImageToS3(res,`public/${slideshowId}_${message.file.name}`);
-                          });
-                                //resolve({isImage:true,base64:res.toString('base64')});
-                     },function(error){
-                         winston.log('error', error);
-                         //reject(error);
-                     });
-              
+               
+              let body = yield request({headers: {'Authorization': 'Bearer ' + botAccessToken},
+              encoding:null,url:slideAssetUrl});
+              slideAssetUrl=body.toString('base64');
               //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
            }
          resolve (new Models.Slide({
