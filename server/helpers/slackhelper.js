@@ -111,7 +111,9 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
               request({headers: {'Authorization': 'Bearer ' + botAccessToken},
               encoding:null,url:slideAssetUrl}).then(
                      function(res){
-                          winston.log('error', res.toString('base64'));
+                          co(function* () {
+                            slideAssetUrl=yield saveImageToS3(res,`public/${slideshowId}/${message.file.name}`);
+                          });
                                 //resolve({isImage:true,base64:res.toString('base64')});
                      },function(error){
                          winston.log('error', error);
