@@ -106,9 +106,12 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
            }
            if(message.file.mode==='snippet'){
                  slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
+                 slideAssetUrl='';
            }else{
-              let body=yield request({headers: {'Authorization': 'Bearer ' + botAccessToken},encoding:null,url:slideAssetUrl});
-              slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
+              let body=yield request({headers: {'Authorization': 'Bearer ' + botAccessToken},
+              encoding:null,url:slideAssetUrl});
+              
+              //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
            }
          resolve (new Models.Slide({
              slideIndex:slideIndex,
@@ -220,9 +223,6 @@ export function getCoverSlide(slide,teamId){
          if (slide.slideAssetUrl !='' && slide.slideMode != 'snippet'){
              let slackTeam=yield Models.SlackTeam.findOne({team_id:teamId});
              if(slackTeam){
-                 let body=yield request({headers: {'Authorization': 'Bearer ' + slackTeam.bot.bot_access_token},encoding:null,url:slide.slideAssetUrl});
-                 let slideAssetUrl=yield saveImageToS3(body,`public/avx1263/asqqs.jpg`);
-                 console.log(slideAssetUrl);
                  request({headers: {'Authorization': 'Bearer ' + slackTeam.bot.bot_access_token},encoding:null,url:slide.slideAssetUrl})
                     .then(
                      function(res){

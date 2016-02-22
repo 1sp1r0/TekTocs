@@ -182,7 +182,7 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                             slideMode = '';
 
                             if (!(message.subtype === 'file_share')) {
-                                _context2.next = 24;
+                                _context2.next = 22;
                                 break;
                             }
 
@@ -193,7 +193,7 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                             }
 
                             if (!(message.file.mode === 'snippet')) {
-                                _context2.next = 15;
+                                _context2.next = 16;
                                 break;
                             }
 
@@ -202,22 +202,23 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
 
                         case 12:
                             slideText = _context2.sent;
-                            _context2.next = 21;
+
+                            slideAssetUrl = '';
+                            _context2.next = 19;
                             break;
 
-                        case 15:
-                            _context2.next = 17;
-                            return (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + botAccessToken }, encoding: null, url: slideAssetUrl });
+                        case 16:
+                            _context2.next = 18;
+                            return (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + botAccessToken },
+                                encoding: null, url: slideAssetUrl });
 
-                        case 17:
+                        case 18:
                             body = _context2.sent;
-                            _context2.next = 20;
-                            return saveImageToS3(body, 'public/' + slideshowId + '/' + message.file.name);
 
-                        case 20:
-                            slideAssetUrl = _context2.sent;
+                        case 19:
 
-                        case 21:
+                            //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
+
                             resolve(new Models.Slide({
                                 slideIndex: slideIndex,
                                 slideText: slideText,
@@ -227,10 +228,10 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                                 slideMimeType: message.file.mimetype,
                                 slideMode: slideMode
                             }));
-                            _context2.next = 25;
+                            _context2.next = 23;
                             break;
 
-                        case 24:
+                        case 22:
                             resolve(new Models.Slide({ slideIndex: slideIndex,
                                 slideText: message.text,
                                 slideCaption: '',
@@ -239,22 +240,22 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                                 slideMimeType: '',
                                 slideMode: '' }));
 
-                        case 25:
-                            _context2.next = 30;
+                        case 23:
+                            _context2.next = 28;
                             break;
 
-                        case 27:
-                            _context2.prev = 27;
+                        case 25:
+                            _context2.prev = 25;
                             _context2.t0 = _context2['catch'](0);
 
                             reject(_context2.t0.stack);
 
-                        case 30:
+                        case 28:
                         case 'end':
                             return _context2.stop();
                     }
                 }
-            }, _callee2, this, [[0, 27]]);
+            }, _callee2, this, [[0, 25]]);
         })).catch(function (err) {
             reject(err.stack);
         });
@@ -388,8 +389,7 @@ function getCoverSlide(slide, teamId) {
     return new Promise(function (resolve, reject) {
         try {
             (0, _co2.default)(regeneratorRuntime.mark(function _callee5() {
-                var slackTeam, _body, _slideAssetUrl;
-
+                var slackTeam;
                 return regeneratorRuntime.wrap(function _callee5$(_context5) {
                     while (1) {
                         switch (_context5.prev = _context5.next) {
@@ -397,7 +397,7 @@ function getCoverSlide(slide, teamId) {
                                 _context5.prev = 0;
 
                                 if (!(slide.slideAssetUrl != '' && slide.slideMode != 'snippet')) {
-                                    _context5.next = 20;
+                                    _context5.next = 8;
                                     break;
                                 }
 
@@ -407,59 +407,40 @@ function getCoverSlide(slide, teamId) {
                             case 4:
                                 slackTeam = _context5.sent;
 
-                                if (!slackTeam) {
-                                    _context5.next = 16;
-                                    break;
+                                if (slackTeam) {
+                                    (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + slackTeam.bot.bot_access_token }, encoding: null, url: slide.slideAssetUrl }).then(function (res) {
+                                        resolve({ isImage: true, base64: res.toString('base64') });
+                                    }, function (error) {
+                                        _logger2.default.log('error', error);
+                                        reject(error);
+                                    });
+                                } else {
+                                    _logger2.default.log('error', 'Could not find a record for team_id:' + teamId);
+                                    reject('Could not find a record for team_id:' + teamId);
                                 }
 
-                                _context5.next = 8;
-                                return (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + slackTeam.bot.bot_access_token }, encoding: null, url: slide.slideAssetUrl });
+                                _context5.next = 9;
+                                break;
 
                             case 8:
-                                _body = _context5.sent;
-                                _context5.next = 11;
-                                return saveImageToS3(_body, 'public/avx1263/asqqs.jpg');
-
-                            case 11:
-                                _slideAssetUrl = _context5.sent;
-
-                                console.log(_slideAssetUrl);
-                                (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + slackTeam.bot.bot_access_token }, encoding: null, url: slide.slideAssetUrl }).then(function (res) {
-                                    resolve({ isImage: true, base64: res.toString('base64') });
-                                }, function (error) {
-                                    _logger2.default.log('error', error);
-                                    reject(error);
-                                });
-                                _context5.next = 18;
-                                break;
-
-                            case 16:
-                                _logger2.default.log('error', 'Could not find a record for team_id:' + teamId);
-                                reject('Could not find a record for team_id:' + teamId);
-
-                            case 18:
-                                _context5.next = 21;
-                                break;
-
-                            case 20:
                                 resolve({ isImage: false, text: slide.slideText });
 
-                            case 21:
-                                _context5.next = 26;
+                            case 9:
+                                _context5.next = 14;
                                 break;
 
-                            case 23:
-                                _context5.prev = 23;
+                            case 11:
+                                _context5.prev = 11;
                                 _context5.t0 = _context5['catch'](0);
 
                                 reject(_context5.t0.stack);
 
-                            case 26:
+                            case 14:
                             case 'end':
                                 return _context5.stop();
                         }
                     }
-                }, _callee5, this, [[0, 23]]);
+                }, _callee5, this, [[0, 11]]);
             })).catch(function (err) {
                 reject(err.stack);
             });
