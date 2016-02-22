@@ -170,7 +170,7 @@ function getNextSlideindex(slides) {
 function getSlide(message, slideIndex, botAccessToken, slideshowId) {
     return new Promise(function (resolve, reject) {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
-            var slideCaption, slideText, slideAssetUrl, slideMode, body;
+            var slideCaption, slideText, slideAssetUrl, slideMode;
             return regeneratorRuntime.wrap(function _callee2$(_context2) {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
@@ -182,7 +182,7 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                             slideMode = '';
 
                             if (!(message.subtype === 'file_share')) {
-                                _context2.next = 22;
+                                _context2.next = 19;
                                 break;
                             }
 
@@ -204,18 +204,12 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                             slideText = _context2.sent;
 
                             slideAssetUrl = '';
-                            _context2.next = 19;
+                            _context2.next = 16;
                             break;
 
                         case 16:
-                            _context2.next = 18;
-                            return (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + botAccessToken },
-                                encoding: null, url: slideAssetUrl });
-
-                        case 18:
-                            body = _context2.sent;
-
-                        case 19:
+                            //let body=yield request({headers: {'Authorization': 'Bearer ' + botAccessToken},
+                            //encoding:null,url:slideAssetUrl});
 
                             //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
 
@@ -228,10 +222,10 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                                 slideMimeType: message.file.mimetype,
                                 slideMode: slideMode
                             }));
-                            _context2.next = 23;
+                            _context2.next = 20;
                             break;
 
-                        case 22:
+                        case 19:
                             resolve(new Models.Slide({ slideIndex: slideIndex,
                                 slideText: message.text,
                                 slideCaption: '',
@@ -240,22 +234,22 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                                 slideMimeType: '',
                                 slideMode: '' }));
 
-                        case 23:
-                            _context2.next = 28;
+                        case 20:
+                            _context2.next = 25;
                             break;
 
-                        case 25:
-                            _context2.prev = 25;
+                        case 22:
+                            _context2.prev = 22;
                             _context2.t0 = _context2['catch'](0);
 
                             reject(_context2.t0.stack);
 
-                        case 28:
+                        case 25:
                         case 'end':
                             return _context2.stop();
                     }
                 }
-            }, _callee2, this, [[0, 25]]);
+            }, _callee2, this, [[0, 22]]);
         })).catch(function (err) {
             reject(err.stack);
         });
