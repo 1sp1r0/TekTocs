@@ -216,7 +216,7 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                                             switch (_context2.prev = _context2.next) {
                                                 case 0:
                                                     _context2.next = 2;
-                                                    return saveImageToS3(res, 'public/' + slideshowId + '/' + message.file.name);
+                                                    return saveImageToS3(res, 'public/' + slideshowId + '_' + message.file.name);
 
                                                 case 2:
                                                     slideAssetUrl = _context2.sent;

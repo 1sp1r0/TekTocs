@@ -112,7 +112,7 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
               encoding:null,url:slideAssetUrl}).then(
                      function(res){
                           co(function* () {
-                            slideAssetUrl=yield saveImageToS3(res,`public/${slideshowId}/${message.file.name}`);
+                            slideAssetUrl=yield saveImageToS3(res,`public/${slideshowId}_${message.file.name}`);
                           });
                                 //resolve({isImage:true,base64:res.toString('base64')});
                      },function(error){
