@@ -182,7 +182,7 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                             slideMode = '';
 
                             if (!(message.subtype === 'file_share')) {
-                                _context3.next = 20;
+                                _context3.next = 21;
                                 break;
                             }
 
@@ -204,10 +204,11 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                             slideText = _context3.sent;
 
                             slideAssetUrl = '';
-                            _context3.next = 17;
+                            _context3.next = 18;
                             break;
 
                         case 16:
+                            slideAssetUrl = 'public/' + slideshowId + '_' + message.file.name;
                             (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + botAccessToken },
                                 encoding: null, url: slideAssetUrl }).then(function (res) {
                                 (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
@@ -236,7 +237,7 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
 
                             //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
 
-                        case 17:
+                        case 18:
                             resolve(new Models.Slide({
                                 slideIndex: slideIndex,
                                 slideText: slideText,
@@ -246,10 +247,10 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                                 slideMimeType: message.file.mimetype,
                                 slideMode: slideMode
                             }));
-                            _context3.next = 21;
+                            _context3.next = 22;
                             break;
 
-                        case 20:
+                        case 21:
                             resolve(new Models.Slide({ slideIndex: slideIndex,
                                 slideText: message.text,
                                 slideCaption: '',
@@ -258,23 +259,23 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                                 slideMimeType: '',
                                 slideMode: '' }));
 
-                        case 21:
-                            _context3.next = 27;
+                        case 22:
+                            _context3.next = 28;
                             break;
 
-                        case 23:
-                            _context3.prev = 23;
+                        case 24:
+                            _context3.prev = 24;
                             _context3.t0 = _context3['catch'](0);
 
                             _logger2.default.log('error', _context3.t0.stack);
                             reject(_context3.t0.stack);
 
-                        case 27:
+                        case 28:
                         case 'end':
                             return _context3.stop();
                     }
                 }
-            }, _callee3, this, [[0, 23]]);
+            }, _callee3, this, [[0, 24]]);
         })).catch(function (err) {
             _logger2.default.log('error', err.stack);
             reject(err.stack);

@@ -108,6 +108,7 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
                  slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
                  slideAssetUrl='';
            }else{
+               slideAssetUrl=`public/${slideshowId}_${message.file.name}`;
               request({headers: {'Authorization': 'Bearer ' + botAccessToken},
               encoding:null,url:slideAssetUrl}).then(
                      function(res){
