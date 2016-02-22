@@ -31,7 +31,7 @@ export function publish(req,res){
                             let response=yield slackhelper.getImHistory(slackTeam.bot.bot_access_token,
                             slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,1000,null);
                             let msgResponse=JSON.parse(response);
-                            winston.log('info', response);
+                           
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages.reverse();
                                 

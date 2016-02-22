@@ -108,8 +108,8 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
                  slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
                  slideAssetUrl='';
            }else{
-              //let body=yield request({headers: {'Authorization': 'Bearer ' + botAccessToken},
-              //encoding:null,url:slideAssetUrl});
+              let body=yield request({headers: {'Authorization': 'Bearer ' + botAccessToken},
+              encoding:null,url:slideAssetUrl});
               
               //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
            }
@@ -133,9 +133,11 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
      }
     }
         catch (err) {
+           winston.log('error',err.stack);
            reject(err.stack);
          }
         }).catch((err) => {
+            winston.log('error',err.stack);
            reject(err.stack);
         });
     });          
