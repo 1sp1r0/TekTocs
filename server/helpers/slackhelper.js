@@ -220,6 +220,9 @@ export function getCoverSlide(slide,teamId){
          if (slide.slideAssetUrl !='' && slide.slideMode != 'snippet'){
              let slackTeam=yield Models.SlackTeam.findOne({team_id:teamId});
              if(slackTeam){
+                 let body=yield request({headers: {'Authorization': 'Bearer ' + slackTeam.bot.bot_access_token},encoding:null,url:slide.slideAssetUrl});
+                 let slideAssetUrl=yield saveImageToS3(body,`public/avx1263/asqqs.jpg`);
+                 console.log(slideAssetUrl);
                  request({headers: {'Authorization': 'Bearer ' + slackTeam.bot.bot_access_token},encoding:null,url:slide.slideAssetUrl})
                     .then(
                      function(res){

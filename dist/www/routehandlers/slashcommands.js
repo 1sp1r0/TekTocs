@@ -64,7 +64,7 @@ function publish(req, res) {
                                 slackTeam = _context.sent;
 
                                 if (!slackTeam) {
-                                    _context.next = 20;
+                                    _context.next = 21;
                                     break;
                                 }
 
@@ -85,7 +85,7 @@ function publish(req, res) {
 
                                 _logger2.default.log('error', 'Could not find any unpublished slideshows for:' + req.body.team_domain + ',' + req.body.user_id);
                                 res.status(200).send('Could not find any unpublished slideshows.');
-                                _context.next = 18;
+                                _context.next = 19;
                                 break;
 
                             case 13:
@@ -96,10 +96,10 @@ function publish(req, res) {
                                 response = _context.sent;
                                 msgResponse = JSON.parse(response);
 
+                                _logger2.default.log('info', response);
                                 if (msgResponse.ok) {
                                     messages = msgResponse.messages.reverse();
 
-                                    _logger2.default.log('info', messages.length);
                                     setImmediate(processMessages(messages, slashCommand, slackTeam.bot.bot_access_token));
                                     res.status(200).send('Slideshow has been published.');
                                 } else {
@@ -107,31 +107,31 @@ function publish(req, res) {
                                     res.status(500).send('Could not retrieve messages from the Slack channel.');
                                 }
 
-                            case 18:
-                                _context.next = 22;
+                            case 19:
+                                _context.next = 23;
                                 break;
 
-                            case 20:
+                            case 21:
                                 _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                            case 22:
-                                _context.next = 28;
+                            case 23:
+                                _context.next = 29;
                                 break;
 
-                            case 24:
-                                _context.prev = 24;
+                            case 25:
+                                _context.prev = 25;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 28:
+                            case 29:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 24]]);
+                }, _callee, this, [[0, 25]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);

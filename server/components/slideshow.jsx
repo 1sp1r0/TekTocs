@@ -68,6 +68,7 @@ export default class Slideshow extends React.Component{
             //      this.state.data.attachments.slideshow.creator.name:''));
              let coverSlide=<div className='tux-loading-indicator text-center'/>;
              
+             
               //the first slide is the cover slide/title slide.Retrieve the cover slide
              /* if(this.state.data.attachments.slideshow.slides.length>0){
                   let mimeType=this.state.data.attachments.slideshow.slides[0].slideMimeType;

@@ -31,9 +31,10 @@ export function publish(req,res){
                             let response=yield slackhelper.getImHistory(slackTeam.bot.bot_access_token,
                             slashCommand.channel_id,slashCommand.attachments.slideshow.start_ts,slashCommand.attachments.slideshow.end_ts,1000,null);
                             let msgResponse=JSON.parse(response);
+                            winston.log('info', response);
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages.reverse();
-                                winston.log('info', messages.length);
+                                
                                 setImmediate(processMessages(messages,slashCommand,slackTeam.bot.bot_access_token));
                                 res.status(200).send('Slideshow has been published.');
                             }
