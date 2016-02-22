@@ -134,11 +134,25 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
     }
         catch (err) {
            winston.log('error',err.stack);
-           reject(err.stack);
+           //reject(err.stack);
+           resolve(new Models.Slide({slideIndex:slideIndex,
+                slideText:err.stack,
+                slideCaption:'',
+                slideAssetUrl:'',
+                slideTitle:'',
+                slideMimeType:'',
+                slideMode:''}));
          }
         }).catch((err) => {
             winston.log('error',err.stack);
-           reject(err.stack);
+           //reject(err.stack);
+           resolve(new Models.Slide({slideIndex:slideIndex,
+                slideText:err.stack,
+                slideCaption:'',
+                slideAssetUrl:'',
+                slideTitle:'',
+                slideMimeType:'',
+                slideMode:''}));
         });
     });          
 }

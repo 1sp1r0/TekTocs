@@ -248,7 +248,14 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                             _context2.t0 = _context2['catch'](0);
 
                             _logger2.default.log('error', _context2.t0.stack);
-                            reject(_context2.t0.stack);
+                            //reject(err.stack);
+                            resolve(new Models.Slide({ slideIndex: slideIndex,
+                                slideText: _context2.t0.stack,
+                                slideCaption: '',
+                                slideAssetUrl: '',
+                                slideTitle: '',
+                                slideMimeType: '',
+                                slideMode: '' }));
 
                         case 29:
                         case 'end':
@@ -258,7 +265,14 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
             }, _callee2, this, [[0, 25]]);
         })).catch(function (err) {
             _logger2.default.log('error', err.stack);
-            reject(err.stack);
+            //reject(err.stack);
+            resolve(new Models.Slide({ slideIndex: slideIndex,
+                slideText: err.stack,
+                slideCaption: '',
+                slideAssetUrl: '',
+                slideTitle: '',
+                slideMimeType: '',
+                slideMode: '' }));
         });
     });
 }
