@@ -170,7 +170,7 @@ function getNextSlideindex(slides) {
 function getSlide(message, slideIndex, botAccessToken, slideshowId) {
     return new Promise(function (resolve, reject) {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
-            var slideCaption, slideText, slideAssetUrl, slideMode, body;
+            var slideCaption, slideText, slideAssetUrl, slideMode;
             return regeneratorRuntime.wrap(function _callee2$(_context2) {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
@@ -182,7 +182,7 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                             slideMode = '';
 
                             if (!(message.subtype === 'file_share')) {
-                                _context2.next = 22;
+                                _context2.next = 20;
                                 break;
                             }
 
@@ -204,21 +204,22 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                             slideText = _context2.sent;
 
                             slideAssetUrl = '';
-                            _context2.next = 19;
+                            _context2.next = 17;
                             break;
 
                         case 16:
-                            _context2.next = 18;
-                            return (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + botAccessToken },
-                                encoding: null, url: slideAssetUrl });
-
-                        case 18:
-                            body = _context2.sent;
-
-                        case 19:
+                            (0, _requestPromise2.default)({ headers: { 'Authorization': 'Bearer ' + botAccessToken },
+                                encoding: null, url: slideAssetUrl }).then(function (res) {
+                                _logger2.default.log('error', res.toString('base64'));
+                                //resolve({isImage:true,base64:res.toString('base64')});
+                            }, function (error) {
+                                _logger2.default.log('error', error);
+                                //reject(error);
+                            });
 
                             //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
 
+                        case 17:
                             resolve(new Models.Slide({
                                 slideIndex: slideIndex,
                                 slideText: slideText,
@@ -228,10 +229,10 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                                 slideMimeType: message.file.mimetype,
                                 slideMode: slideMode
                             }));
-                            _context2.next = 23;
+                            _context2.next = 21;
                             break;
 
-                        case 22:
+                        case 20:
                             resolve(new Models.Slide({ slideIndex: slideIndex,
                                 slideText: message.text,
                                 slideCaption: '',
@@ -240,23 +241,23 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                                 slideMimeType: '',
                                 slideMode: '' }));
 
-                        case 23:
-                            _context2.next = 29;
+                        case 21:
+                            _context2.next = 27;
                             break;
 
-                        case 25:
-                            _context2.prev = 25;
+                        case 23:
+                            _context2.prev = 23;
                             _context2.t0 = _context2['catch'](0);
 
                             _logger2.default.log('error', _context2.t0.stack);
                             reject(_context2.t0.stack);
 
-                        case 29:
+                        case 27:
                         case 'end':
                             return _context2.stop();
                     }
                 }
-            }, _callee2, this, [[0, 25]]);
+            }, _callee2, this, [[0, 23]]);
         })).catch(function (err) {
             _logger2.default.log('error', err.stack);
             reject(err.stack);

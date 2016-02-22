@@ -108,8 +108,15 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
                  slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
                  slideAssetUrl='';
            }else{
-              let body=yield request({headers: {'Authorization': 'Bearer ' + botAccessToken},
-              encoding:null,url:slideAssetUrl});
+              request({headers: {'Authorization': 'Bearer ' + botAccessToken},
+              encoding:null,url:slideAssetUrl}).then(
+                     function(res){
+                          winston.log('error', res.toString('base64'));
+                                //resolve({isImage:true,base64:res.toString('base64')});
+                     },function(error){
+                         winston.log('error', error);
+                         //reject(error);
+                     });
               
               //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
            }
