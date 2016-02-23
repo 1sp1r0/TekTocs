@@ -113,7 +113,7 @@ function publish(req, res) {
                                 slashCommand.attachments.slideshow.published = true;
                                 yield slashCommand.attachments.slideshow.save();
                                 }*/
-                                res.status(200).send('Slideshow has been published.' + slide.slideAssetUrl + ' ' + slashCommand.attachments.slideshow.slides.length);
+                                res.status(200).send('Slideshow has been published.');
                                 _context.next = 26;
                                 break;
 
@@ -178,8 +178,7 @@ function processMessages(messages, slashCommand, botAcessToken) {
 
                                             messages.forEach(function (m) {
                                                 (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
-                                                    var _slide;
-
+                                                    var slide;
                                                     return regeneratorRuntime.wrap(function _callee2$(_context2) {
                                                         while (1) {
                                                             switch (_context2.prev = _context2.next) {
@@ -189,10 +188,10 @@ function processMessages(messages, slashCommand, botAcessToken) {
                                                                     return slackhelper.getSlide(m, slideIndex, botAcessToken, slashCommand.attachments.slideshow.short_id);
 
                                                                 case 3:
-                                                                    _slide = _context2.sent;
+                                                                    slide = _context2.sent;
 
-                                                                    if (_slide) {
-                                                                        slashCommand.attachments.slideshow.slides.push(_slide);
+                                                                    if (slide) {
+                                                                        slashCommand.attachments.slideshow.slides.push(slide);
                                                                     }
                                                                     _context2.next = 10;
                                                                     break;

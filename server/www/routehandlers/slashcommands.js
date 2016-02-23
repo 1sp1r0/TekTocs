@@ -42,7 +42,7 @@ export function publish(req,res){
                                 slashCommand.attachments.slideshow.published = true;
                                 yield slashCommand.attachments.slideshow.save();
                             }*/
-                                res.status(200).send('Slideshow has been published.' + slide.slideAssetUrl + ' ' + slashCommand.attachments.slideshow.slides.length);
+                                res.status(200).send('Slideshow has been published.');
                             }
                             else{
                                 winston.log('error', response.error);
