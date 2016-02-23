@@ -69,11 +69,15 @@ block content
         script(src="/socket.io/socket.io.js")
         script(src='/js/build/bundle.js') 
         script.
+            function createCarousel(){
+                $('.carousel').carousel({interval: false});
+            }
             $().ready(function() {
+                ReactRenderers.renderSlideshow('react-root','#{userid}','#{slideshowid}');
                 $('.carousel').carousel({
                     interval: false
                 });
-                ReactRenderers.renderSlideshow('react-root','#{userid}','#{slideshowid}');
+                
                 //ReactDOM.render(<Slideshow userid='#{userid}' slideshowid='#{slideshowid}' />,
                 //    document.getElementById('react-root')
                 //);

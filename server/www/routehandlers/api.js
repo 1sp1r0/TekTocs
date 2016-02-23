@@ -36,14 +36,17 @@ export function getUserSlideshow (req,res){
                                   
                                    // let coverSlide= yield slackhelper.getCoverSlide(
                                     //    slashCommand.attachments.slideshow.slides[0],slashCommand.team_id);
+                                    
                                  res.status(200).send({name:name,coverslide:coverSlide,mimeType:mimeType,
                                         createDateText:'created on ' + slashCommand.createDate,
                                         slideshow:{title:slashCommand.attachments.slideshow.title,
+                                        slides:slashCommand.attachments.slideshow.slides,
                                         creator:slashCommand.attachments.slideshow.creator}});       
                            }
                            
                         }else{
                             res.status(500).send('no data');
+                            
                         }
              }catch (err) {
                     winston.log('error', err.stack);
