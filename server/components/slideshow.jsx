@@ -68,8 +68,21 @@ export default class Slideshow extends React.Component{
             //      (this.state.data.attachments.slideshow.creator.name?
             //      this.state.data.attachments.slideshow.creator.name:''));
              let coverSlide=<div className='tux-loading-indicator text-center'/>;
-             
-             
+             let slides='';
+             if(this.state.data.attachments.slideshow.slides.length>0){
+                  slides=this.state.data.attachments.slideshow.slides.map(function(slide){
+                     if (slide.slideAssetUrl !='' && slide.slideMode!='snippet'){
+                        return (<div className='item active'>
+                                <img src={slide.slideAssetUrl} />
+                             </div>);
+                     }else{
+                         return (<div className="item active slideContainer">
+                                <div className="slide">{slide.slideText}</div>
+                            </div>);
+                     }
+                     
+                 });
+             }
               //the first slide is the cover slide/title slide.Retrieve the cover slide
              /* if(this.state.data.attachments.slideshow.slides.length>0){
                   let mimeType=this.state.data.attachments.slideshow.slides[0].slideMimeType;
@@ -123,7 +136,7 @@ export default class Slideshow extends React.Component{
                         </div>
                         <div className='carousel' id='slideshow-carousel'>
                              <div className='carousel-inner' role='listbox'>
-                                {coverSlide}
+                                {slides}
                              </div>
                         </div>
                    </div>

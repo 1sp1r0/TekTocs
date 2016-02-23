@@ -90,7 +90,28 @@ var Slideshow = function (_React$Component) {
                 //      (this.state.data.attachments.slideshow.creator.name?
                 //      this.state.data.attachments.slideshow.creator.name:''));
                 var coverSlide = _react2.default.createElement('div', { className: 'tux-loading-indicator text-center' });
-
+                var slides = '';
+                if (this.state.data.attachments.slideshow.slides.length > 0) {
+                    slides = this.state.data.attachments.slideshow.slides.map(function (slide) {
+                        if (slide.slideAssetUrl != '' && slide.slideMode != 'snippet') {
+                            return _react2.default.createElement(
+                                'div',
+                                { className: 'item active' },
+                                _react2.default.createElement('img', { src: slide.slideAssetUrl })
+                            );
+                        } else {
+                            return _react2.default.createElement(
+                                'div',
+                                { className: 'item active slideContainer' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'slide' },
+                                    slide.slideText
+                                )
+                            );
+                        }
+                    });
+                }
                 //the first slide is the cover slide/title slide.Retrieve the cover slide
                 /* if(this.state.data.attachments.slideshow.slides.length>0){
                      let mimeType=this.state.data.attachments.slideshow.slides[0].slideMimeType;
@@ -184,7 +205,7 @@ var Slideshow = function (_React$Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'carousel-inner', role: 'listbox' },
-                            coverSlide
+                            slides
                         )
                     )
                 );
