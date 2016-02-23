@@ -86,6 +86,8 @@ function processMessages(messages, slashCommand, botAcessToken) {
                         if (slide) {
                             slashCommand.attachments.slideshow.slides.push(slide);
                         }
+                        slashCommand.attachments.slideshow.published = true;
+                        yield slashCommand.attachments.slideshow.save();
                     } catch (err) {
                         winston.log('error', err.stack);
 
@@ -96,8 +98,8 @@ function processMessages(messages, slashCommand, botAcessToken) {
                 });
                 slideIndex = slideIndex + 1;
             });
-            slashCommand.attachments.slideshow.published = true;
-            yield slashCommand.attachments.slideshow.save();
+            //slashCommand.attachments.slideshow.published = true;
+            //yield slashCommand.attachments.slideshow.save();
         }
         catch (err) {
             winston.log('error', err.stack);
