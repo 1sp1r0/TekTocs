@@ -68,7 +68,7 @@ export function publish(req,res){
 
 
 function processMessages(messages, slashCommand, botAcessToken) {
-    co(function* () {
+    //co(function* () {
         try {
             
             let slideIndex = 1;
@@ -91,15 +91,15 @@ function processMessages(messages, slashCommand, botAcessToken) {
                 slideIndex = slideIndex + 1;
             });
             slashCommand.attachments.slideshow.published = true;
-            yield slashCommand.attachments.slideshow.save();
+            slashCommand.attachments.slideshow.save();
         }
         catch (err) {
             winston.log('error', err.stack);
         }
-    }).catch((err) => {
-        winston.log('error', err.stack);
+   // }).catch((err) => {
+   //     winston.log('error', err.stack);
 
-    });
+    //});
 }
 
 export function end(req, res) {
