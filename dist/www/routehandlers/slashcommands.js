@@ -51,7 +51,7 @@ function publish(req, res) {
     try {
         if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
             (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-                var slackTeam, slashCommand, response, msgResponse, messages;
+                var slackTeam, slashCommand, response, msgResponse, messages, slide;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -64,7 +64,7 @@ function publish(req, res) {
                                 slackTeam = _context.sent;
 
                                 if (!slackTeam) {
-                                    _context.next = 20;
+                                    _context.next = 30;
                                     break;
                                 }
 
@@ -85,7 +85,7 @@ function publish(req, res) {
 
                                 _logger2.default.log('error', 'Could not find any unpublished slideshows for:' + req.body.team_domain + ',' + req.body.user_id);
                                 res.status(200).send('Could not find any unpublished slideshows.');
-                                _context.next = 18;
+                                _context.next = 28;
                                 break;
 
                             case 13:
@@ -96,41 +96,56 @@ function publish(req, res) {
                                 response = _context.sent;
                                 msgResponse = JSON.parse(response);
 
-                                if (msgResponse.ok) {
-                                    messages = msgResponse.messages.reverse();
-
-                                    processMessages(messages, slashCommand, slackTeam.bot.bot_access_token);
-                                    res.status(200).send('Slideshow has been published.');
-                                } else {
-                                    _logger2.default.log('error', response.error);
-                                    res.status(500).send('Could not retrieve messages from the Slack channel.');
+                                if (!msgResponse.ok) {
+                                    _context.next = 26;
+                                    break;
                                 }
 
-                            case 18:
-                                _context.next = 22;
-                                break;
+                                messages = msgResponse.messages.reverse();
+                                //processMessages(messages,slashCommand,slackTeam.bot.bot_access_token);
 
-                            case 20:
-                                _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
-                                res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+                                _context.next = 21;
+                                return slackhelper.getSlide(messages[0], 1, slackTeam.bot.bot_access_token, slashCommand.attachments.slideshow.short_id);
 
-                            case 22:
+                            case 21:
+                                slide = _context.sent;
+
+                                if (slide) {
+                                    slashCommand.attachments.slideshow.slides.push(slide);
+                                }
+                                res.status(200).send('Slideshow has been published.' + slide.slideAssetUrl + ' ' + slashCommand.attachments.slideshow.slides.length);
                                 _context.next = 28;
                                 break;
 
-                            case 24:
-                                _context.prev = 24;
+                            case 26:
+                                _logger2.default.log('error', response.error);
+                                res.status(500).send('Could not retrieve messages from the Slack channel.');
+
+                            case 28:
+                                _context.next = 32;
+                                break;
+
+                            case 30:
+                                _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
+                                res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+
+                            case 32:
+                                _context.next = 38;
+                                break;
+
+                            case 34:
+                                _context.prev = 34;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 28:
+                            case 38:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 24]]);
+                }, _callee, this, [[0, 34]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
@@ -163,7 +178,8 @@ function processMessages(messages, slashCommand, botAcessToken) {
 
                                             messages.forEach(function (m) {
                                                 (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
-                                                    var slide;
+                                                    var _slide;
+
                                                     return regeneratorRuntime.wrap(function _callee2$(_context2) {
                                                         while (1) {
                                                             switch (_context2.prev = _context2.next) {
@@ -173,10 +189,10 @@ function processMessages(messages, slashCommand, botAcessToken) {
                                                                     return slackhelper.getSlide(m, slideIndex, botAcessToken, slashCommand.attachments.slideshow.short_id);
 
                                                                 case 3:
-                                                                    slide = _context2.sent;
+                                                                    _slide = _context2.sent;
 
-                                                                    if (slide) {
-                                                                        slashCommand.attachments.slideshow.slides.push(slide);
+                                                                    if (_slide) {
+                                                                        slashCommand.attachments.slideshow.slides.push(_slide);
                                                                     }
                                                                     _context2.next = 10;
                                                                     break;

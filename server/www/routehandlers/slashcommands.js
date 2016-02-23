@@ -34,8 +34,13 @@ export function publish(req,res){
                            
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages.reverse();
-                                processMessages(messages,slashCommand,slackTeam.bot.bot_access_token);
-                                res.status(200).send('Slideshow has been published.');
+                                //processMessages(messages,slashCommand,slackTeam.bot.bot_access_token);
+                                let slide = yield slackhelper.getSlide(messages[0], 1,
+                            slackTeam.bot.bot_access_token,slashCommand.attachments.slideshow.short_id);
+                            if (slide) {
+                                slashCommand.attachments.slideshow.slides.push(slide);
+                            }
+                                res.status(200).send('Slideshow has been published.' + slide.slideAssetUrl + ' ' + slashCommand.attachments.slideshow.slides.length);
                             }
                             else{
                                 winston.log('error', response.error);
