@@ -34,16 +34,20 @@ export function publish(req,res){
                            
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages.reverse();
-                                yield processMessages(messages,slashCommand,slackTeam.bot.bot_access_token);
-                                slashCommand.attachments.slideshow.published = true;
-                                yield slashCommand.attachments.slideshow.save();
-                                /*let slide = yield slackhelper.getSlide(messages[0], 1,
-                            slackTeam.bot.bot_access_token,slashCommand.attachments.slideshow.short_id);
-                            if (slide) {
-                                slashCommand.attachments.slideshow.slides.push(slide);
-                                slashCommand.attachments.slideshow.published = true;
-                                yield slashCommand.attachments.slideshow.save();
-                            }*/
+                                setImmediate(()=>{
+                                    try {
+                                        co(function* () {
+                                            yield processMessages(messages,slashCommand,slackTeam.bot.bot_access_token);
+                                            slashCommand.attachments.slideshow.published = true;
+                                            yield slashCommand.attachments.slideshow.save();
+                                            }).catch((err) => {
+                                                winston.log('error', err.stack);
+                                            });
+                                    } catch (err) {
+                                        winston.log('error', err.stack);
+                            
+                                    }
+                                });
                                 res.status(200).send('Slideshow has been published.');
                             }
                             else{
