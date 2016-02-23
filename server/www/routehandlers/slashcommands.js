@@ -80,7 +80,7 @@ export function publish(req,res){
 
 
 function processMessages(messages, slashCommand, botAcessToken) {
-    //co(function* () {
+   
         let slideIndex = 1;
         try {
             return messages.map(m=>{
@@ -108,35 +108,12 @@ function processMessages(messages, slashCommand, botAcessToken) {
                 });
             });
             
-         /*   messages.forEach(m=> {
-                co(function* () {
-                    try {
-                        let slide = yield slackhelper.getSlide(m, slideIndex,
-                            botAcessToken,slashCommand.attachments.slideshow.short_id);
-                        if (slide) {
-                            slashCommand.attachments.slideshow.slides.push(slide);
-                        }
-                        
-                    } catch (err) {
-                        winston.log('error', err.stack);
-
-                    }
-                }).catch((err) => {
-                    winston.log('error', err.stack);
-
-                });
-                slideIndex = slideIndex + 1;
-            });*/
-            //slashCommand.attachments.slideshow.published = true;
-            //yield slashCommand.attachments.slideshow.save();
+        
         }
         catch (err) {
             winston.log('error', err.stack);
         }
-    //}).catch((err) => {
-     //  winston.log('error', err.stack);
-
-    //});
+    
 }
 
 export function end(req, res) {
