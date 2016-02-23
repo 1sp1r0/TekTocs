@@ -34,9 +34,8 @@ export function publish(req,res){
                            
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages.reverse();
-                                res.status(200).send('Slideshow has been published.');
                                 processMessages(messages,slashCommand,slackTeam.bot.bot_access_token);
-                                
+                                res.status(200).send('Slideshow has been published.');
                             }
                             else{
                                 winston.log('error', response.error);
@@ -68,7 +67,7 @@ export function publish(req,res){
 
 
 function processMessages(messages, slashCommand, botAcessToken) {
-    //co(function* () {
+    co(function* () {
         try {
             
             let slideIndex = 1;
@@ -91,15 +90,15 @@ function processMessages(messages, slashCommand, botAcessToken) {
                 slideIndex = slideIndex + 1;
             });
             slashCommand.attachments.slideshow.published = true;
-            slashCommand.attachments.slideshow.save();
+            yield slashCommand.attachments.slideshow.save();
         }
         catch (err) {
             winston.log('error', err.stack);
         }
-   // }).catch((err) => {
-   //     winston.log('error', err.stack);
+    }).catch((err) => {
+       winston.log('error', err.stack);
 
-    //});
+    });
 }
 
 export function end(req, res) {
