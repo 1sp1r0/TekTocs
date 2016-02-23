@@ -36,7 +36,7 @@ export function publish(req,res){
                                 let messages=msgResponse.messages.reverse();
                                 
                                 setImmediate(processMessages(messages,slashCommand,slackTeam.bot.bot_access_token));
-                                res.status(200).send('Slideshow has been published.');
+                                res.status(200).send('Slideshow has been published.' + messages.length);
                             }
                             else{
                                 winston.log('error', response.error);

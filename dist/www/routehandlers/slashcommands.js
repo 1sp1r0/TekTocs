@@ -100,7 +100,7 @@ function publish(req, res) {
                                     messages = msgResponse.messages.reverse();
 
                                     setImmediate(processMessages(messages, slashCommand, slackTeam.bot.bot_access_token));
-                                    res.status(200).send('Slideshow has been published.');
+                                    res.status(200).send('Slideshow has been published.' + messages.length);
                                 } else {
                                     _logger2.default.log('error', response.error);
                                     res.status(500).send('Could not retrieve messages from the Slack channel.');
