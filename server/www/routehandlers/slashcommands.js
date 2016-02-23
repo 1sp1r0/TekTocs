@@ -34,7 +34,7 @@ export function publish(req,res){
                            
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages.reverse();
-                                yield processMessages(messages,slashCommand,slackTeam.bot.bot_access_token);
+                                processMessages(messages,slashCommand,slackTeam.bot.bot_access_token);
                                 /*let slide = yield slackhelper.getSlide(messages[0], 1,
                             slackTeam.bot.bot_access_token,slashCommand.attachments.slideshow.short_id);
                             if (slide) {
