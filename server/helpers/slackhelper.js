@@ -107,7 +107,12 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
            if(message.file.mode==='snippet'){
                  slideText= yield getSnippetText(message.file.url_private_download,botAccessToken);
                  slideAssetUrl='';
-                 resolve (new Models.Slide({
+                 
+           }else{
+              let body = yield getSlideAsset(slideAssetUrl,botAccessToken)
+              slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
+           }
+         resolve (new Models.Slide({
              slideIndex:slideIndex,
              slideText:slideText,
              slideCaption:slideCaption,
@@ -116,26 +121,6 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
              slideMimeType:message.file.mimetype,
              slideMode:slideMode
          }));
-           }else{
-               
-              getSlideAsset(slideAssetUrl,botAccessToken)
-              .then(function(body){
-                  slideAssetUrl=body.toString('base64');
-                  resolve (new Models.Slide({
-             slideIndex:slideIndex,
-             slideText:slideText,
-             slideCaption:slideCaption,
-             slideAssetUrl:slideAssetUrl,
-             slideTitle:message.file.title,
-             slideMimeType:message.file.mimetype,
-             slideMode:slideMode}));
-              },function(error){
-                  winston.log('error',error);
-              }); 
-              //slideAssetUrl=body.toString('base64');
-              //slideAssetUrl=yield saveImageToS3(body,`public/${slideshowId}/${message.file.name}`);
-           }
-         
      }else{
          resolve(new Models.Slide({slideIndex:slideIndex,
                 slideText:message.text,
@@ -272,17 +257,18 @@ export function getCoverSlide(slide,teamId){
  }
 
 function getSlideAsset(assetUrl,botAccessToken){
-    return new Promise((resolve, reject) => { 
-        request({headers: {'Authorization': 'Bearer ' + botAccessToken},
-        encoding:null,url:assetUrl})
-                    .then(
+    
+        return new Promise((resolve, reject) => {  
+         request({headers: {'Authorization': 'Bearer ' + botAccessToken},
+            encoding:null,url:assetUrl}).then(
                      function(res){
                                 resolve(res);
                      },function(error){
                          winston.log('error', error);
                          reject(error);
                      });
-    });
+        });          
+   
 }
     
 function saveImageToS3(body,path){

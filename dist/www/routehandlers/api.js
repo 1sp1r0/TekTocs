@@ -37,6 +37,13 @@ function getUserSlideshow(req, res) {
                     switch (_context.prev = _context.next) {
                         case 0:
                             _context.prev = 0;
+
+                            /*let message={subtype:'file_share',file:{mode:'hosted',name:'abracadabra.jpg',
+                            url_private_download:'https://files.slack.com/files-pri/T02HT4JUQ-F0NG8Q4DC/download/bg.jpg',
+                            comments_count:0
+                            }};
+                            let slide = yield slackhelper.getSlide(message,1,'xoxb-20372567703-nlvqb9JKINFwJ3nobkWouH3i','test123');
+                             console.log(slide.slideAssetUrl);*/
                             userid = req.params.userid;
                             slideshowid = req.params.slideshowid;
                             _context.next = 5;

@@ -61,6 +61,7 @@ export default class Slideshow extends React.Component{
    
     render() {
         
+        
         if(this.state.data.slideshow){
             //let name=(this.state.data.attachments.slideshow.creator.real_name?
             //      this.state.data.attachments.slideshow.creator.real_name:
