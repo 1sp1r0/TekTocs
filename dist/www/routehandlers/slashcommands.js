@@ -64,7 +64,7 @@ function publish(req, res) {
                                 slackTeam = _context.sent;
 
                                 if (!slackTeam) {
-                                    _context.next = 30;
+                                    _context.next = 31;
                                     break;
                                 }
 
@@ -85,7 +85,7 @@ function publish(req, res) {
 
                                 _logger2.default.log('error', 'Could not find any unpublished slideshows for:' + req.body.team_domain + ',' + req.body.user_id);
                                 res.status(200).send('Could not find any unpublished slideshows.');
-                                _context.next = 28;
+                                _context.next = 29;
                                 break;
 
                             case 13:
@@ -97,18 +97,20 @@ function publish(req, res) {
                                 msgResponse = JSON.parse(response);
 
                                 if (!msgResponse.ok) {
-                                    _context.next = 26;
+                                    _context.next = 27;
                                     break;
                                 }
 
                                 messages = msgResponse.messages.reverse();
+                                _context.next = 21;
+                                return processMessages(messages, slashCommand, slackTeam.bot.bot_access_token);
 
-                                processMessages(messages, slashCommand, slackTeam.bot.bot_access_token);
+                            case 21:
                                 slashCommand.attachments.slideshow.published = true;
-                                _context.next = 23;
+                                _context.next = 24;
                                 return slashCommand.attachments.slideshow.save();
 
-                            case 23:
+                            case 24:
                                 /*let slide = yield slackhelper.getSlide(messages[0], 1,
                                 slackTeam.bot.bot_access_token,slashCommand.attachments.slideshow.short_id);
                                 if (slide) {
@@ -117,38 +119,38 @@ function publish(req, res) {
                                 yield slashCommand.attachments.slideshow.save();
                                 }*/
                                 res.status(200).send('Slideshow has been published.');
-                                _context.next = 28;
+                                _context.next = 29;
                                 break;
 
-                            case 26:
+                            case 27:
                                 _logger2.default.log('error', response.error);
                                 res.status(500).send('Could not retrieve messages from the Slack channel.');
 
-                            case 28:
-                                _context.next = 32;
+                            case 29:
+                                _context.next = 33;
                                 break;
 
-                            case 30:
+                            case 31:
                                 _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
                                 res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
 
-                            case 32:
-                                _context.next = 38;
+                            case 33:
+                                _context.next = 39;
                                 break;
 
-                            case 34:
-                                _context.prev = 34;
+                            case 35:
+                                _context.prev = 35;
                                 _context.t0 = _context['catch'](0);
 
                                 _logger2.default.log('error', _context.t0.stack);
                                 res.sendStatus(500);
 
-                            case 38:
+                            case 39:
                             case 'end':
                                 return _context.stop();
                         }
                     }
-                }, _callee, this, [[0, 34]]);
+                }, _callee, this, [[0, 35]]);
             })).catch(function (err) {
                 _logger2.default.log('error', err.stack);
                 res.sendStatus(500);
@@ -164,11 +166,10 @@ function publish(req, res) {
 
 function processMessages(messages, slashCommand, botAcessToken) {
     //co(function* () {
+    var slideIndex = 1;
     try {
-        (function () {
-
-            var slideIndex = 1;
-            messages.forEach(function (m) {
+        return messages.map(function (m) {
+            return new Promise(function (resolve, reject) {
                 (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
                     var slide;
                     return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -177,16 +178,20 @@ function processMessages(messages, slashCommand, botAcessToken) {
                                 case 0:
                                     _context2.prev = 0;
                                     _context2.next = 3;
-                                    return slackhelper.getSlide(m, slideIndex, botAcessToken, slashCommand.attachments.slideshow.short_id);
+                                    return slackhelper.getSlide(m, slideIndex++, botAcessToken, slashCommand.attachments.slideshow.short_id);
 
                                 case 3:
                                     slide = _context2.sent;
 
                                     if (slide) {
                                         slashCommand.attachments.slideshow.slides.push(slide);
+                                        resolve(true);
+                                    } else {
+                                        reject('Could not process message as slide');
+                                        _logger2.default.log('error', 'Could not process message as slide');
                                     }
 
-                                    _context2.next = 10;
+                                    _context2.next = 11;
                                     break;
 
                                 case 7:
@@ -194,8 +199,9 @@ function processMessages(messages, slashCommand, botAcessToken) {
                                     _context2.t0 = _context2['catch'](0);
 
                                     _logger2.default.log('error', _context2.t0.stack);
+                                    reject(_context2.t0.stack);
 
-                                case 10:
+                                case 11:
                                 case 'end':
                                     return _context2.stop();
                             }
@@ -203,12 +209,30 @@ function processMessages(messages, slashCommand, botAcessToken) {
                     }, _callee2, this, [[0, 7]]);
                 })).catch(function (err) {
                     _logger2.default.log('error', err.stack);
+                    reject(err.stack);
                 });
-                slideIndex = slideIndex + 1;
             });
-            //slashCommand.attachments.slideshow.published = true;
-            //yield slashCommand.attachments.slideshow.save();
-        })();
+        });
+
+        /*   messages.forEach(m=> {
+               co(function* () {
+                   try {
+                       let slide = yield slackhelper.getSlide(m, slideIndex,
+                           botAcessToken,slashCommand.attachments.slideshow.short_id);
+                       if (slide) {
+                           slashCommand.attachments.slideshow.slides.push(slide);
+                       }
+                       
+                   } catch (err) {
+                       winston.log('error', err.stack);
+                    }
+               }).catch((err) => {
+                   winston.log('error', err.stack);
+                });
+               slideIndex = slideIndex + 1;
+           });*/
+        //slashCommand.attachments.slideshow.published = true;
+        //yield slashCommand.attachments.slideshow.save();
     } catch (err) {
         _logger2.default.log('error', err.stack);
     }

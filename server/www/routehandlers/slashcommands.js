@@ -34,7 +34,7 @@ export function publish(req,res){
                            
                             if(msgResponse.ok){
                                 let messages=msgResponse.messages.reverse();
-                                processMessages(messages,slashCommand,slackTeam.bot.bot_access_token);
+                                yield processMessages(messages,slashCommand,slackTeam.bot.bot_access_token);
                                 slashCommand.attachments.slideshow.published = true;
                                 yield slashCommand.attachments.slideshow.save();
                                 /*let slide = yield slackhelper.getSlide(messages[0], 1,
@@ -77,10 +77,34 @@ export function publish(req,res){
 
 function processMessages(messages, slashCommand, botAcessToken) {
     //co(function* () {
+        let slideIndex = 1;
         try {
+            return messages.map(m=>{
+                return new Promise((resolve,reject)=>{
+                    co(function* () {
+                    try {
+                        let slide = yield slackhelper.getSlide(m, slideIndex++,
+                            botAcessToken,slashCommand.attachments.slideshow.short_id);
+                        if (slide) {
+                            slashCommand.attachments.slideshow.slides.push(slide);
+                            resolve(true);
+                        }else{
+                            reject('Could not process message as slide');
+                            winston.log('error', 'Could not process message as slide');
+                        }
+                        
+                    } catch (err) {
+                        winston.log('error', err.stack);
+                        reject(err.stack);    
+                    }
+                }).catch((err) => {
+                    winston.log('error', err.stack);
+                    reject(err.stack);    
+                });
+                });
+            });
             
-            let slideIndex = 1;
-            messages.forEach(m=> {
+         /*   messages.forEach(m=> {
                 co(function* () {
                     try {
                         let slide = yield slackhelper.getSlide(m, slideIndex,
@@ -98,7 +122,7 @@ function processMessages(messages, slashCommand, botAcessToken) {
 
                 });
                 slideIndex = slideIndex + 1;
-            });
+            });*/
             //slashCommand.attachments.slideshow.published = true;
             //yield slashCommand.attachments.slideshow.save();
         }
