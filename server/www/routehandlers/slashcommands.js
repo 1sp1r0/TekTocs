@@ -39,6 +39,8 @@ export function publish(req,res){
                             slackTeam.bot.bot_access_token,slashCommand.attachments.slideshow.short_id);
                             if (slide) {
                                 slashCommand.attachments.slideshow.slides.push(slide);
+                                slashCommand.attachments.slideshow.published = true;
+                                yield slashCommand.attachments.slideshow.save();
                             }
                                 res.status(200).send('Slideshow has been published.' + slide.slideAssetUrl + ' ' + slashCommand.attachments.slideshow.slides.length);
                             }
