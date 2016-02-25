@@ -19,7 +19,7 @@ export default class Slideshow extends React.Component{
        let self=this;
        
        $.ajax({
-      url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
+      url: 'http://44107b1f.ngrok.io/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -70,35 +70,100 @@ export default class Slideshow extends React.Component{
                                 <div className="slide">{this.state.data.coverslide.text}</div>
                             </div>);
                }
-            return <div><div className='jumbotron'>
+            return <div className='jumbotron'>
                         <div className='jumbotron-contents'>
-                            <div className='row'>
-                                <div className='col-md-12'>
-                                    <div className='floatLeft'>
-                                        <div className='avatar-container'>
-                                            <a className='avatar'>
-                                                <img className='avatar-image' src={this.state.data.slideshow.creator.image_32} />
-                                            </a>
-                                        </div>    
-                                        <div className='userinfo'>
-                                             <a>{this.state.data.name}</a>
-                                             <span className='userinfo-extra'>{this.state.data.createDateText}</span>
+                                    <div className='row'>
+                                        <div className='col-md-12 col-sm-12 col-xs-12'>
+                                            <div className='floatLeft'>
+                                                <div className='avatar-container'>
+                                                    <a className='avatar'>
+                                                        <img className='avatar-image' src={this.state.data.slideshow.creator.image_32} />
+                                                    </a>
+                                                </div>    
+                                                <div className='userinfo'>
+                                                    <a>{this.state.data.name}</a>
+                                                    <span className='userinfo-extra'>{this.state.data.createDateText}</span>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <div className='col-md-12 col-sm-12 col-xs-12'>
+                                            <div className='slideshow-title'>{this.state.data.slideshow.title}</div> 
+                                       </div>
+                            </div>
+                              <div className='row visible-xs'>
+                                <div className='col-xs-2'>
+                                    <div className='slideshow-nav-button-left'>
+                                    <a className='left pull-left' href='#slideshow-carousel' role='button' data-slide='prev'>
+                                        <span className='glyphicon glyphicon-chevron-left' aria-hidden='true'/>
+                                        <span className='sr-only'>Previous</span>
+                                    </a>
+                                    
                                     </div>
                                 </div>
+                                <div className='col-xs-8'>
+                                    
+                                </div>
+                                  <div className='col-xs-2'>
+                                    <div className='slideshow-nav-button-right'>
+                                        <a className='right pull-right' href='#slideshow-carousel' role='button' data-slide='next'>
+                                            <span className='glyphicon glyphicon-chevron-right' aria-hidden='true'/>
+                                            <span className='sr-only'>Next</span>
+                                        </a>
+                                   </div>   
+                                </div>
                             </div>
-                            <div className='slideshow-title'>{this.state.data.slideshow.title}</div> 
+                            <div className='row'>
+                                <div className='col-md-1 col-sm-1 hidden-xs'>
+                                    <div className='slideshow-nav-button-left'>
+                                    <a className='left pull-left' href='#slideshow-carousel' role='button' data-slide='prev'>
+                                        <span className='glyphicon glyphicon-chevron-left' aria-hidden='true'/>
+                                        <span className='sr-only'>Previous</span>
+                                    </a>
+                                    
+                                    </div>
+                                </div>
+                                <div className='col-md-10 col-sm-10 col-xs-12 text-center'>
+                                    <div  className='carousel' id='slideshow-carousel'>
+                                        <div className='carousel-inner' role='listbox'>
+                                              {slides}
+                                          </div>
+                                     </div>
+                                </div>
+                                  <div className='col-md-1 col-sm-1 hidden-xs'>
+                                    <div className='slideshow-nav-button-right'>
+                                        <a className='right pull-right' href='#slideshow-carousel' role='button' data-slide='next'>
+                                            <span className='glyphicon glyphicon-chevron-right' aria-hidden='true'/>
+                                            <span className='sr-only'>Next</span>
+                                        </a>
+                                    </div>   
+                                </div>
+                            </div>
+                           <div className='row visible-xs'>
+                                <div className='col-xs-2'>
+                                    <div className='slideshow-nav-button-left'>
+                                    <a className='left pull-left' href='#slideshow-carousel' role='button' data-slide='prev'>
+                                        <span className='glyphicon glyphicon-chevron-left' aria-hidden='true'/>
+                                        <span className='sr-only'>Previous</span>
+                                    </a>
+                                    
+                                    </div>
+                                </div>
+                                <div className='col-xs-8'>
+                                    
+                                </div>
+                                  <div className='col-xs-2'>
+                                    <div className='slideshow-nav-button-right'>
+                                        <a className='right pull-right' href='#slideshow-carousel' role='button' data-slide='next'>
+                                            <span className='glyphicon glyphicon-chevron-right' aria-hidden='true'/>
+                                            <span className='sr-only'>Next</span>
+                                        </a>
+                                   </div>   
+                                </div>
+                            </div>
                         </div>
-                        <div  className='carousel' id='slideshow-carousel'>
-                             <div className='carousel-inner' role='listbox'>
-                                {slides}
-                             </div>
-                        </div>
+                       
                    </div>
-                   <div className="col-md-1 col-sm-1 col-xs-2"><a href="#slideshow-carousel" role="button" data-slide="prev" className="left pull-left"><span aria-hidden="true" className="glyphicon glyphicon-chevron-left"></span><span className="sr-only">Previous</span></a></div>
-                   <div className="col-md-10 col-sm-10 col-xs-8 text-center">1 of 50</div>
-                   <div className="col-md-1 col-sm-1 col-xs-2"><a href="#slideshow-carousel" role="button" data-slide="next" className="right pull-right"><span aria-hidden="true" className="glyphicon glyphicon-chevron-right"></span><span className="sr-only">Next</span></a></div>
-                   </div>
+                   
         }else {
              return <div></div>
                     

@@ -19729,7 +19729,7 @@ var ReactRenderers =
 	            var self = this;
 
 	            $.ajax({
-	                url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
+	                url: 'http://44107b1f.ngrok.io/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
 	                dataType: 'json',
 	                cache: false,
 	                success: function success(data) {
@@ -19795,94 +19795,187 @@ var ReactRenderers =
 	                }
 	                return _react2.default.createElement(
 	                    'div',
-	                    null,
+	                    { className: 'jumbotron' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        { className: 'jumbotron' },
+	                        { className: 'jumbotron-contents' },
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'jumbotron-contents' },
+	                            { className: 'row' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'row' },
+	                                { className: 'col-md-12 col-sm-12 col-xs-12' },
 	                                _react2.default.createElement(
 	                                    'div',
-	                                    { className: 'col-md-12' },
+	                                    { className: 'floatLeft' },
 	                                    _react2.default.createElement(
 	                                        'div',
-	                                        { className: 'floatLeft' },
+	                                        { className: 'avatar-container' },
 	                                        _react2.default.createElement(
-	                                            'div',
-	                                            { className: 'avatar-container' },
-	                                            _react2.default.createElement(
-	                                                'a',
-	                                                { className: 'avatar' },
-	                                                _react2.default.createElement('img', { className: 'avatar-image', src: this.state.data.slideshow.creator.image_32 })
-	                                            )
+	                                            'a',
+	                                            { className: 'avatar' },
+	                                            _react2.default.createElement('img', { className: 'avatar-image', src: this.state.data.slideshow.creator.image_32 })
+	                                        )
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'userinfo' },
+	                                        _react2.default.createElement(
+	                                            'a',
+	                                            null,
+	                                            this.state.data.name
 	                                        ),
 	                                        _react2.default.createElement(
-	                                            'div',
-	                                            { className: 'userinfo' },
-	                                            _react2.default.createElement(
-	                                                'a',
-	                                                null,
-	                                                this.state.data.name
-	                                            ),
-	                                            _react2.default.createElement(
-	                                                'span',
-	                                                { className: 'userinfo-extra' },
-	                                                this.state.data.createDateText
-	                                            )
+	                                            'span',
+	                                            { className: 'userinfo-extra' },
+	                                            this.state.data.createDateText
 	                                        )
 	                                    )
 	                                )
 	                            ),
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'slideshow-title' },
-	                                this.state.data.slideshow.title
+	                                { className: 'col-md-12 col-sm-12 col-xs-12' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'slideshow-title' },
+	                                    this.state.data.slideshow.title
+	                                )
 	                            )
 	                        ),
 	                        _react2.default.createElement(
 	                            'div',
-	                            { className: 'carousel', id: 'slideshow-carousel' },
+	                            { className: 'row visible-xs' },
 	                            _react2.default.createElement(
 	                                'div',
-	                                { className: 'carousel-inner', role: 'listbox' },
-	                                slides
-	                            )
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-1 col-sm-1 col-xs-2' },
-	                        _react2.default.createElement(
-	                            'a',
-	                            { href: '#slideshow-carousel', role: 'button', 'data-slide': 'prev', className: 'left pull-left' },
-	                            _react2.default.createElement('span', { 'aria-hidden': 'true', className: 'glyphicon glyphicon-chevron-left' }),
+	                                { className: 'col-xs-2' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'slideshow-nav-button-left' },
+	                                    _react2.default.createElement(
+	                                        'a',
+	                                        { className: 'left pull-left', href: '#slideshow-carousel', role: 'button', 'data-slide': 'prev' },
+	                                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-chevron-left', 'aria-hidden': 'true' }),
+	                                        _react2.default.createElement(
+	                                            'span',
+	                                            { className: 'sr-only' },
+	                                            'Previous'
+	                                        )
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement('div', { className: 'col-xs-8' }),
 	                            _react2.default.createElement(
-	                                'span',
-	                                { className: 'sr-only' },
-	                                'Previous'
+	                                'div',
+	                                { className: 'col-xs-2' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'slideshow-nav-button-right' },
+	                                    _react2.default.createElement(
+	                                        'a',
+	                                        { className: 'right pull-right', href: '#slideshow-carousel', role: 'button', 'data-slide': 'next' },
+	                                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-chevron-right', 'aria-hidden': 'true' }),
+	                                        _react2.default.createElement(
+	                                            'span',
+	                                            { className: 'sr-only' },
+	                                            'Next'
+	                                        )
+	                                    )
+	                                )
 	                            )
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-10 col-sm-10 col-xs-8 text-center' },
-	                        '1 of 50'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'col-md-1 col-sm-1 col-xs-2' },
+	                        ),
 	                        _react2.default.createElement(
-	                            'a',
-	                            { href: '#slideshow-carousel', role: 'button', 'data-slide': 'next', className: 'right pull-right' },
-	                            _react2.default.createElement('span', { 'aria-hidden': 'true', className: 'glyphicon glyphicon-chevron-right' }),
+	                            'div',
+	                            { className: 'row' },
 	                            _react2.default.createElement(
-	                                'span',
-	                                { className: 'sr-only' },
-	                                'Next'
+	                                'div',
+	                                { className: 'col-md-1 col-sm-1 hidden-xs' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'slideshow-nav-button-left' },
+	                                    _react2.default.createElement(
+	                                        'a',
+	                                        { className: 'left pull-left', href: '#slideshow-carousel', role: 'button', 'data-slide': 'prev' },
+	                                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-chevron-left', 'aria-hidden': 'true' }),
+	                                        _react2.default.createElement(
+	                                            'span',
+	                                            { className: 'sr-only' },
+	                                            'Previous'
+	                                        )
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'col-md-10 col-sm-10 col-xs-12 text-center' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'carousel', id: 'slideshow-carousel' },
+	                                    _react2.default.createElement(
+	                                        'div',
+	                                        { className: 'carousel-inner', role: 'listbox' },
+	                                        slides
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'col-md-1 col-sm-1 hidden-xs' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'slideshow-nav-button-right' },
+	                                    _react2.default.createElement(
+	                                        'a',
+	                                        { className: 'right pull-right', href: '#slideshow-carousel', role: 'button', 'data-slide': 'next' },
+	                                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-chevron-right', 'aria-hidden': 'true' }),
+	                                        _react2.default.createElement(
+	                                            'span',
+	                                            { className: 'sr-only' },
+	                                            'Next'
+	                                        )
+	                                    )
+	                                )
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'row visible-xs' },
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'col-xs-2' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'slideshow-nav-button-left' },
+	                                    _react2.default.createElement(
+	                                        'a',
+	                                        { className: 'left pull-left', href: '#slideshow-carousel', role: 'button', 'data-slide': 'prev' },
+	                                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-chevron-left', 'aria-hidden': 'true' }),
+	                                        _react2.default.createElement(
+	                                            'span',
+	                                            { className: 'sr-only' },
+	                                            'Previous'
+	                                        )
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement('div', { className: 'col-xs-8' }),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'col-xs-2' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'slideshow-nav-button-right' },
+	                                    _react2.default.createElement(
+	                                        'a',
+	                                        { className: 'right pull-right', href: '#slideshow-carousel', role: 'button', 'data-slide': 'next' },
+	                                        _react2.default.createElement('span', { className: 'glyphicon glyphicon-chevron-right', 'aria-hidden': 'true' }),
+	                                        _react2.default.createElement(
+	                                            'span',
+	                                            { className: 'sr-only' },
+	                                            'Next'
+	                                        )
+	                                    )
+	                                )
 	                            )
 	                        )
 	                    )
