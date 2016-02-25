@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from  'react-dom/server';
 import Slideshow from '../../components/slideshow';
+import * as Components from '../../components/slideshowlist';
 
 function userSlideshows (req,res){
-    res.render('slideshows/user',{userid:req.params.userid});
+    let SlideshowListComponent = React.createFactory(Components.SlideshowList);
+    res.render('slideshows/user',{userid:req.params.userid,
+    react: ReactDOM.renderToString(SlideshowListComponent({userid: req.params.userid}))
+    });
 }
 
 function userSlideshow (req,res){

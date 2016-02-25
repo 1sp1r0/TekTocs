@@ -142,6 +142,7 @@ function getUserSlideshows(req, res) {
                                     return { name: name, coverslide: coverSlide,
                                         createDateText: 'created ' + (0, _moment2.default)(slashCommand.createDate).fromNow(),
                                         slideshow: { title: slashCommand.attachments.slideshow.title,
+                                            slideCount: slashCommand.attachments.slideshow.length,
                                             short_id: slashCommand.attachments.slideshow.short_id,
                                             creator: { _id: slashCommand.attachments.slideshow.creator._id,
                                                 image_32: slashCommand.attachments.slideshow.creator.image_32 } } };
@@ -149,7 +150,7 @@ function getUserSlideshows(req, res) {
 
                                 res.status(200).send({ ok: true, result: result });
                             } else {
-                                res.status(200).send({ ok: false, result: {} });
+                                res.status(200).send({ ok: false, result: [] });
                             }
 
                             _context2.next = 12;
