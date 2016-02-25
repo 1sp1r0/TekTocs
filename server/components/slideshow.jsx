@@ -10,7 +10,7 @@ export default class Slideshow extends React.Component{
       this.setState({data:{name:'',
       coverslide:{isImage:true},
       'mimeType':'image/jpeg',createDateText:'',
-      slideshow:{title:'',creator:{image_32:''},slides:[]}
+      slideshow:{title:'',creator:{image_32:''},slides:[],slideCaption:''}
       }});
     
   }
@@ -19,7 +19,7 @@ export default class Slideshow extends React.Component{
        let self=this;
        
        $.ajax({
-      url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
+      url: 'http://localhost:5000/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -48,6 +48,7 @@ export default class Slideshow extends React.Component{
                          
                         return (<div key={slide._id} className={`${index===0?'active':''} item`}>
                                 <img src={slide.slideAssetUrl} />
+                                <div className="slide">{slide.slideCaption}</div>
                              </div>);
                      }else{
                          return (<div key={slide._id} className={`${index===0?'active':''} item slideContainer`}>

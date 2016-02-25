@@ -36,7 +36,7 @@ var Slideshow = function (_React$Component) {
             this.setState({ data: { name: '',
                     coverslide: { isImage: true },
                     'mimeType': 'image/jpeg', createDateText: '',
-                    slideshow: { title: '', creator: { image_32: '' }, slides: [] }
+                    slideshow: { title: '', creator: { image_32: '' }, slides: [], slideCaption: '' }
                 } });
         }
     }, {
@@ -45,7 +45,7 @@ var Slideshow = function (_React$Component) {
             var self = this;
 
             $.ajax({
-                url: 'https://tektocs.herokuapp.com/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
+                url: 'http://localhost:5000/api/' + self.props.userid + '/' + self.props.slideshowid, //this.props.url,
                 dataType: 'json',
                 cache: false,
                 success: function success(data) {
@@ -74,7 +74,12 @@ var Slideshow = function (_React$Component) {
                             return _react2.default.createElement(
                                 'div',
                                 { key: slide._id, className: (index === 0 ? 'active' : '') + ' item' },
-                                _react2.default.createElement('img', { src: slide.slideAssetUrl })
+                                _react2.default.createElement('img', { src: slide.slideAssetUrl }),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'slide' },
+                                    slide.slideCaption
+                                )
                             );
                         } else {
                             return _react2.default.createElement(

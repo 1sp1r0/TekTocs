@@ -24,6 +24,10 @@ var Models = _interopRequireWildcard(_models);
 
 require('babel-polyfill');
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -66,7 +70,7 @@ function getUserSlideshow(req, res) {
                                     //    slashCommand.attachments.slideshow.slides[0],slashCommand.team_id);
 
                                     res.status(200).send({ name: name, coverslide: coverSlide, mimeType: mimeType,
-                                        createDateText: 'created on ' + slashCommand.createDate,
+                                        createDateText: 'created ' + (0, _moment2.default)(slashCommand.createDate).fromNow(),
                                         slideshow: { title: slashCommand.attachments.slideshow.title,
                                             slides: slashCommand.attachments.slideshow.slides,
                                             creator: slashCommand.attachments.slideshow.creator } });

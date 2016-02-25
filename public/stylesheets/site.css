@@ -60,7 +60,7 @@ body{
 }
 
 .slideshow-nav-button-left{
-    /*position: fixed;*/
+    position: fixed;
     padding-top:75px;
     z-index: 1000;
     
@@ -71,7 +71,7 @@ body{
 }
 
 .slideshow-nav-button-right{
-    /*position: fixed;*/
+    position: fixed;
    padding-top:75px;
     z-index: 1000;
    /* margin-right:-15px;*/
