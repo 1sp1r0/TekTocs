@@ -107,7 +107,7 @@ function getUserSlideshow(req, res) {
 function getUserSlideshows(req, res) {
     try {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
-            var _userid, slideshows;
+            var _userid, slashCommands, result;
 
             return regeneratorRuntime.wrap(function _callee2$(_context2) {
                 while (1) {
@@ -118,12 +118,40 @@ function getUserSlideshows(req, res) {
                             _context2.next = 4;
                             return Models.SlashCommand.find({
                                 'attachments.slideshow.published': true,
-                                'attachments.slideshow.creator': _userid }, { 'attachments.slideshow': 1 }).populate('attachments.slideshow.creator').exec();
+                                'attachments.slideshow.creator': _userid }, { createDate: 1, team_id: 1, 'attachments.slideshow': 1 }, { sort: { createDate: -1 }, skip: 0, limit: 15 }).populate('attachments.slideshow.creator').exec();
 
                         case 4:
-                            slideshows = _context2.sent;
+                            slashCommands = _context2.sent;
 
-                            res.status(200).send(slideshows);
+                            if (slashCommands && slashCommands.length > 0) {
+                                result = slashCommands.map(function (slashCommand) {
+                                    var coverSlide = {};
+                                    var name = '';
+                                    if (slashCommand.attachments) {
+                                        name = slashCommand.attachments.slideshow.creator.real_name ? slashCommand.attachments.slideshow.creator.real_name : slashCommand.attachments.slideshow.creator.name ? slashCommand.attachments.slideshow.creator.name : '';
+                                        if (slashCommand.attachments.slideshow.slides.length > 0) {
+                                            var _slide = slashCommand.attachments.slideshow.slides[0];
+                                            if (_slide.slideAssetUrl != '' && _slide.slideMode != 'snippet') {
+                                                coverSlide = { isImage: true, src: _slide.slideAssetUrl };
+                                            } else {
+                                                coverSlide = { isImage: false, src: '' };
+                                            }
+                                        }
+                                    }
+
+                                    return { name: name, coverslide: coverSlide,
+                                        createDateText: 'created ' + (0, _moment2.default)(slashCommand.createDate).fromNow(),
+                                        slideshow: { title: slashCommand.attachments.slideshow.title,
+                                            short_id: slashCommand.attachments.slideshow.short_id,
+                                            creator: { _id: slashCommand.attachments.slideshow.creator._id,
+                                                image_32: slashCommand.attachments.slideshow.creator.image_32 } } };
+                                });
+
+                                res.status(200).send({ ok: true, result: result });
+                            } else {
+                                res.status(200).send({ ok: false, result: {} });
+                            }
+
                             _context2.next = 12;
                             break;
 

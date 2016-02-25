@@ -68,12 +68,44 @@ export function getUserSlideshows (req,res){
         co(function* () {
            try{
                 let userid=req.params.userid;
-                let slideshows = yield Models.SlashCommand.find({ 
+                let slashCommands = yield Models.SlashCommand.find({ 
                         'attachments.slideshow.published':true,
-                        'attachments.slideshow.creator': userid},{'attachments.slideshow':1})
+                        'attachments.slideshow.creator': userid},
+                        {createDate:1,team_id:1,'attachments.slideshow':1},
+                        {sort:{createDate:-1},skip: 0, limit: 15})
                         .populate('attachments.slideshow.creator')
                         .exec();
-                res.status(200).send(slideshows);
+                 if(slashCommands && slashCommands.length>0){
+                    let result= slashCommands.map((slashCommand)=>{
+                        let coverSlide={};
+                        let name='';
+                         if(slashCommand.attachments){
+                             name=(slashCommand.attachments.slideshow.creator.real_name?
+                                slashCommand.attachments.slideshow.creator.real_name:
+                                (slashCommand.attachments.slideshow.creator.name?
+                                slashCommand.attachments.slideshow.creator.name:''));
+                              if(slashCommand.attachments.slideshow.slides.length>0){  
+                                  let slide=slashCommand.attachments.slideshow.slides[0];
+                                  if (slide.slideAssetUrl !='' && slide.slideMode != 'snippet'){
+                                      coverSlide={isImage:true,src:slide.slideAssetUrl};
+                                  }else{
+                                      coverSlide={isImage:false,src:''};
+                                  }
+                              }   
+                         }
+                         
+                         return {name:name,coverslide:coverSlide,
+                                        createDateText:'created ' + moment(slashCommand.createDate).fromNow(),
+                                        slideshow:{title:slashCommand.attachments.slideshow.title,
+                                        short_id:slashCommand.attachments.slideshow.short_id,
+                                        creator:{_id:slashCommand.attachments.slideshow.creator._id,
+                                        image_32:slashCommand.attachments.slideshow.creator.image_32}}};  
+                     });
+                     res.status(200).send({ok:true,result:result});
+                 }   else{
+                     res.status(200).send({ok:false,result:{}});
+                 }    
+                
              }catch (err) {
                     winston.log('error', err.stack);
                     res.sendStatus(500);
