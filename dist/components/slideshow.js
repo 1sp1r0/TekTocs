@@ -57,6 +57,11 @@ var Slideshow = function (_React$Component) {
             });
         }
     }, {
+        key: 'createMarkup',
+        value: function createMarkup(slideText) {
+            return { __html: slideText.replace(/\r\n/g, '<br/>') };
+        }
+    }, {
         key: 'render',
         value: function render() {
 
@@ -66,7 +71,7 @@ var Slideshow = function (_React$Component) {
                 var slides = '';
 
                 if (this.state.data.slideshow.slides.length > 0) {
-
+                    var self = this;
                     slides = this.state.data.slideshow.slides.map(function (slide, index) {
 
                         if (slide.slideAssetUrl != '' && slide.slideMode != 'snippet') {
@@ -82,15 +87,23 @@ var Slideshow = function (_React$Component) {
                                 )
                             );
                         } else {
-                            return _react2.default.createElement(
-                                'div',
-                                { key: slide._id, className: (index === 0 ? 'active' : '') + ' item slideContainer' },
-                                _react2.default.createElement(
+                            if (slide.slideMode === 'snippet') {
+                                return _react2.default.createElement(
                                     'div',
-                                    { className: 'slide' },
-                                    slide.slideText
-                                )
-                            );
+                                    { key: slide._id, className: (index === 0 ? 'active' : '') + ' item slideContainer' },
+                                    _react2.default.createElement('div', { dangerouslySetInnerHTML: self.createMarkup(slide.slideText), className: 'slide text-left' })
+                                );
+                            } else {
+                                return _react2.default.createElement(
+                                    'div',
+                                    { key: slide._id, className: (index === 0 ? 'active' : '') + ' item slideContainer' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'slide' },
+                                        slide.slideText
+                                    )
+                                );
+                            }
                         }
                     });
                 }

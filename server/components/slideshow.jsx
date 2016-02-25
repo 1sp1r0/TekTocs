@@ -32,6 +32,7 @@ export default class Slideshow extends React.Component{
     });
    }
    
+   createMarkup(slideText) { return {__html: slideText.replace(/\r\n/g,'<br/>')}; }
    
    render() {
        
@@ -41,7 +42,7 @@ export default class Slideshow extends React.Component{
              let slides='';
             
              if(this.state.data.slideshow.slides.length>0){
-                 
+                 var self=this;
                   slides=this.state.data.slideshow.slides.map(function(slide,index){
                       
                      if (slide.slideAssetUrl !='' && slide.slideMode!='snippet'){
@@ -51,9 +52,15 @@ export default class Slideshow extends React.Component{
                                 <div className="slide">{slide.slideCaption}</div>
                              </div>);
                      }else{
+                         if(slide.slideMode==='snippet'){
+                             return (<div key={slide._id} className={`${index===0?'active':''} item slideContainer`}>
+                                <div dangerouslySetInnerHTML={self.createMarkup(slide.slideText)} className="slide text-left"></div>
+                            </div>);
+                         }else{
                          return (<div key={slide._id} className={`${index===0?'active':''} item slideContainer`}>
                                 <div className="slide">{slide.slideText}</div>
                             </div>);
+                         }
                      }
                      
                      
