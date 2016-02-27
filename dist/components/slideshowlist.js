@@ -11,6 +11,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactInfinite = require('react-infinite');
+
+var _reactInfinite2 = _interopRequireDefault(_reactInfinite);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18,6 +22,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var pageSize = 15;
 
 var SlideshowList = exports.SlideshowList = function (_React$Component) {
     _inherits(SlideshowList, _React$Component);
@@ -27,7 +33,11 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SlideshowList).call(this, props));
 
-        _this.state = { data: { ok: false } };
+        _this.state = { data: { ok: false,
+                result: [] },
+            isInfiniteLoading: false,
+            skip: -1 * pageSize,
+            noMoreRecords: false };
         return _this;
     }
 
@@ -35,19 +45,42 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
 
+            this.getSlideShows();
+        }
+    }, {
+        key: 'getSlideShows',
+        value: function getSlideShows() {
+            if (this.state.noMoreRecords) {
+                return;
+            }
+            this.state.isInfiniteLoading = true;
+            this.state.skip = this.state.skip + pageSize;
             var self = this;
 
             $.ajax({
-                url: 'https://tektocs.herokuapp.com/api/' + self.props.userid, //this.props.url,
+                url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows?skip=' + self.state.skip, //this.props.url,
                 dataType: 'json',
                 cache: false,
                 success: function success(data) {
-                    self.setState({ data: data });
+
+                    if (!data.ok || data.result.length === 0) {
+                        self.state.noMoreRecords = true;
+                    }
+                    self.setState({ data: data, isInfiniteLoading: false });
                 },
                 error: function error(xhr, status, err) {
                     console.error(self.props.url, status, err.toString());
                 }
             });
+        }
+    }, {
+        key: 'elementInfiniteLoad',
+        value: function elementInfiniteLoad() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                'Loading...'
+            );
         }
     }, {
         key: 'render',
@@ -61,8 +94,14 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
                         return _react2.default.createElement(SlideshowLead, { data: data, key: data.slideshow.short_id });
                     });
                     return _react2.default.createElement(
-                        'div',
-                        null,
+                        _reactInfinite2.default,
+                        { elementHeight: 200,
+                            infiniteLoadBeginEdgeOffset: 200,
+                            onInfiniteLoad: this.getSlideShows.bind(this),
+                            loadingSpinnerDelegate: this.elementInfiniteLoad(),
+                            isInfiniteLoading: this.state.isInfiniteLoading,
+                            useWindowAsScrollContainer: true
+                        },
                         slideshows
                     );
                 } else {

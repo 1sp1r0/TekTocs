@@ -1,23 +1,43 @@
 import React from 'react';
+import Infinite from 'react-infinite'
+const pageSize=15;
 
 export  class SlideshowList extends React.Component{
     
   constructor(props) {
     super(props);
-    this.state = {data: {ok:false}};
+    this.state = {data: {ok:false,
+    result:[]},
+    isInfiniteLoading: false,
+    skip:-1*pageSize,
+    noMoreRecords:false};
   }
 
   
    componentDidMount() {
        
+       this.getSlideShows();
+   }
+   
+   getSlideShows(){
+       if(this.state.noMoreRecords){
+           return;
+       }
+       this.state.isInfiniteLoading= true;
+       this.state.skip=this.state.skip+pageSize;
        let self=this;
        
        $.ajax({
-      url: 'https://tektocs.herokuapp.com/api/' + self.props.userid , //this.props.url,
+      url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows?skip=' + self.state.skip, //this.props.url,
       dataType: 'json',
       cache: false,
       success: function(data) {
-        self.setState({data: data});
+          
+          if(!data.ok || data.result.length===0){
+              self.state.noMoreRecords=true;
+              
+          }
+        self.setState({data: data,isInfiniteLoading:false});
         
       },
       error: function(xhr, status, err) {
@@ -26,6 +46,13 @@ export  class SlideshowList extends React.Component{
     });
    }
    
+    
+
+    elementInfiniteLoad() {
+        return <div>
+                   Loading...
+               </div>;
+    }
 
    
    render() {
@@ -37,7 +64,15 @@ export  class SlideshowList extends React.Component{
                   slideshows=this.state.data.result.map(function(data,index){
                      return (<SlideshowLead data={data} key={data.slideshow.short_id}></SlideshowLead>);
                  });
-                 return <div>{slideshows}</div>;
+                 return <Infinite  elementHeight={200}
+                         infiniteLoadBeginEdgeOffset={200}
+                         onInfiniteLoad={this.getSlideShows.bind(this)}
+                         loadingSpinnerDelegate={this.elementInfiniteLoad()}
+                         isInfiniteLoading={this.state.isInfiniteLoading} 
+                         useWindowAsScrollContainer={true}
+                         >
+                            {slideshows}
+                         </Infinite>   
              }
              else {
                  return <div></div>;

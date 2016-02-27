@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getUserSlideshow = getUserSlideshow;
 exports.getUserSlideshows = getUserSlideshows;
+exports.getUser = getUser;
 
 var _co = require('co');
 
@@ -105,6 +106,7 @@ function getUserSlideshow(req, res) {
 }
 
 function getUserSlideshows(req, res) {
+
     try {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
             var _userid, slashCommands, result;
@@ -118,7 +120,7 @@ function getUserSlideshows(req, res) {
                             _context2.next = 4;
                             return Models.SlashCommand.find({
                                 'attachments.slideshow.published': true,
-                                'attachments.slideshow.creator': _userid }, { createDate: 1, team_id: 1, 'attachments.slideshow': 1 }, { sort: { createDate: -1 }, skip: 0, limit: 15 }).populate('attachments.slideshow.creator').exec();
+                                'attachments.slideshow.creator': _userid }, { createDate: 1, team_id: 1, 'attachments.slideshow': 1 }, { sort: { createDate: -1 }, skip: req.query.skip, limit: 15 }).populate('attachments.slideshow.creator').exec();
 
                         case 4:
                             slashCommands = _context2.sent;
@@ -169,6 +171,59 @@ function getUserSlideshows(req, res) {
                     }
                 }
             }, _callee2, this, [[0, 8]]);
+        })).catch(function (err) {
+            _logger2.default.log('error', err.stack);
+            res.sendStatus(500);
+        });
+    } catch (err) {
+        _logger2.default.log('error', err.message);
+        res.sendStatus(500);
+    }
+}
+
+function getUser(req, res) {
+
+    try {
+        (0, _co2.default)(regeneratorRuntime.mark(function _callee3() {
+            var _userid2, slackUser, _name;
+
+            return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                while (1) {
+                    switch (_context3.prev = _context3.next) {
+                        case 0:
+                            _context3.prev = 0;
+                            _userid2 = req.params.userid;
+                            _context3.next = 4;
+                            return Models.SlackUser.findOne({
+                                _id: _userid2 }).exec();
+
+                        case 4:
+                            slackUser = _context3.sent;
+
+                            if (slackUser) {
+                                _name = slackUser.real_name ? slackUser.real_name : slackUser.name ? slackUser.name : '';
+
+                                res.status(200).send({ ok: true, result: { name: _name,
+                                        image: slackUser.image_72, description: '' } });
+                            } else {
+                                res.status(200).send({ ok: false, result: null });
+                            }
+                            _context3.next = 12;
+                            break;
+
+                        case 8:
+                            _context3.prev = 8;
+                            _context3.t0 = _context3['catch'](0);
+
+                            _logger2.default.log('error', _context3.t0.stack);
+                            res.sendStatus(500);
+
+                        case 12:
+                        case 'end':
+                            return _context3.stop();
+                    }
+                }
+            }, _callee3, this, [[0, 8]]);
         })).catch(function (err) {
             _logger2.default.log('error', err.stack);
             res.sendStatus(500);

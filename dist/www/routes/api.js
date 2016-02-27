@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-       value: true
+      value: true
 });
 
 var _express = require('express');
@@ -16,12 +16,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
-router.get('/:userid/:slideshowid', function (req, res) {
-       _routehandlermappings2.default['/api/:userid/:slideshowid'][req.method.toLowerCase()](req, res);
+router.get('/users/:userid/slideshows/:slideshowid', function (req, res) {
+      _routehandlermappings2.default['/api/users/:userid/slideshows/:slideshowid'][req.method.toLowerCase()](req, res);
 });
 
-router.get('/:userid', function (req, res) {
-       _routehandlermappings2.default['/api/:userid'][req.method.toLowerCase()](req, res);
+router.get('/users/:userid/slideshows', function (req, res) {
+      _routehandlermappings2.default['/api/users/:userid/slideshows'][req.method.toLowerCase()](req, res);
+});
+
+router.get('/users/:userid', function (req, res) {
+      _routehandlermappings2.default['/api/users/:userid'][req.method.toLowerCase()](req, res);
 });
 
 exports.default = router;

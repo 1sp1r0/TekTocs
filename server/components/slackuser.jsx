@@ -1,17 +1,13 @@
 import React from 'react';
 
-export default class Slideshow extends React.Component{
+export default class SlackUser extends React.Component{
     
   constructor(props) {
     super(props);
     this.state = {data: {}};
   }
   componentWillMount() {
-      this.setState({data:{name:'',
-      coverslide:{isImage:true},
-      'mimeType':'image/jpeg',createDateText:'',
-      slideshow:{title:'',creator:{image_32:''},slides:[],slideCaption:''}
-      }});
+      this.setState({data:{name:'',image:'',description:''}});
     
   }
   
@@ -19,7 +15,7 @@ export default class Slideshow extends React.Component{
        let self=this;
        
        $.ajax({
-      url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows/' + self.props.slideshowid, //this.props.url,
+      url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid ,
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -36,7 +32,7 @@ export default class Slideshow extends React.Component{
    
    render() {
        
-        if(this.state.data.slideshow){
+        if(this.state.data.name !=''){
            
              let coverSlide=<div className='tux-loading-indicator text-center'/>;
              let slides='';

@@ -18,26 +18,22 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Slideshow = function (_React$Component) {
-    _inherits(Slideshow, _React$Component);
+var SlackUser = function (_React$Component) {
+    _inherits(SlackUser, _React$Component);
 
-    function Slideshow(props) {
-        _classCallCheck(this, Slideshow);
+    function SlackUser(props) {
+        _classCallCheck(this, SlackUser);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Slideshow).call(this, props));
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SlackUser).call(this, props));
 
         _this.state = { data: {} };
         return _this;
     }
 
-    _createClass(Slideshow, [{
+    _createClass(SlackUser, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            this.setState({ data: { name: '',
-                    coverslide: { isImage: true },
-                    'mimeType': 'image/jpeg', createDateText: '',
-                    slideshow: { title: '', creator: { image_32: '' }, slides: [], slideCaption: '' }
-                } });
+            this.setState({ data: { name: '', image: '', description: '' } });
         }
     }, {
         key: 'componentDidMount',
@@ -45,7 +41,7 @@ var Slideshow = function (_React$Component) {
             var self = this;
 
             $.ajax({
-                url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows/' + self.props.slideshowid, //this.props.url,
+                url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid,
                 dataType: 'json',
                 cache: false,
                 success: function success(data) {
@@ -65,7 +61,7 @@ var Slideshow = function (_React$Component) {
         key: 'render',
         value: function render() {
 
-            if (this.state.data.slideshow) {
+            if (this.state.data.name != '') {
 
                 var coverSlide = _react2.default.createElement('div', { className: 'tux-loading-indicator text-center' });
                 var slides = '';
@@ -320,8 +316,8 @@ var Slideshow = function (_React$Component) {
         }
     }]);
 
-    return Slideshow;
+    return SlackUser;
 }(_react2.default.Component);
 
-exports.default = Slideshow;
+exports.default = SlackUser;
 ;

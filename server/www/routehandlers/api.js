@@ -64,6 +64,7 @@ export function getUserSlideshow (req,res){
 }
 
 export function getUserSlideshows (req,res){
+    
     try{
         co(function* () {
            try{
@@ -72,7 +73,7 @@ export function getUserSlideshows (req,res){
                         'attachments.slideshow.published':true,
                         'attachments.slideshow.creator': userid},
                         {createDate:1,team_id:1,'attachments.slideshow':1},
-                        {sort:{createDate:-1},skip: 0, limit: 15})
+                        {sort:{createDate:-1},skip: req.query.skip, limit: 15})
                         .populate('attachments.slideshow.creator')
                         .exec();
                  if(slashCommands && slashCommands.length>0){
@@ -119,5 +120,39 @@ export function getUserSlideshows (req,res){
         winston.log('error',err.message);
         res.sendStatus(500);
     }
+}
+
+export function getUser (req,res){
+    
+    try{
+        co(function* () {
+           try{
+               let userid=req.params.userid;
+               let slackUser = yield Models.SlackUser.findOne({ 
+                        _id:userid})
+                        .exec();
+               if(slackUser){
+                   let name=(slackUser.real_name?
+                                slackUser.real_name:
+                                (slackUser.name?
+                                slackUser.name:''));
+                   res.status(200).send({ok:true,result:{name:name,
+                   image:slackUser.image_72,description:''}});
+               }else{
+                   res.status(200).send({ok:false,result:null});
+               }        
+               }catch (err) {
+                    winston.log('error', err.stack);
+                    res.sendStatus(500);
+             }
+       }).catch((err) => {
+            winston.log('error', err.stack);
+            res.sendStatus(500);
+      });
+    }catch (err) {
+        winston.log('error',err.message);
+        res.sendStatus(500);
+    }
+    
 }
 
