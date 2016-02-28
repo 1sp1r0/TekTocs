@@ -52,6 +52,7 @@ var ReactRenderers =
 	});
 	exports.renderSlideshow = renderSlideshow;
 	exports.renderSlideshowlist = renderSlideshowlist;
+	exports.renderSlackUser = renderSlackUser;
 
 	var _react = __webpack_require__(1);
 
@@ -68,6 +69,10 @@ var ReactRenderers =
 	var _slideshowlist = __webpack_require__(160);
 
 	var Components = _interopRequireWildcard(_slideshowlist);
+
+	var _slackuser = __webpack_require__(174);
+
+	var _slackuser2 = _interopRequireDefault(_slackuser);
 
 	function _interopRequireWildcard(obj) {
 	    if (obj && obj.__esModule) {
@@ -93,6 +98,11 @@ var ReactRenderers =
 	function renderSlideshowlist(targetElementId, userid) {
 	    var SlideShowListComponent = _react2.default.createFactory(Components.SlideshowList);
 	    _reactDom2.default.render(SlideShowListComponent({ userid: userid }), document.getElementById(targetElementId));
+	}
+
+	function renderSlackUser(targetElementId, userid) {
+	    var SlackUserComponent = _react2.default.createFactory(_slackuser2.default);
+	    _reactDom2.default.render(SlackUserComponent({ userid: userid }), document.getElementById(targetElementId));
 	}
 
 	if (false) {
@@ -21386,6 +21396,103 @@ var ReactRenderers =
 	  }
 	};
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SlackUser = function (_React$Component) {
+	    _inherits(SlackUser, _React$Component);
+
+	    function SlackUser(props) {
+	        _classCallCheck(this, SlackUser);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SlackUser).call(this, props));
+
+	        _this.state = { data: {} };
+	        return _this;
+	    }
+
+	    _createClass(SlackUser, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.setState({ data: { ok: false, result: { name: '', image: '', description: '' } } });
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var self = this;
+
+	            $.ajax({
+	                url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid,
+	                dataType: 'json',
+	                cache: false,
+	                success: function success(data) {
+	                    self.setState({ data: data });
+	                },
+	                error: function error(xhr, status, err) {
+	                    console.error(self.props.url, status, err.toString());
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            if (this.state.data.ok) {
+
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'jumbotron' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'jumbotron-contents bs-sidebar affix', id: 'sidebar' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'avatar-container' },
+	                            _react2.default.createElement(
+	                                'a',
+	                                { className: 'avatar' },
+	                                _react2.default.createElement('img', { className: 'avatar-image', src: this.state.data.result.image })
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            this.state.data.result.name
+	                        )
+	                    )
+	                );
+	            } else {
+	                return _react2.default.createElement('div', null);
+	            }
+	        }
+	    }]);
+
+	    return SlackUser;
+	}(_react2.default.Component);
+
+	exports.default = SlackUser;
 
 /***/ }
 /******/ ]);

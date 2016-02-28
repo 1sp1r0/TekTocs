@@ -5,7 +5,8 @@ block content
         div.col-md-7.col-sm-12.col-xs-12
             div#react-root!= react
         div.col-md-5.hidden-xs.hidden-sm
-                div.jumbotron
+            div#react-user-component!= react-user-component
+                //div.jumbotron
                     div.jumbotron-contents#sidebar.bs-sidebar.affix
                             div.avatar-container
                                         a.avatar
@@ -22,6 +23,7 @@ block content
             $().ready(function() {
                 
                 ReactRenderers.renderSlideshowlist('react-root','#{userid}');
+                ReactRenderers.renderSlackUser('react-user-component','#{userid}');
                 //$('.carousel').carousel({
                 //    interval: false
                 //});
