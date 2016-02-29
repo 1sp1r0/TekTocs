@@ -68,7 +68,7 @@ export default class Slackbot{
     registerSlackListeners(){
         let self=this;
         this.slack.on('message', function(message) {
-            winston.log('error', JSON.parse(message));
+           
             co(function* () {
                 try {
                 //ignore messages sent by the bot.
@@ -99,11 +99,11 @@ export default class Slackbot{
                     self.clientio.emit('SlackMessage',slide.slideText);
                 }
                 }catch(err){
-                    winston.log('error', err);
+                    winston.log('error', err.stack);
                 }
                 
             }).catch((err) => {
-                winston.log('error', err);
+                winston.log('error', err.stack);
             });
         });
     }

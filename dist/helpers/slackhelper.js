@@ -103,7 +103,7 @@ function processMessage(message) {
                             }
 
                             reject('Slideshow has not been started yet.');
-                            _context.next = 24;
+                            _context.next = 22;
                             break;
 
                         case 8:
@@ -114,47 +114,51 @@ function processMessage(message) {
                             team = _context.sent;
                             botAccessToken = team.bot.bot_access_token;
                             slideIndex = getNextSlideindex(slashCommand.attachments.slideshow.slides);
-                            _context.next = 15;
-                            return getSlide(message, slideIndex, botAccessToken, slashCommand.slideshow.short_id);
+                            //let slide=yield getSlide(message,slideIndex,botAccessToken,slashCommand.slideshow.short_id);
 
-                        case 15:
-                            slide = _context.sent;
+                            slide = new Models.Slide({ slideIndex: slideIndex,
+                                slideText: message.text,
+                                slideCaption: '',
+                                slideAssetUrl: '',
+                                slideTitle: '',
+                                slideMimeType: '',
+                                slideMode: '' });
 
                             if (!slide) {
-                                _context.next = 23;
+                                _context.next = 21;
                                 break;
                             }
 
                             slashCommand.attachments.slideshow.slides.push(slide);
-                            _context.next = 20;
+                            _context.next = 18;
                             return slashCommand.attachments.slideshow.save();
 
-                        case 20:
+                        case 18:
                             resolve(slide);
-                            _context.next = 24;
+                            _context.next = 22;
                             break;
 
-                        case 23:
+                        case 21:
                             reject("error getting slide data");
 
-                        case 24:
-                            _context.next = 29;
+                        case 22:
+                            _context.next = 27;
                             break;
 
-                        case 26:
-                            _context.prev = 26;
+                        case 24:
+                            _context.prev = 24;
                             _context.t0 = _context['catch'](0);
 
-                            reject(_context.t0);
+                            reject(_context.t0.stack);
 
-                        case 29:
+                        case 27:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 26]]);
+            }, _callee, this, [[0, 24]]);
         })).catch(function (err) {
-            reject(err);
+            reject(err.stack);
         });
     });
 }

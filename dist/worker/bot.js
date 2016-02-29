@@ -100,7 +100,7 @@ var Slackbot = function () {
         value: function registerSlackListeners() {
             var self = this;
             this.slack.on('message', function (message) {
-                _logger2.default.log('error', JSON.parse(message));
+
                 (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
                     var slide;
                     return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -150,7 +150,7 @@ var Slackbot = function () {
                                     _context.prev = 10;
                                     _context.t0 = _context['catch'](0);
 
-                                    _logger2.default.log('error', _context.t0);
+                                    _logger2.default.log('error', _context.t0.stack);
 
                                 case 13:
                                 case 'end':
@@ -159,7 +159,7 @@ var Slackbot = function () {
                         }
                     }, _callee, this, [[0, 10]]);
                 })).catch(function (err) {
-                    _logger2.default.log('error', err);
+                    _logger2.default.log('error', err.stack);
                 });
             });
         }

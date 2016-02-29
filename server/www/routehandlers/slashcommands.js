@@ -182,7 +182,7 @@ export function startSlideshow(req, res,isLive) {
                     if(isLive && req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
                         req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
                         req.app.slackbot.registerSlackListeners();
-                        //req.app.slackbot.registerSocketIoListeners(req.body.user_id);
+                        req.app.slackbot.registerSocketIoListeners(req.body.user_id);
                     }
                     let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
                     let im=JSON.parse(imResponse);
