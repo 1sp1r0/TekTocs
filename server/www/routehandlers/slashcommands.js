@@ -172,6 +172,7 @@ export function startSlideshow(req, res,isLive) {
     if (req.body.token === process.env.SLASH_COMMAND_VERIFICATION_TOKEN) {
         co(function* () {
             try {
+                req.app.slackbot.slack=new Slack('', true, true);
                 if (req.body.text.trim()===''){
                     res.status(200).send('Every slideshow needs a title. Enter the title after the command - "/tektocs-startlive titleOfYourSlideshow"');
                     return;
