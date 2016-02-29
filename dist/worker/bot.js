@@ -100,6 +100,7 @@ var Slackbot = function () {
         value: function registerSlackListeners() {
             var self = this;
             this.slack.on('message', function (message) {
+                _logger2.default.log('error', JSON.parse(message));
                 (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
                     var slide;
                     return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -123,7 +124,7 @@ var Slackbot = function () {
                                     slide = _context.sent;
 
                                     //check if the message is an image or snippet.
-
+                                    _logger2.default.log('error', JSON.parse(slide));
                                     if (slide.slideAssetUrl != '' && slide.slideMode != 'snippet') {
                                         self.clientio.emit('SlackMessage', { src: slide.slideAssetUrl, isImage: true });
 
@@ -142,21 +143,21 @@ var Slackbot = function () {
                                             //emit SlackMessage event to the server- socketioServer.
                                             self.clientio.emit('SlackMessage', slide.slideText);
                                         }
-                                    _context.next = 12;
+                                    _context.next = 13;
                                     break;
 
-                                case 9:
-                                    _context.prev = 9;
+                                case 10:
+                                    _context.prev = 10;
                                     _context.t0 = _context['catch'](0);
 
                                     _logger2.default.log('error', _context.t0);
 
-                                case 12:
+                                case 13:
                                 case 'end':
                                     return _context.stop();
                             }
                         }
-                    }, _callee, this, [[0, 9]]);
+                    }, _callee, this, [[0, 10]]);
                 })).catch(function (err) {
                     _logger2.default.log('error', err);
                 });

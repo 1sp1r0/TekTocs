@@ -68,6 +68,7 @@ export default class Slackbot{
     registerSlackListeners(){
         let self=this;
         this.slack.on('message', function(message) {
+            winston.log('error', JSON.parse(message));
             co(function* () {
                 try {
                 //ignore messages sent by the bot.
@@ -77,7 +78,7 @@ export default class Slackbot{
                 
                 let slide=yield slackhelper.processMessage(message);
                 //check if the message is an image or snippet. 
-                
+                winston.log('error', JSON.parse(slide));
                     if (slide.slideAssetUrl !='' && slide.slideMode!='snippet'){
                             self.clientio.emit('SlackMessage',{src:slide.slideAssetUrl,isImage:true });
                         
