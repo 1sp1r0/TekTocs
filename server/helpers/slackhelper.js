@@ -73,6 +73,7 @@ export function processMessage(message){
                 slideTitle:'',
                 slideMimeType:'',
                 slideMode:''});
+                
                 if(slide){
                             slashCommand.attachments.slideshow.slides.push(slide);
                             yield slashCommand.attachments.slideshow.save();
