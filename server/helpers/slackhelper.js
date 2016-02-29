@@ -76,10 +76,10 @@ export function processMessage(message){
             }
         }
         catch (err) {
-                    reject(err.stack);
+                    reject(err);
                 }
         }).catch((err) => {
-              reject(err.stack);
+              reject(err);
             });
     });
 }    

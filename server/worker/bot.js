@@ -69,6 +69,7 @@ export default class Slackbot{
         let self=this;
         this.slack.on('message', function(message) {
             co(function* () {
+                try {
                 //ignore messages sent by the bot.
                 if(message.user===self.slack.self.id){
                     return;
@@ -96,9 +97,12 @@ export default class Slackbot{
                     //emit SlackMessage event to the server- socketioServer.
                     self.clientio.emit('SlackMessage',slide.slideText);
                 }
+                }catch(err){
+                    winston.log('error', err);
+                }
                 
             }).catch((err) => {
-                winston.log('error', err.stack);
+                winston.log('error', err);
             });
         });
     }

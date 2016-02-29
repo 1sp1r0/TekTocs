@@ -145,7 +145,7 @@ function processMessage(message) {
                             _context.prev = 26;
                             _context.t0 = _context['catch'](0);
 
-                            reject(_context.t0.stack);
+                            reject(_context.t0);
 
                         case 29:
                         case 'end':
@@ -154,7 +154,7 @@ function processMessage(message) {
                 }
             }, _callee, this, [[0, 26]]);
         })).catch(function (err) {
-            reject(err.stack);
+            reject(err);
         });
     });
 }

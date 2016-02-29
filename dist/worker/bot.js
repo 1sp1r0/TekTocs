@@ -106,18 +106,20 @@ var Slackbot = function () {
                         while (1) {
                             switch (_context.prev = _context.next) {
                                 case 0:
+                                    _context.prev = 0;
+
                                     if (!(message.user === self.slack.self.id)) {
-                                        _context.next = 2;
+                                        _context.next = 3;
                                         break;
                                     }
 
                                     return _context.abrupt('return');
 
-                                case 2:
-                                    _context.next = 4;
+                                case 3:
+                                    _context.next = 5;
                                     return slackhelper.processMessage(message);
 
-                                case 4:
+                                case 5:
                                     slide = _context.sent;
 
                                     //check if the message is an image or snippet.
@@ -140,15 +142,23 @@ var Slackbot = function () {
                                             //emit SlackMessage event to the server- socketioServer.
                                             self.clientio.emit('SlackMessage', slide.slideText);
                                         }
+                                    _context.next = 12;
+                                    break;
 
-                                case 6:
+                                case 9:
+                                    _context.prev = 9;
+                                    _context.t0 = _context['catch'](0);
+
+                                    _logger2.default.log('error', _context.t0);
+
+                                case 12:
                                 case 'end':
                                     return _context.stop();
                             }
                         }
-                    }, _callee, this);
+                    }, _callee, this, [[0, 9]]);
                 })).catch(function (err) {
-                    _logger2.default.log('error', err.stack);
+                    _logger2.default.log('error', err);
                 });
             });
         }
