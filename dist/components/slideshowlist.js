@@ -15,6 +15,10 @@ var _reactInfinite = require('react-infinite');
 
 var _reactInfinite2 = _interopRequireDefault(_reactInfinite);
 
+var _reactWaypoint = require('react-waypoint');
+
+var _reactWaypoint2 = _interopRequireDefault(_reactWaypoint);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33,27 +37,44 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SlideshowList).call(this, props));
 
-        _this.state = { data: { ok: false,
-                result: [] },
-            isInfiniteLoading: false,
-            skip: -1 * pageSize,
-            noMoreRecords: false };
+        _this.state = {
+            data: { ok: false, result: [] },
+            isInitialLoad: true,
+            skip: -1 * pageSize
+        };
         return _this;
     }
+
+    //componentWillMount(){
+    //    this.setState({ok:true,result:[]});
+    //}
 
     _createClass(SlideshowList, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-
             this.getSlideShows();
+        }
+    }, {
+        key: 'renderWaypoint',
+        value: function renderWaypoint() {
+            //if (this.state.isInitialLoad) {
+            //  this.state.isInitialLoad=false;
+
+            return _react2.default.createElement(_reactWaypoint2.default, {
+                onEnter: this.getSlideShows.bind(this),
+                threshold: 2.0
+            });
+            //}
         }
     }, {
         key: 'getSlideShows',
         value: function getSlideShows() {
-            if (this.state.noMoreRecords) {
-                return;
-            }
-            this.state.isInfiniteLoading = true;
+
+            /* if(this.state.noMoreRecords){
+                 return;
+             }
+             this.state.isInfiniteLoading= true;*/
+
             this.state.skip = this.state.skip + pageSize;
             var self = this;
 
@@ -63,10 +84,11 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
                 cache: false,
                 success: function success(data) {
 
-                    if (!data.ok || data.result.length === 0) {
-                        self.state.noMoreRecords = true;
+                    if (data.ok && data.result.length > 0) {
+                        //self.state.noMoreRecords=true;
+                        data.result = self.state.data.result.concat(data.result);
+                        self.setState({ data: data });
                     }
-                    self.setState({ data: data, isInfiniteLoading: false });
                 },
                 error: function error(xhr, status, err) {
                     console.error(self.props.url, status, err.toString());
@@ -87,29 +109,34 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
         value: function render() {
 
             if (this.state.data.ok) {
-                var slideshows = '';
-                if (this.state.data.result.length > 0) {
-                    var self = this;
-                    slideshows = this.state.data.result.map(function (data, index) {
-                        return _react2.default.createElement(SlideshowLead, { data: data, key: data.slideshow.short_id });
-                    });
-                    return _react2.default.createElement(
-                        _reactInfinite2.default,
-                        { elementHeight: 200,
-                            infiniteLoadBeginEdgeOffset: 200,
-                            onInfiniteLoad: this.getSlideShows.bind(this),
-                            loadingSpinnerDelegate: this.elementInfiniteLoad(),
-                            isInfiniteLoading: this.state.isInfiniteLoading,
-                            useWindowAsScrollContainer: true
-                        },
-                        slideshows
-                    );
-                } else {
+                var slideshows = _react2.default.createElement('div', null);
+                // if(this.state.data.result.length>0){
+                var self = this;
+                slideshows = this.state.data.result.map(function (data, index) {
+                    return _react2.default.createElement(SlideshowLead, { data: data, key: data.slideshow.short_id });
+                });
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    slideshows,
+                    this.renderWaypoint()
+                );
+                /*return <Infinite  elementHeight={200}
+                        infiniteLoadBeginEdgeOffset={200}
+                        onInfiniteLoad={this.getSlideShows.bind(this)}
+                        loadingSpinnerDelegate={this.elementInfiniteLoad()}
+                        isInfiniteLoading={this.state.isInfiniteLoading} 
+                        useWindowAsScrollContainer={true}
+                        >
+                           {slideshows}
+                        </Infinite>   */
+                // }
+                // else {
+                //     return <div></div>;
+                // }
+            } else {
                     return _react2.default.createElement('div', null);
                 }
-            } else {
-                return _react2.default.createElement('div', null);
-            }
         }
     }]);
 

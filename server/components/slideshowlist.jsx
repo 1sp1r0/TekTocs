@@ -1,43 +1,65 @@
 import React from 'react';
 import Infinite from 'react-infinite'
+import Waypoint from 'react-waypoint'
 const pageSize=15;
 
 export  class SlideshowList extends React.Component{
     
   constructor(props) {
     super(props);
-    this.state = {data: {ok:false,
-    result:[]},
-    isInfiniteLoading: false,
-    skip:-1*pageSize,
-    noMoreRecords:false};
+    this.state = {
+       data: {ok:false,result:[]},
+       isInitialLoad:true,
+       skip:-1*pageSize
+  };
   }
 
+//componentWillMount(){
+//    this.setState({ok:true,result:[]});
+//}
   
    componentDidMount() {
-       
        this.getSlideShows();
    }
    
+   renderWaypoint() {
+    //if (this.state.isInitialLoad) {
+      //  this.state.isInitialLoad=false;
+      
+      return (
+         <Waypoint
+            onEnter={this.getSlideShows.bind(this)}
+          threshold={2.0}
+        />
+      );
+    //}
+  }
+  
+ 
+   
    getSlideShows(){
-       if(this.state.noMoreRecords){
+       
+      /* if(this.state.noMoreRecords){
            return;
        }
-       this.state.isInfiniteLoading= true;
+       this.state.isInfiniteLoading= true;*/
+       
        this.state.skip=this.state.skip+pageSize;
        let self=this;
        
        $.ajax({
-      url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows?skip=' + self.state.skip, //this.props.url,
+      url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows?skip=' + self.state.skip , //this.props.url,
       dataType: 'json',
       cache: false,
       success: function(data) {
           
-          if(!data.ok || data.result.length===0){
-              self.state.noMoreRecords=true;
-              
+          if(data.ok && data.result.length > 0){
+              //self.state.noMoreRecords=true;
+              data.result=self.state.data.result.concat(data.result);
+              self.setState({data: data});
           }
-        self.setState({data: data,isInfiniteLoading:false});
+          
+          
         
       },
       error: function(xhr, status, err) {
@@ -58,13 +80,17 @@ export  class SlideshowList extends React.Component{
    render() {
        
         if(this.state.data.ok){
-             let slideshows='';
-             if(this.state.data.result.length>0){
+             let slideshows=<div></div>;
+            // if(this.state.data.result.length>0){
                  var self=this;
                   slideshows=this.state.data.result.map(function(data,index){
                      return (<SlideshowLead data={data} key={data.slideshow.short_id}></SlideshowLead>);
                  });
-                 return <Infinite  elementHeight={200}
+                 return <div>
+                            {slideshows}
+                            {this.renderWaypoint()}
+                        </div>    
+                 /*return <Infinite  elementHeight={200}
                          infiniteLoadBeginEdgeOffset={200}
                          onInfiniteLoad={this.getSlideShows.bind(this)}
                          loadingSpinnerDelegate={this.elementInfiniteLoad()}
@@ -72,14 +98,15 @@ export  class SlideshowList extends React.Component{
                          useWindowAsScrollContainer={true}
                          >
                             {slideshows}
-                         </Infinite>   
-             }
-             else {
-                 return <div></div>;
-             }
+                         </Infinite>   */
+            // }
+            // else {
+            //     return <div></div>;
+            // }
     }else{
         return <div></div>;
     }
+    
     
   
 }
