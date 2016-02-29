@@ -24,7 +24,7 @@ block content
                 
                
             });
-            var socket = io('/#{userid}');
+            var socket = io.connect('/#{userid}');
             socket.on('DisplaySlackMessage', function(msg){
                 $('.carousel  div.item').removeClass('active');
                  if(msg.isImage){
