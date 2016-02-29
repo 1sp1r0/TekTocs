@@ -89,7 +89,7 @@ export default class Slideshow extends React.Component{
                                                     </a>
                                                 </div>    
                                                 <div className='userinfo'>
-                                                    <a>{this.state.data.name}</a>
+                                                    <a href={'/slideshows/' + this.props.userid}>{this.state.data.name}</a>
                                                     <span className='userinfo-extra'>{this.state.data.createDateText}</span>
                                                 </div>
                                             </div>

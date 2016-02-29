@@ -156,7 +156,7 @@ var Slideshow = function (_React$Component) {
                                         { className: 'userinfo' },
                                         _react2.default.createElement(
                                             'a',
-                                            null,
+                                            { href: '/slideshows/' + this.props.userid },
                                             this.state.data.name
                                         ),
                                         _react2.default.createElement(

@@ -84,7 +84,7 @@ export  class SlideshowList extends React.Component{
             // if(this.state.data.result.length>0){
                  var self=this;
                   slideshows=this.state.data.result.map(function(data,index){
-                     return (<SlideshowLead data={data} key={data.slideshow.short_id}></SlideshowLead>);
+                     return (<SlideshowLead userid={self.props.userid} data={data} key={data.slideshow.short_id}></SlideshowLead>);
                  });
                  return <div>
                             {slideshows}
@@ -128,22 +128,24 @@ export  class SlideshowLead extends React.Component{
   }
   
    componentDidMount() {
-       this.setState({data: this.props.data});
+       //this.setState();
    }
    
 
    
    render() {
        
-        if(this.state.data && this.state.data.coverslide && this.state.data.slideshow){
+        if(this.props.data && this.props.data.coverslide && this.props.data.slideshow){
            
             
              let coverSlide=<div />;
-             if(this.state.data.coverslide.isImage){
-                  if(this.state.data.coverslide.src){
-                      coverSlide=(<div className='jumbotron-photo'>
-                                <img src={this.state.data.coverslide.src} />
-                             </div>); 
+             if(this.props.data.coverslide.isImage){
+                  if(this.props.data.coverslide.src){
+                      coverSlide=(<a href={'/slideshows/' + this.props.userid + '/' + this.props.data.slideshow.short_id }>
+                                      <div className='jumbotron-photo'>
+                                            <img src={this.props.data.coverslide.src} />
+                                      </div>      
+                                </a>); 
                   }
               }
              
@@ -154,18 +156,18 @@ export  class SlideshowLead extends React.Component{
                                             <div className='floatLeft'>
                                                 <div className='avatar-container'>
                                                     <a className='avatar'>
-                                                        <img className='avatar-image' src={this.state.data.slideshow.creator.image_32} />
+                                                        <img className='avatar-image' src={this.props.data.slideshow.creator.image_32} />
                                                     </a>
                                                 </div>    
                                                 <div className='userinfo'>
-                                                    <a>{this.state.data.name}</a>
-                                                    <span className='userinfo-extra'>{this.state.data.createDateText + '-' +  this.state.data.slideshow.slideCount + ' slides'}</span>
+                                                    <a href={'/slideshows/' + this.props.userid}>{this.props.data.name}</a>
+                                                    <span className='userinfo-extra'>{this.props.data.createDateText + '-' +  this.props.data.slideshow.slideCount }</span>
                                                 </div>
                                             </div>
                                         </div>
                                    </div>
                                    <div>{coverSlide}</div>
-                                  <div className='slideshow-lead-title'>{this.state.data.slideshow.title}</div>   
+                                  <a href={'/slideshows/' + this.props.userid + '/' + this.props.data.slideshow.short_id } className='slideshow-lead-title'>{this.props.data.slideshow.title}</a>   
                           
                         </div>
                        

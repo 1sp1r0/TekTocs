@@ -113,7 +113,7 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
                 // if(this.state.data.result.length>0){
                 var self = this;
                 slideshows = this.state.data.result.map(function (data, index) {
-                    return _react2.default.createElement(SlideshowLead, { data: data, key: data.slideshow.short_id });
+                    return _react2.default.createElement(SlideshowLead, { userid: self.props.userid, data: data, key: data.slideshow.short_id });
                 });
                 return _react2.default.createElement(
                     'div',
@@ -163,21 +163,25 @@ var SlideshowLead = exports.SlideshowLead = function (_React$Component2) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.setState({ data: this.props.data });
+            //this.setState();
         }
     }, {
         key: 'render',
         value: function render() {
 
-            if (this.state.data && this.state.data.coverslide && this.state.data.slideshow) {
+            if (this.props.data && this.props.data.coverslide && this.props.data.slideshow) {
 
                 var coverSlide = _react2.default.createElement('div', null);
-                if (this.state.data.coverslide.isImage) {
-                    if (this.state.data.coverslide.src) {
+                if (this.props.data.coverslide.isImage) {
+                    if (this.props.data.coverslide.src) {
                         coverSlide = _react2.default.createElement(
-                            'div',
-                            { className: 'jumbotron-photo' },
-                            _react2.default.createElement('img', { src: this.state.data.coverslide.src })
+                            'a',
+                            { href: '/slideshows/' + this.props.userid + '/' + this.props.data.slideshow.short_id },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'jumbotron-photo' },
+                                _react2.default.createElement('img', { src: this.props.data.coverslide.src })
+                            )
                         );
                     }
                 }
@@ -203,7 +207,7 @@ var SlideshowLead = exports.SlideshowLead = function (_React$Component2) {
                                         _react2.default.createElement(
                                             'a',
                                             { className: 'avatar' },
-                                            _react2.default.createElement('img', { className: 'avatar-image', src: this.state.data.slideshow.creator.image_32 })
+                                            _react2.default.createElement('img', { className: 'avatar-image', src: this.props.data.slideshow.creator.image_32 })
                                         )
                                     ),
                                     _react2.default.createElement(
@@ -211,13 +215,13 @@ var SlideshowLead = exports.SlideshowLead = function (_React$Component2) {
                                         { className: 'userinfo' },
                                         _react2.default.createElement(
                                             'a',
-                                            null,
-                                            this.state.data.name
+                                            { href: '/slideshows/' + this.props.userid },
+                                            this.props.data.name
                                         ),
                                         _react2.default.createElement(
                                             'span',
                                             { className: 'userinfo-extra' },
-                                            this.state.data.createDateText + '-' + this.state.data.slideshow.slideCount + ' slides'
+                                            this.props.data.createDateText + '-' + this.props.data.slideshow.slideCount
                                         )
                                     )
                                 )
@@ -229,9 +233,9 @@ var SlideshowLead = exports.SlideshowLead = function (_React$Component2) {
                             coverSlide
                         ),
                         _react2.default.createElement(
-                            'div',
-                            { className: 'slideshow-lead-title' },
-                            this.state.data.slideshow.title
+                            'a',
+                            { href: '/slideshows/' + this.props.userid + '/' + this.props.data.slideshow.short_id, className: 'slideshow-lead-title' },
+                            this.props.data.slideshow.title
                         )
                     )
                 );

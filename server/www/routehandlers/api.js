@@ -98,7 +98,9 @@ export function getUserSlideshows (req,res){
                          return {name:name,coverslide:coverSlide,
                                         createDateText:'created ' + moment(slashCommand.createDate).fromNow(),
                                         slideshow:{title:slashCommand.attachments.slideshow.title,
-                                        slideCount:slashCommand.attachments.slideshow.length,
+                                        slideCount:slashCommand.attachments.slideshow.slides.length===1?
+                                        slashCommand.attachments.slideshow.slides.length + ' slide': 
+                                        slashCommand.attachments.slideshow.slides.length + ' slides',
                                         short_id:slashCommand.attachments.slideshow.short_id,
                                         creator:{_id:slashCommand.attachments.slideshow.creator._id,
                                         image_32:slashCommand.attachments.slideshow.creator.image_32}}};  
