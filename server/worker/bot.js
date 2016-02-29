@@ -19,6 +19,8 @@ export default class Slackbot{
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer=io;
         this.slack=new Slack('', true, true);
+        //namespace for socket io
+        this.socketioNamespace={};
         /*
         this.slack=new Slack('xoxb-17952512917-xCZUmeEjTLLjR3DtXqAkLv2v', true, true);
         this.slack.login();
@@ -64,7 +66,6 @@ export default class Slackbot{
    
     
     registerSlackListeners(){
-        
         let self=this;
         this.slack.on('message', function(message) {
             co(function* () {
@@ -77,17 +78,19 @@ export default class Slackbot{
                 //check if the message is an image or snippet. 
                 
                     if (slide.slideAssetUrl !='' && slide.slideMode!='snippet'){
-                          request({headers: {'Authorization': 'Bearer ' + self.slack.token},encoding:null,url:slide.slideAssetUrl},
-                     function(err,res,body){
-                            if(err){
-                                winston.log('error',err);
-                            }else{
-                                //emit SlackMessage event to the server- socketioServer.
-                                self.socketioServer.emit('DisplaySlackMessage',{src:'data:' + slide.slideMimeType + ';base64,' 
-                                + body.toString('base64'),isImage:true });
-                            }
+                            self.clientio.emit('SlackMessage',{src:slide.slideAssetUrl,isImage:true });
+                        
+                          //request({headers: {'Authorization': 'Bearer ' + self.slack.token},encoding:null,url:slide.slideAssetUrl},
+                            //function(err,res,body){
+                            //if(err){
+                              //  winston.log('error',err);
+                            //}else{
+                              //  //emit SlackMessage event to the server- socketioServer.
+                                //self.socketioServer.emit('DisplaySlackMessage',{src:'data:' + slide.slideMimeType + ';base64,' 
+                                //+ body.toString('base64'),isImage:true });
+                            //}
                 
-                     });
+                     //});
                     }
                 else{
                     //emit SlackMessage event to the server- socketioServer.
@@ -100,9 +103,10 @@ export default class Slackbot{
         });
     }
 
-   registerSocketIoListeners(){
+   registerSocketIoListeners(socketioNamespaceName){
+    this.socketioNamespace=this.socketioServer.of(socketioNamespaceName);   
     let self=this;
-    this.socketioServer.on('connection', function(socket){
+    this.socketioNamespace.on('connection', function(socket){
             
             socket.on('disconnect', function(){
                 
@@ -111,7 +115,7 @@ export default class Slackbot{
             //listener for SlackMessage event emitted by handler of slack.on('message')
             socket.on('SlackMessage', function(msg){ 
                 //emit message to connected browser clients
-                self.socketioServer.emit('DisplaySlackMessage',msg);
+                self.socketioNamespace.emit('DisplaySlackMessage',msg);
             });
         });
   }

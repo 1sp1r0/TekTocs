@@ -9,6 +9,8 @@ router.get('/:userid/:slideshowid', function(req,res){
        handlerMappings['/slideshows/:userid/:slideshowid'][req.method.toLowerCase()](req,res);
  });
 
-
+router.get('/live/:userid/:slideshowid', function(req,res){
+       handlerMappings['/slideshows/live/:userid/:slideshowid'][req.method.toLowerCase()](req,res);
+ });
 
 export default router;

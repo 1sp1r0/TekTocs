@@ -4,7 +4,7 @@ import Slideshow from '../../components/slideshow';
 import * as Components from '../../components/slideshowlist';
 import SlackUser from '../../components/slackuser';
 
-function userSlideshows (req,res){
+export function userSlideshows (req,res){
     let SlideshowListComponent = React.createFactory(Components.SlideshowList);
     let SlackUserComponent = React.createFactory(SlackUser);
     res.render('slideshows/user',{userid:req.params.userid,
@@ -13,7 +13,7 @@ function userSlideshows (req,res){
     });
 }
 
-function userSlideshow (req,res){
+export function userSlideshow (req,res){
     let SlideShowComponent = React.createFactory(Slideshow);
     //res.render('slideshows/slideshow',{userid: req.params.userid,
     //slideshowid:req.params.slideshowid});
@@ -25,4 +25,15 @@ function userSlideshow (req,res){
   });
 }
 
-export {userSlideshows,userSlideshow};
+export function userLiveSlideshow (req,res){
+    let SlideShowComponent = React.createFactory(Slideshow);
+    //res.render('slideshows/slideshow',{userid: req.params.userid,
+    //slideshowid:req.params.slideshowid});
+    
+    res.render('slideshows/live',
+    {userid: req.params.userid,slideshowid:req.params.slideshowid,
+    react: ReactDOM.renderToString(SlideShowComponent({userid: req.params.userid,
+    slideshowid:req.params.slideshowid}))
+  });
+}
+

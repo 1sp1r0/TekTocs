@@ -11,6 +11,7 @@ routeHandlerMappings["/slack/commands/end"]={post:handlers.end};
 routeHandlerMappings["/slack/commands/publish"]={post:handlers.publish};
 routeHandlerMappings["/slideshows/:userid"]={get:handlers.userSlideshows};
 routeHandlerMappings["/slideshows/:userid/:slideshowid"]={get:handlers.userSlideshow};
+routeHandlerMappings["/slideshows/live/:userid/:slideshowid"]={get:handlers.userLiveSlideshow};
 routeHandlerMappings["/api/users/:userid/slideshows/:slideshowid"]={get:handlers.getUserSlideshow};
 routeHandlerMappings["/api/users/:userid/slideshows"]={get:handlers.getUserSlideshows};
 routeHandlerMappings["/api/users/:userid"]={get:handlers.getUser};

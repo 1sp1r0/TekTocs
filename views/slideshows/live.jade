@@ -22,11 +22,9 @@ block content
                     interval: false
                 });
                 
-                //ReactDOM.render(<Slideshow userid='#{userid}' slideshowid='#{slideshowid}' />,
-                //    document.getElementById('react-root')
-                //);
+               
             });
-            var socket = io();
+            var socket = io('/#{userid}');
             socket.on('DisplaySlackMessage', function(msg){
                 $('.carousel  div.item').removeClass('active');
                  if(msg.isImage){

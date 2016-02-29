@@ -3,7 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.userSlideshow = exports.userSlideshows = undefined;
+exports.userSlideshows = userSlideshows;
+exports.userSlideshow = userSlideshow;
+exports.userLiveSlideshow = userLiveSlideshow;
 
 var _react = require('react');
 
@@ -49,5 +51,13 @@ function userSlideshow(req, res) {
     });
 }
 
-exports.userSlideshows = userSlideshows;
-exports.userSlideshow = userSlideshow;
+function userLiveSlideshow(req, res) {
+    var SlideShowComponent = _react2.default.createFactory(_slideshow2.default);
+    //res.render('slideshows/slideshow',{userid: req.params.userid,
+    //slideshowid:req.params.slideshowid});
+
+    res.render('slideshows/live', { userid: req.params.userid, slideshowid: req.params.slideshowid,
+        react: _server2.default.renderToString(SlideShowComponent({ userid: req.params.userid,
+            slideshowid: req.params.slideshowid }))
+    });
+}

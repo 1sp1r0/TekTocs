@@ -181,6 +181,7 @@ export function startSlideshow(req, res,isLive) {
                     if(isLive && req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
                         req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
                         req.app.slackbot.registerSlackListeners();
+                        req.app.slackbot.registerSocketIoListeners(req.body.user_id);
                     }
                     let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
                     let im=JSON.parse(imResponse);
@@ -205,10 +206,15 @@ export function startSlideshow(req, res,isLive) {
                             userDbId=user._id;
                         }
                         if(userDbId !=''){
-                            let postMessageResponse=yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.');
+                            let msg='Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.';
+                            let liveMsg='Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide.';
+                            let postMessageResponse=yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,isLive?liveMsg:msg);
                             let postMessage=JSON.parse(postMessageResponse);
                             if(postMessage.ok){
-                                yield saveStartSlashCommand(req.body,im.channel.id,userDbId,postMessage.ts);
+                                let savedSlashCommand=yield saveStartSlashCommand(req.body,im.channel.id,userDbId,postMessage.ts,isLive);
+                                if(isLive){
+                                    yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'This is the url where your slideshow will be streaming: https://tektocs.herokuapp.com/slideshows/live/' + req.body.user_id + '/' + savedSlashCommand.attachments.slideshow.short_id);
+                                }
                                 req.app.slackbot.slack.login();
                                 res.status(200).send('You are now ready to add slides to your slideshow. First, change over to our bot, Tektocs\', direct messaging channel. Every message you post in that channel will be a single slide.  Happy creating!');
                             }else{
@@ -252,7 +258,7 @@ export function startSlideshow(req, res,isLive) {
     }
 }
 
-function saveStartSlashCommand(body,channelId,userid,startTs) {
+function saveStartSlashCommand(body,channelId,userid,startTs,isLive) {
     
     let slashCommand = new Models.SlashCommand({team_id:body.team_id,
                     team_domain: body.team_domain,
@@ -271,11 +277,11 @@ function saveStartSlashCommand(body,channelId,userid,startTs) {
                             short_id:shortid.generate(),
                             creator:userid,
                             slides:[],
-                            published:false,
-                            pending:true
+                            published:isLive,
+                            pending:!isLive
                         }
                     },
-                    pending:true,
+                    pending:!isLive,
                     createDate:new Date()});
     return slashCommand.save();                
 }

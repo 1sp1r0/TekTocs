@@ -51,6 +51,8 @@ var Slackbot = function () {
         //server-side client, this.clientio, connect to this socket.
         this.socketioServer = io;
         this.slack = new _slackClient2.default('', true, true);
+        //namespace for socket io
+        this.socketioNamespace = {};
         /*
         this.slack=new Slack('xoxb-17952512917-xCZUmeEjTLLjR3DtXqAkLv2v', true, true);
         this.slack.login();
@@ -96,7 +98,6 @@ var Slackbot = function () {
     _createClass(Slackbot, [{
         key: 'registerSlackListeners',
         value: function registerSlackListeners() {
-
             var self = this;
             this.slack.on('message', function (message) {
                 (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
@@ -122,18 +123,23 @@ var Slackbot = function () {
                                     //check if the message is an image or snippet.
 
                                     if (slide.slideAssetUrl != '' && slide.slideMode != 'snippet') {
-                                        (0, _request2.default)({ headers: { 'Authorization': 'Bearer ' + self.slack.token }, encoding: null, url: slide.slideAssetUrl }, function (err, res, body) {
-                                            if (err) {
-                                                _logger2.default.log('error', err);
-                                            } else {
-                                                //emit SlackMessage event to the server- socketioServer.
-                                                self.socketioServer.emit('DisplaySlackMessage', { src: 'data:' + slide.slideMimeType + ';base64,' + body.toString('base64'), isImage: true });
-                                            }
-                                        });
+                                        self.clientio.emit('SlackMessage', { src: slide.slideAssetUrl, isImage: true });
+
+                                        //request({headers: {'Authorization': 'Bearer ' + self.slack.token},encoding:null,url:slide.slideAssetUrl},
+                                        //function(err,res,body){
+                                        //if(err){
+                                        //  winston.log('error',err);
+                                        //}else{
+                                        //  //emit SlackMessage event to the server- socketioServer.
+                                        //self.socketioServer.emit('DisplaySlackMessage',{src:'data:' + slide.slideMimeType + ';base64,'
+                                        //+ body.toString('base64'),isImage:true });
+                                        //}
+
+                                        //});
                                     } else {
-                                        //emit SlackMessage event to the server- socketioServer.
-                                        self.clientio.emit('SlackMessage', slide.slideText);
-                                    }
+                                            //emit SlackMessage event to the server- socketioServer.
+                                            self.clientio.emit('SlackMessage', slide.slideText);
+                                        }
 
                                 case 6:
                                 case 'end':
@@ -148,16 +154,17 @@ var Slackbot = function () {
         }
     }, {
         key: 'registerSocketIoListeners',
-        value: function registerSocketIoListeners() {
+        value: function registerSocketIoListeners(socketioNamespaceName) {
+            this.socketioNamespace = this.socketioServer.of(socketioNamespaceName);
             var self = this;
-            this.socketioServer.on('connection', function (socket) {
+            this.socketioNamespace.on('connection', function (socket) {
 
                 socket.on('disconnect', function () {});
 
                 //listener for SlackMessage event emitted by handler of slack.on('message')
                 socket.on('SlackMessage', function (msg) {
                     //emit message to connected browser clients
-                    self.socketioServer.emit('DisplaySlackMessage', msg);
+                    self.socketioNamespace.emit('DisplaySlackMessage', msg);
                 });
             });
         }

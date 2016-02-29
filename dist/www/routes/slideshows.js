@@ -23,4 +23,8 @@ router.get('/:userid/:slideshowid', function (req, res) {
        _routehandlermappings2.default['/slideshows/:userid/:slideshowid'][req.method.toLowerCase()](req, res);
 });
 
+router.get('/live/:userid/:slideshowid', function (req, res) {
+       _routehandlermappings2.default['/slideshows/live/:userid/:slideshowid'][req.method.toLowerCase()](req, res);
+});
+
 exports.default = router;
