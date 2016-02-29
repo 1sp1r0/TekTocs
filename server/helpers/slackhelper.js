@@ -65,15 +65,7 @@ export function processMessage(message){
                 let team = yield getSlackTeam(slashCommand.team_id);
                 let botAccessToken=team.bot.bot_access_token;
                 let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
-                //let slide=yield getSlide(message,slideIndex,botAccessToken,slashCommand.slideshow.short_id);
-                let slide=new Models.Slide({slideIndex:slideIndex,
-                slideText:message.text,
-                slideCaption:'',
-                slideAssetUrl:'',
-                slideTitle:'',
-                slideMimeType:'',
-                slideMode:''});
-                
+                let slide=yield getSlide(message,slideIndex,botAccessToken,slashCommand.slideshow.short_id);
                 if(slide){
                             slashCommand.attachments.slideshow.slides.push(slide);
                             yield slashCommand.attachments.slideshow.save();
