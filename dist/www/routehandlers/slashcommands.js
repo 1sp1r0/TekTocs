@@ -552,7 +552,7 @@ function saveStartSlashCommand(body, channelId, userid, startTs, isLive) {
                 pending: !isLive
             }
         },
-        pending: !isLive,
+        pending: true,
         createDate: new Date() });
     return slashCommand.save();
 }
