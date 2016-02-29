@@ -124,7 +124,7 @@ var Slackbot = function () {
                                     slide = _context.sent;
 
                                     //check if the message is an image or snippet.
-                                    _logger2.default.log('error', slide);
+
                                     if (slide.slideAssetUrl != '' && slide.slideMode != 'snippet') {
                                         self.clientio.emit('SlackMessage', { src: slide.slideAssetUrl, isImage: true });
 
@@ -143,21 +143,21 @@ var Slackbot = function () {
                                             //emit SlackMessage event to the server- socketioServer.
                                             self.clientio.emit('SlackMessage', slide.slideText);
                                         }
-                                    _context.next = 13;
+                                    _context.next = 12;
                                     break;
 
-                                case 10:
-                                    _context.prev = 10;
+                                case 9:
+                                    _context.prev = 9;
                                     _context.t0 = _context['catch'](0);
 
                                     _logger2.default.log('error', _context.t0.stack);
 
-                                case 13:
+                                case 12:
                                 case 'end':
                                     return _context.stop();
                             }
                         }
-                    }, _callee, this, [[0, 10]]);
+                    }, _callee, this, [[0, 9]]);
                 })).catch(function (err) {
                     _logger2.default.log('error', err.stack);
                 });
