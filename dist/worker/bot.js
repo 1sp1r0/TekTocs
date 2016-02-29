@@ -124,7 +124,7 @@ var Slackbot = function () {
                                     slide = _context.sent;
 
                                     //check if the message is an image or snippet.
-                                    _logger2.default.log('error', JSON.parse(slide));
+                                    _logger2.default.log('error', slide);
                                     if (slide.slideAssetUrl != '' && slide.slideMode != 'snippet') {
                                         self.clientio.emit('SlackMessage', { src: slide.slideAssetUrl, isImage: true });
 

@@ -78,7 +78,7 @@ export default class Slackbot{
                 
                 let slide=yield slackhelper.processMessage(message);
                 //check if the message is an image or snippet. 
-                winston.log('error', JSON.parse(slide));
+                winston.log('error', slide);
                     if (slide.slideAssetUrl !='' && slide.slideMode!='snippet'){
                             self.clientio.emit('SlackMessage',{src:slide.slideAssetUrl,isImage:true });
                         
