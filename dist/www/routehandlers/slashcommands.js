@@ -463,7 +463,7 @@ function startSlideshow(req, res, isLive) {
                                 }
 
                                 _context7.next = 51;
-                                return slackhelper.postMessageToSlack(_slackTeam.bot.bot_access_token, im.channel.id, 'This is the url where your slideshow will be streaming: https://tektocs.herokuapp.com/slideshows/live/' + req.body.user_id + '/' + savedSlashCommand.attachments.slideshow.short_id);
+                                return slackhelper.postMessageToSlack(_slackTeam.bot.bot_access_token, im.channel.id, 'This is the url where your slideshow will be streaming: https://tektocs.herokuapp.com/slideshows/live/' + savedSlashCommand.attachments.slideshow.creator + '/' + savedSlashCommand.attachments.slideshow.short_id);
 
                             case 51:
                                 req.app.slackbot.slack.login();

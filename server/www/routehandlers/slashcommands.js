@@ -214,7 +214,7 @@ export function startSlideshow(req, res,isLive) {
                             if(postMessage.ok){
                                 let savedSlashCommand=yield saveStartSlashCommand(req.body,im.channel.id,userDbId,postMessage.ts,isLive);
                                 if(isLive){
-                                    yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'This is the url where your slideshow will be streaming: https://tektocs.herokuapp.com/slideshows/live/' + req.body.user_id + '/' + savedSlashCommand.attachments.slideshow.short_id);
+                                    yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'This is the url where your slideshow will be streaming: https://tektocs.herokuapp.com/slideshows/live/' + savedSlashCommand.attachments.slideshow.creator + '/' + savedSlashCommand.attachments.slideshow.short_id);
                                 }
                                 req.app.slackbot.slack.login();
                                 res.status(200).send('You are now ready to add slides to your slideshow. First, change over to our bot, Tektocs\', direct messaging channel. Every message you post in that channel will be a single slide.  Happy creating!');
