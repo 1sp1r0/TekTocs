@@ -141,7 +141,8 @@ var Slackbot = function () {
                                         //});
                                     } else {
                                             //emit SlackMessage event to the server- socketioServer.
-                                            self.clientio.emit('SlackMessage', slide.slideText);
+                                            self.socketioServer.emit('DisplaySlackMessage', slide.slideText);
+                                            //self.clientio.emit('SlackMessage',slide.slideText);
                                         }
                                     _context.next = 12;
                                     break;
