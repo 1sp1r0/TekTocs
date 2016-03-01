@@ -92,7 +92,8 @@ var ReactRenderers =
 
 	function renderSlideshow(targetElementId, userid, slideshowid) {
 	    var SlideShowComponent = _react2.default.createFactory(_slideshow2.default);
-	    _reactDom2.default.render(SlideShowComponent({ userid: userid, slideshowid: slideshowid }), document.getElementById(targetElementId));
+	    var renderedComponent = _reactDom2.default.render(SlideShowComponent({ userid: userid, slideshowid: slideshowid }), document.getElementById(targetElementId));
+	    return renderedComponent;
 	}
 
 	function renderSlideshowlist(targetElementId, userid) {
@@ -19772,6 +19773,11 @@ var ReactRenderers =
 	                    console.error(self.props.url, status, err.toString());
 	                }
 	            });
+	        }
+	    }, {
+	        key: 'updateState',
+	        value: function updateState(data) {
+	            this.setState({ data: data });
 	        }
 	    }, {
 	        key: 'createMarkup',

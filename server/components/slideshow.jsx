@@ -34,7 +34,9 @@ export default class Slideshow extends React.Component{
     });
    }
    
-   
+   updateState(data){
+       this.setState({data: data});
+   }
    
    createMarkup(slideText) { return {__html: slideText.replace(/\r\n/g,'<br/>')}; }
    

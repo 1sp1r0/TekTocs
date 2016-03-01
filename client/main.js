@@ -7,8 +7,9 @@ import SlackUser from '../server/components/slackuser.jsx';
 
 export function renderSlideshow(targetElementId,userid,slideshowid) {
     let SlideShowComponent = React.createFactory(Slideshow);
-    ReactDOM.render(SlideShowComponent({userid:userid,slideshowid:slideshowid}), 
+    let renderedComponent=ReactDOM.render(SlideShowComponent({userid:userid,slideshowid:slideshowid}), 
     document.getElementById(targetElementId));
+    return renderedComponent;
 }
 
 export function renderSlideshowlist(targetElementId,userid) {

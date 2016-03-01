@@ -58,6 +58,11 @@ var Slideshow = function (_React$Component) {
             });
         }
     }, {
+        key: 'updateState',
+        value: function updateState(data) {
+            this.setState({ data: data });
+        }
+    }, {
         key: 'createMarkup',
         value: function createMarkup(slideText) {
             return { __html: slideText.replace(/\r\n/g, '<br/>') };

@@ -17,23 +17,24 @@ block content
                 $('.carousel').carousel({interval: false});
             }
             $().ready(function() {
-                ReactRenderers.renderSlideshow('react-root','#{userid}','#{slideshowid}');
+               let renderedComponent= ReactRenderers.renderSlideshow('react-root','#{userid}','#{slideshowid}');
                 $('.carousel').carousel({
                     interval: false
                 });
                 
                
-            });
-            var socket = io();
-            socket.on('connect',function(){
+            
+                var socket = io();
+                socket.on('connect',function(){
                 
-                }
-                );
-            socket.on('connect_error',function(err){
+                    });
+                socket.on('connect_error',function(err){
                 
                 });
-            socket.on('DisplaySlackMessage', function(msg){
+                socket.on('DisplaySlackMessage', function(msg){
                 if(msg.creator==='#{userid}'){
+                    renderedComponent.updateState(msg);
+                    return;
                     $('.carousel  div.item').removeClass('active');
                     if(msg.isImage){
                      $('.carousel-inner').append($(`<div class='item active'><img src='${msg.src}'/></div>`));
@@ -42,5 +43,5 @@ block content
                     }
                 }
             });
-    
+            });
      
