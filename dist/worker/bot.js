@@ -166,17 +166,17 @@ var Slackbot = function () {
     }, {
         key: 'registerSocketIoListeners',
         value: function registerSocketIoListeners(socketioNamespaceName) {
-            this.socketioNamespace = this.socketioServer.of(socketioNamespaceName);
-            this.clientio = (0, _socket2.default)(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName);
+            //this.socketioNamespace=this.socketioServer.of(socketioNamespaceName); 
+            //this.clientio=socketclient(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName);
             var self = this;
-            this.socketioNamespace.on('connection', function (socket) {
+            this.socketioServer.on('connection', function (socket) {
 
                 socket.on('disconnect', function () {});
 
                 //listener for SlackMessage event emitted by handler of slack.on('message')
                 socket.on('SlackMessage', function (msg) {
                     //emit message to connected browser clients
-                    self.socketioNamespace.emit('DisplaySlackMessage', msg);
+                    self.socketioServer.emit('DisplaySlackMessage', msg);
                 });
             });
         }
