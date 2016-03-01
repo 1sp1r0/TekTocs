@@ -69,7 +69,7 @@
   
   //initilaize slack bot
   let slackbot= new Slackbot(io);
- //slackbot.registerSocketIoListeners();
+  slackbot.registerSocketIoListeners();
   app.slackbot=slackbot;
   
  
