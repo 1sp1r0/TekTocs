@@ -34,6 +34,10 @@ var _request = require('request');
 
 var _request2 = _interopRequireDefault(_request);
 
+var _socket3 = require('socket.io');
+
+var _socket4 = _interopRequireDefault(_socket3);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -46,10 +50,12 @@ var Slackbot = function () {
 
         //this is the server-side socket client which emits SlackMessage events when there is a
         //message from Slack.
-        this.clientio = (0, _socket2.default)(process.env.SOCKETIO_ADDRESS);
+        //this.clientio=socketclient(process.env.SOCKETIO_ADDRESS);
+        this.clientio = {};
         //this is the socketio server bound to the same port as expressjs. Browser clients as well as the
         //server-side client, this.clientio, connect to this socket.
-        this.socketioServer = io;
+        //this.socketioServer=io;
+        this.socketioServer = {};
         this.slack = new _slackClient2.default('', true, true);
         //namespace for socket io
         this.socketioNamespace = {};
@@ -166,7 +172,8 @@ var Slackbot = function () {
         }
     }, {
         key: 'registerSocketIoListeners',
-        value: function registerSocketIoListeners(socketioNamespaceName) {
+        value: function registerSocketIoListeners(app, socketioNamespaceName) {
+            this.socketioServer = (0, _socket4.default)(app);
             this.socketioNamespace = this.socketioServer.of(socketioNamespaceName);
             this.clientio = (0, _socket2.default)(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName);
             var self = this;

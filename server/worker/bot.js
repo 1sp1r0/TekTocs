@@ -5,7 +5,7 @@ import * as slackhelper from '../helpers/slackhelper'
 import co from 'co'
 import * as Models from '../models/'
 import request from 'request'
-
+import socketioserver from 'socket.io';
 
 
 export default class Slackbot{
@@ -14,10 +14,12 @@ export default class Slackbot{
     constructor(io){
         //this is the server-side socket client which emits SlackMessage events when there is a
         //message from Slack. 
-        this.clientio=socketclient(process.env.SOCKETIO_ADDRESS);
+        //this.clientio=socketclient(process.env.SOCKETIO_ADDRESS);
+        this.clientio={};
         //this is the socketio server bound to the same port as expressjs. Browser clients as well as the 
         //server-side client, this.clientio, connect to this socket.
-        this.socketioServer=io;
+        //this.socketioServer=io;
+        this.socketioServer={};
         this.slack=new Slack('', true, true);
         //namespace for socket io
         this.socketioNamespace={};
@@ -109,7 +111,8 @@ export default class Slackbot{
         });
     }
 
-   registerSocketIoListeners(socketioNamespaceName){
+   registerSocketIoListeners(app,socketioNamespaceName){
+    this.socketioServer=socketioserver(app);
     this.socketioNamespace=this.socketioServer.of(socketioNamespaceName);  
     this.clientio=socketclient(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName); 
     let self=this;
