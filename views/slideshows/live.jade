@@ -24,7 +24,7 @@ block content
                 
                
             });
-            var socket = io('/#{userid}');
+            var socket = io();
             socket.on('connect',function(){
                 alert('/#{userid}');
                 }

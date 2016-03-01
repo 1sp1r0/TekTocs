@@ -83,7 +83,7 @@ export default class Slackbot{
                
                     if (slide.slideAssetUrl !='' && slide.slideMode!='snippet'){
                             //self.clientio.emit('SlackMessage',{src:slide.slideAssetUrl,isImage:true });
-                            self.socketioServer.of(creator).emit('DisplaySlackMessage',{creator:creator,src:slide.slideAssetUrl,isImage:true });
+                            self.socketioServer.emit('DisplaySlackMessage',{creator:creator,src:slide.slideAssetUrl,isImage:true });
                           //request({headers: {'Authorization': 'Bearer ' + self.slack.token},encoding:null,url:slide.slideAssetUrl},
                             //function(err,res,body){
                             //if(err){
@@ -98,7 +98,7 @@ export default class Slackbot{
                     }
                 else{
                     //emit SlackMessage event to the server- socketioServer.
-                    self.socketioServer.of(creator).emit('DisplaySlackMessage',{creator:creator,text:slide.slideText});
+                    self.socketioServer.emit('DisplaySlackMessage',{creator:creator,text:slide.slideText});
                     //self.clientio.emit('SlackMessage',slide.slideText);
                 }
                 }catch(err){
