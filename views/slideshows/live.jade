@@ -1,3 +1,4 @@
+
 extends ../layout.jade
 block content
     .container(style='padding-top: 150px;') 
@@ -17,7 +18,7 @@ block content
                 $('.carousel').carousel({interval: false});
             }
             $().ready(function() {
-               let renderedComponent= ReactRenderers.renderSlideshow('react-root','#{userid}','#{slideshowid}');
+               var renderedComponent= ReactRenderers.renderSlideshow('react-root','#{userid}','#{slideshowid}');
                 $('.carousel').carousel({
                     interval: false
                 });
