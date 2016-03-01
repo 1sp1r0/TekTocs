@@ -179,11 +179,11 @@ export function startSlideshow(req, res,isLive) {
                 }
                 let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
                 if(slackTeam){
-                    if(isLive && req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
+                    /*if(isLive && req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
                         req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
                         //req.app.slackbot.registerSocketIoListeners(req.app.server,req.body.user_id);
                         req.app.slackbot.registerSlackListeners(req.body.user_id);
-                    }
+                    }*/
                     let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
                     let im=JSON.parse(imResponse);
                     if(im.ok){
@@ -215,6 +215,11 @@ export function startSlideshow(req, res,isLive) {
                                 let savedSlashCommand=yield saveStartSlashCommand(req.body,im.channel.id,userDbId,postMessage.ts,isLive);
                                 if(isLive){
                                     yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,'This is the url where your slideshow will be streaming: https://tektocs.herokuapp.com/slideshows/live/' + savedSlashCommand.attachments.slideshow.creator + '/' + savedSlashCommand.attachments.slideshow.short_id);
+                                    if(req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
+                                        req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
+                                        //req.app.slackbot.registerSocketIoListeners(req.app.server,req.body.user_id);
+                                        req.app.slackbot.registerSlackListeners(savedSlashCommand.attachments.slideshow.creator);
+                                    }
                                 }
                                 req.app.slackbot.slack.login();
                                 res.status(200).send('You are now ready to add slides to your slideshow. First, change over to our bot, Tektocs\', direct messaging channel. Every message you post in that channel will be a single slide.  Happy creating!');
