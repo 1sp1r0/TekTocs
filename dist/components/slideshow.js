@@ -27,6 +27,7 @@ var Slideshow = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Slideshow).call(this, props));
 
         _this.state = { data: {} };
+        _this.socket = io();
         return _this;
     }
 
@@ -42,8 +43,8 @@ var Slideshow = function (_React$Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
+            this.registerSocketIOListeners();
             var self = this;
-
             $.ajax({
                 url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows/' + self.props.slideshowid, //this.props.url,
                 dataType: 'json',
@@ -59,8 +60,8 @@ var Slideshow = function (_React$Component) {
     }, {
         key: 'registerSocketIOListeners',
         value: function registerSocketIOListeners() {
-            if (socket) {
-                socket.on('DisplaySlackMessage', function (msg) {
+            if (this.socket) {
+                this.socket.on('DisplaySlackMessage', function (msg) {
                     if (msg.creator === this.props.userid) {}
                 });
             }

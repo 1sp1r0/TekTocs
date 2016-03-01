@@ -1,10 +1,12 @@
 import React from 'react';
 
+
 export default class Slideshow extends React.Component{
     
   constructor(props) {
     super(props);
     this.state = {data: {}};
+    this.socket=io();
   }
   componentWillMount() {
       this.setState({data:{name:'',
@@ -16,8 +18,8 @@ export default class Slideshow extends React.Component{
   }
   
    componentDidMount() {
+       this.registerSocketIOListeners();
        let self=this;
-       
        $.ajax({
       url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows/' + self.props.slideshowid, //this.props.url,
       dataType: 'json',
@@ -33,8 +35,8 @@ export default class Slideshow extends React.Component{
    }
    
    registerSocketIOListeners(){
-       if(socket){
-           socket.on('DisplaySlackMessage', function(msg){
+       if(this.socket){
+           this.socket.on('DisplaySlackMessage', function(msg){
                if(msg.creator===this.props.userid){
                    
                }
