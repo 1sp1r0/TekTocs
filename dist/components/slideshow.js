@@ -27,6 +27,7 @@ var Slideshow = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Slideshow).call(this, props));
 
         _this.state = { data: {} };
+        _this.activeSlideIndex = 0;
 
         return _this;
     }
@@ -60,6 +61,9 @@ var Slideshow = function (_React$Component) {
     }, {
         key: 'updateState',
         value: function updateState(data) {
+            if (data.slideshow && data.slideshow.slides) {
+                this.activeSlideIndex = data.slideshow.slides.length - 1;
+            }
             this.setState({ data: data });
         }
     }, {
@@ -84,7 +88,7 @@ var Slideshow = function (_React$Component) {
 
                             return _react2.default.createElement(
                                 'div',
-                                { key: slide._id, className: (index === 0 ? 'active' : '') + ' item' },
+                                { key: slide._id, className: (index === self.activeSlideIndex ? 'active' : '') + ' item' },
                                 _react2.default.createElement('img', { src: slide.slideAssetUrl }),
                                 _react2.default.createElement(
                                     'div',
@@ -96,13 +100,13 @@ var Slideshow = function (_React$Component) {
                             if (slide.slideMode === 'snippet') {
                                 return _react2.default.createElement(
                                     'div',
-                                    { key: slide._id, className: (index === 0 ? 'active' : '') + ' item slideContainer' },
+                                    { key: slide._id, className: (index === self.activeSlideIndex ? 'active' : '') + ' item slideContainer' },
                                     _react2.default.createElement('div', { dangerouslySetInnerHTML: self.createMarkup(slide.slideText), className: 'slide text-left' })
                                 );
                             } else {
                                 return _react2.default.createElement(
                                     'div',
-                                    { key: slide._id, className: (index === 0 ? 'active' : '') + ' item slideContainer' },
+                                    { key: slide._id, className: (index === self.activeSlideIndex ? 'active' : '') + ' item slideContainer' },
                                     _react2.default.createElement(
                                         'div',
                                         { className: 'slide' },

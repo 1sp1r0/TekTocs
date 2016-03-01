@@ -6,6 +6,7 @@ export default class Slideshow extends React.Component{
   constructor(props) {
     super(props);
     this.state = {data: {}};
+    this.activeSlideIndex=0;
     
   }
   componentWillMount() {
@@ -35,6 +36,9 @@ export default class Slideshow extends React.Component{
    }
    
    updateState(data){
+       if(data.slideshow && data.slideshow.slides){
+        this.activeSlideIndex=data.slideshow.slides.length-1;
+       }
        this.setState({data: data});
    }
    
@@ -53,17 +57,17 @@ export default class Slideshow extends React.Component{
                       
                      if (slide.slideAssetUrl !='' && slide.slideMode!='snippet'){
                          
-                        return (<div key={slide._id} className={`${index===0?'active':''} item`}>
+                        return (<div key={slide._id} className={`${index===self.activeSlideIndex?'active':''} item`}>
                                 <img src={slide.slideAssetUrl} />
                                 <div className="slide">{slide.slideCaption}</div>
                              </div>);
                      }else{
                          if(slide.slideMode==='snippet'){
-                             return (<div key={slide._id} className={`${index===0?'active':''} item slideContainer`}>
+                             return (<div key={slide._id} className={`${index===self.activeSlideIndex?'active':''} item slideContainer`}>
                                 <div dangerouslySetInnerHTML={self.createMarkup(slide.slideText)} className="slide text-left"></div>
                             </div>);
                          }else{
-                         return (<div key={slide._id} className={`${index===0?'active':''} item slideContainer`}>
+                         return (<div key={slide._id} className={`${index===self.activeSlideIndex?'active':''} item slideContainer`}>
                                 <div className="slide">{slide.slideText}</div>
                             </div>);
                          }
