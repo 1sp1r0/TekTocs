@@ -141,8 +141,8 @@ var Slackbot = function () {
                                         //});
                                     } else {
                                             //emit SlackMessage event to the server- socketioServer.
-                                            self.socketioNamespace.emit('DisplaySlackMessage', slide.slideText);
-                                            //self.clientio.emit('SlackMessage',slide.slideText);
+                                            //self.socketioNamespace.emit('DisplaySlackMessage',slide.slideText);
+                                            self.clientio.emit('SlackMessage', slide.slideText);
                                         }
                                     _context.next = 12;
                                     break;
@@ -168,7 +168,7 @@ var Slackbot = function () {
         key: 'registerSocketIoListeners',
         value: function registerSocketIoListeners(socketioNamespaceName) {
             this.socketioNamespace = this.socketioServer.of(socketioNamespaceName);
-            //this.clientio=socketclient(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName);
+            this.clientio = (0, _socket2.default)(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName);
             var self = this;
             this.socketioNamespace.on('connection', function (socket) {
 
@@ -177,7 +177,7 @@ var Slackbot = function () {
                 //listener for SlackMessage event emitted by handler of slack.on('message')
                 socket.on('SlackMessage', function (msg) {
                     //emit message to connected browser clients
-                    self.socketioServer.emit('DisplaySlackMessage', msg);
+                    self.socketioNamespace.emit('DisplaySlackMessage', msg);
                 });
             });
         }

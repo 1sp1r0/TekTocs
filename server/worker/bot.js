@@ -96,8 +96,8 @@ export default class Slackbot{
                     }
                 else{
                     //emit SlackMessage event to the server- socketioServer.
-                    self.socketioNamespace.emit('DisplaySlackMessage',slide.slideText);
-                    //self.clientio.emit('SlackMessage',slide.slideText);
+                    //self.socketioNamespace.emit('DisplaySlackMessage',slide.slideText);
+                    self.clientio.emit('SlackMessage',slide.slideText);
                 }
                 }catch(err){
                     winston.log('error', err.stack);
@@ -111,7 +111,7 @@ export default class Slackbot{
 
    registerSocketIoListeners(socketioNamespaceName){
     this.socketioNamespace=this.socketioServer.of(socketioNamespaceName);  
-    //this.clientio=socketclient(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName); 
+    this.clientio=socketclient(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName); 
     let self=this;
     this.socketioNamespace.on('connection', function(socket){
             
@@ -122,7 +122,7 @@ export default class Slackbot{
             //listener for SlackMessage event emitted by handler of slack.on('message')
             socket.on('SlackMessage', function(msg){ 
                 //emit message to connected browser clients
-                self.socketioServer.emit('DisplaySlackMessage',msg);
+                self.socketioNamespace.emit('DisplaySlackMessage',msg);
             });
         });
   }
