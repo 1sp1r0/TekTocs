@@ -167,6 +167,7 @@ var Slackbot = function () {
         key: 'registerSocketIoListeners',
         value: function registerSocketIoListeners(socketioNamespaceName) {
             this.socketioNamespace = this.socketioServer.of(socketioNamespaceName);
+            this.clientio = (0, _socket2.default)(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName);
             var self = this;
             this.socketioNamespace.on('connection', function (socket) {
 
