@@ -27,7 +27,7 @@ var Slideshow = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Slideshow).call(this, props));
 
         _this.state = { data: {} };
-        _this.socket = io();
+
         return _this;
     }
 
@@ -56,15 +56,6 @@ var Slideshow = function (_React$Component) {
                     console.error(self.props.url, status, err.toString());
                 }
             });
-        }
-    }, {
-        key: 'registerSocketIOListeners',
-        value: function registerSocketIOListeners() {
-            if (this.socket) {
-                this.socket.on('DisplaySlackMessage', function (msg) {
-                    if (msg.creator === this.props.userid) {}
-                });
-            }
         }
     }, {
         key: 'createMarkup',

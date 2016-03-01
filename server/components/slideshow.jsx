@@ -6,7 +6,7 @@ export default class Slideshow extends React.Component{
   constructor(props) {
     super(props);
     this.state = {data: {}};
-    this.socket=io();
+    
   }
   componentWillMount() {
       this.setState({data:{name:'',
@@ -34,15 +34,7 @@ export default class Slideshow extends React.Component{
     });
    }
    
-   registerSocketIOListeners(){
-       if(this.socket){
-           this.socket.on('DisplaySlackMessage', function(msg){
-               if(msg.creator===this.props.userid){
-                   
-               }
-           });
-       }
-   }
+   
    
    createMarkup(slideText) { return {__html: slideText.replace(/\r\n/g,'<br/>')}; }
    
