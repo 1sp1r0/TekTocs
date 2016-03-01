@@ -141,7 +141,7 @@ var Slackbot = function () {
                                         //});
                                     } else {
                                             //emit SlackMessage event to the server- socketioServer.
-                                            self.socketioServer.emit('DisplaySlackMessage', slide.slideText);
+                                            self.socketioNamespace.emit('DisplaySlackMessage', slide.slideText);
                                             //self.clientio.emit('SlackMessage',slide.slideText);
                                         }
                                     _context.next = 12;
@@ -167,7 +167,7 @@ var Slackbot = function () {
     }, {
         key: 'registerSocketIoListeners',
         value: function registerSocketIoListeners(socketioNamespaceName) {
-            //this.socketioNamespace=this.socketioServer.of(socketioNamespaceName); 
+            this.socketioNamespace = this.socketioServer.of(socketioNamespaceName);
             //this.clientio=socketclient(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName);
             var self = this;
             this.socketioServer.on('connection', function (socket) {

@@ -96,7 +96,7 @@ export default class Slackbot{
                     }
                 else{
                     //emit SlackMessage event to the server- socketioServer.
-                    self.socketioServer.emit('DisplaySlackMessage',slide.slideText);
+                    self.socketioNamespace.emit('DisplaySlackMessage',slide.slideText);
                     //self.clientio.emit('SlackMessage',slide.slideText);
                 }
                 }catch(err){
@@ -110,7 +110,7 @@ export default class Slackbot{
     }
 
    registerSocketIoListeners(socketioNamespaceName){
-    //this.socketioNamespace=this.socketioServer.of(socketioNamespaceName);  
+    this.socketioNamespace=this.socketioServer.of(socketioNamespaceName);  
     //this.clientio=socketclient(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName); 
     let self=this;
     this.socketioServer.on('connection', function(socket){
