@@ -65,7 +65,7 @@ export function processMessage(message){
                 let team = yield getSlackTeam(slashCommand.team_id);
                 let botAccessToken=team.bot.bot_access_token;
                 let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
-                let slide=yield getSlide(message,slideIndex,botAccessToken,slashCommand.slideshow.short_id);
+                let slide=yield getSlide(message,slideIndex,botAccessToken,slashCommand.attachments.slideshow.short_id);
                 /*let slide=new Models.Slide({slideIndex:slideIndex,
                 slideText:message.text,
                 slideCaption:'',
@@ -146,8 +146,8 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
            
          }
         }).catch((err) => {
-            winston.log('error',err);
-            reject(err);
+            winston.log('error',err.stack);
+            reject(err.stack);
           
         });
     });          

@@ -115,7 +115,7 @@ function processMessage(message) {
                             botAccessToken = team.bot.bot_access_token;
                             slideIndex = getNextSlideindex(slashCommand.attachments.slideshow.slides);
                             _context.next = 15;
-                            return getSlide(message, slideIndex, botAccessToken, slashCommand.slideshow.short_id);
+                            return getSlide(message, slideIndex, botAccessToken, slashCommand.attachments.slideshow.short_id);
 
                         case 15:
                             slide = _context.sent;
@@ -261,8 +261,8 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                 }
             }, _callee2, this, [[0, 28]]);
         })).catch(function (err) {
-            _logger2.default.log('error', err);
-            reject(err);
+            _logger2.default.log('error', err.stack);
+            reject(err.stack);
         });
     });
 }
