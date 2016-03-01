@@ -111,8 +111,8 @@ export default class Slackbot{
         });
     }
 
-   registerSocketIoListeners(app,socketioNamespaceName){
-    this.socketioServer=socketioserver(app);
+   registerSocketIoListeners(httpserver,socketioNamespaceName){
+    this.socketioServer=socketioserver(httpserver);
     this.socketioNamespace=this.socketioServer.of(socketioNamespaceName);  
     this.clientio=socketclient(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName); 
     let self=this;
