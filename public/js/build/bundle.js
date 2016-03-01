@@ -19759,7 +19759,7 @@ var ReactRenderers =
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            this.registerSocketIOListeners();
+
 	            var self = this;
 	            $.ajax({
 	                url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows/' + self.props.slideshowid, //this.props.url,
