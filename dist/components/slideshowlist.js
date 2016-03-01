@@ -11,10 +11,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactInfinite = require('react-infinite');
-
-var _reactInfinite2 = _interopRequireDefault(_reactInfinite);
-
 var _reactWaypoint = require('react-waypoint');
 
 var _reactWaypoint2 = _interopRequireDefault(_reactWaypoint);
@@ -39,15 +35,10 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
 
         _this.state = {
             data: { ok: false, result: [] },
-            isInitialLoad: true,
             skip: -1 * pageSize
         };
         return _this;
     }
-
-    //componentWillMount(){
-    //    this.setState({ok:true,result:[]});
-    //}
 
     _createClass(SlideshowList, [{
         key: 'componentDidMount',
@@ -57,23 +48,15 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
     }, {
         key: 'renderWaypoint',
         value: function renderWaypoint() {
-            //if (this.state.isInitialLoad) {
-            //  this.state.isInitialLoad=false;
 
             return _react2.default.createElement(_reactWaypoint2.default, {
                 onEnter: this.getSlideShows.bind(this),
                 threshold: 2.0
             });
-            //}
         }
     }, {
         key: 'getSlideShows',
         value: function getSlideShows() {
-
-            /* if(this.state.noMoreRecords){
-                 return;
-             }
-             this.state.isInfiniteLoading= true;*/
 
             this.state.skip = this.state.skip + pageSize;
             var self = this;
@@ -85,7 +68,6 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
                 success: function success(data) {
 
                     if (data.ok && data.result.length > 0) {
-                        //self.state.noMoreRecords=true;
                         data.result = self.state.data.result.concat(data.result);
                         self.setState({ data: data });
                     }
@@ -110,7 +92,7 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
 
             if (this.state.data.ok) {
                 var slideshows = _react2.default.createElement('div', null);
-                // if(this.state.data.result.length>0){
+
                 var self = this;
                 slideshows = this.state.data.result.map(function (data, index) {
                     return _react2.default.createElement(SlideshowLead, { userid: self.props.userid, data: data, key: data.slideshow.short_id });
@@ -121,22 +103,9 @@ var SlideshowList = exports.SlideshowList = function (_React$Component) {
                     slideshows,
                     this.renderWaypoint()
                 );
-                /*return <Infinite  elementHeight={200}
-                        infiniteLoadBeginEdgeOffset={200}
-                        onInfiniteLoad={this.getSlideShows.bind(this)}
-                        loadingSpinnerDelegate={this.elementInfiniteLoad()}
-                        isInfiniteLoading={this.state.isInfiniteLoading} 
-                        useWindowAsScrollContainer={true}
-                        >
-                           {slideshows}
-                        </Infinite>   */
-                // }
-                // else {
-                //     return <div></div>;
-                // }
             } else {
-                    return _react2.default.createElement('div', null);
-                }
+                return _react2.default.createElement('div', null);
+            }
         }
     }]);
 
@@ -162,9 +131,7 @@ var SlideshowLead = exports.SlideshowLead = function (_React$Component2) {
         }
     }, {
         key: 'componentDidMount',
-        value: function componentDidMount() {
-            //this.setState();
-        }
+        value: function componentDidMount() {}
     }, {
         key: 'render',
         value: function render() {

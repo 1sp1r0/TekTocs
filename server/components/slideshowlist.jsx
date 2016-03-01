@@ -1,5 +1,4 @@
 import React from 'react';
-import Infinite from 'react-infinite'
 import Waypoint from 'react-waypoint'
 const pageSize=15;
 
@@ -9,40 +8,32 @@ export  class SlideshowList extends React.Component{
     super(props);
     this.state = {
        data: {ok:false,result:[]},
-       isInitialLoad:true,
        skip:-1*pageSize
   };
   }
 
-//componentWillMount(){
-//    this.setState({ok:true,result:[]});
-//}
+
   
    componentDidMount() {
        this.getSlideShows();
    }
    
    renderWaypoint() {
-    //if (this.state.isInitialLoad) {
-      //  this.state.isInitialLoad=false;
-      
+   
       return (
          <Waypoint
             onEnter={this.getSlideShows.bind(this)}
           threshold={2.0}
         />
       );
-    //}
+   
   }
   
  
    
    getSlideShows(){
        
-      /* if(this.state.noMoreRecords){
-           return;
-       }
-       this.state.isInfiniteLoading= true;*/
+    
        
        this.state.skip=this.state.skip+pageSize;
        let self=this;
@@ -54,7 +45,6 @@ export  class SlideshowList extends React.Component{
       success: function(data) {
           
           if(data.ok && data.result.length > 0){
-              //self.state.noMoreRecords=true;
               data.result=self.state.data.result.concat(data.result);
               self.setState({data: data});
           }
@@ -81,7 +71,7 @@ export  class SlideshowList extends React.Component{
        
         if(this.state.data.ok){
              let slideshows=<div></div>;
-            // if(this.state.data.result.length>0){
+          
                  var self=this;
                   slideshows=this.state.data.result.map(function(data,index){
                      return (<SlideshowLead userid={self.props.userid} data={data} key={data.slideshow.short_id}></SlideshowLead>);
@@ -90,19 +80,7 @@ export  class SlideshowList extends React.Component{
                             {slideshows}
                             {this.renderWaypoint()}
                         </div>    
-                 /*return <Infinite  elementHeight={200}
-                         infiniteLoadBeginEdgeOffset={200}
-                         onInfiniteLoad={this.getSlideShows.bind(this)}
-                         loadingSpinnerDelegate={this.elementInfiniteLoad()}
-                         isInfiniteLoading={this.state.isInfiniteLoading} 
-                         useWindowAsScrollContainer={true}
-                         >
-                            {slideshows}
-                         </Infinite>   */
-            // }
-            // else {
-            //     return <div></div>;
-            // }
+                 
     }else{
         return <div></div>;
     }
@@ -128,7 +106,7 @@ export  class SlideshowLead extends React.Component{
   }
   
    componentDidMount() {
-       //this.setState();
+       
    }
    
 
