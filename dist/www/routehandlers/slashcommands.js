@@ -370,8 +370,8 @@ function startSlideshow(req, res, isLive) {
 
                                 if (isLive && req.app.slackbot.slack.token != _slackTeam.bot.bot_access_token) {
                                     req.app.slackbot.slack = new _slackClient2.default(_slackTeam.bot.bot_access_token, true, true);
-                                    req.app.slackbot.registerSlackListeners();
                                     req.app.slackbot.registerSocketIoListeners(req.body.user_id);
+                                    req.app.slackbot.registerSlackListeners();
                                 }
                                 _context7.next = 12;
                                 return slackhelper.openIm(_slackTeam.bot.bot_access_token, req.body.user_id);
