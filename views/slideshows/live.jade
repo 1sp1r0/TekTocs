@@ -24,9 +24,14 @@ block content
                 
                
             });
-            var socket = io('/' + '#{userid}');
-            socket.on('connect',function(){alert('/#{userid}');});
-            socket.on('connect_error',function(err){alert(err);});
+            var socket = io('https://tektocs.herokuapp.com/#{userid}');
+            socket.on('connect',function(){
+                alert('/#{userid}');
+                }
+                );
+            socket.on('connect_error',function(err){
+                alert(err);
+                });
             socket.on('DisplaySlackMessage', function(msg){
                 $('.carousel  div.item').removeClass('active');
                  if(msg.isImage){
