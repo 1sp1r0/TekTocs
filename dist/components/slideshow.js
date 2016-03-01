@@ -57,6 +57,15 @@ var Slideshow = function (_React$Component) {
             });
         }
     }, {
+        key: 'registerSocketIOListeners',
+        value: function registerSocketIOListeners() {
+            if (socket) {
+                socket.on('DisplaySlackMessage', function (msg) {
+                    if (msg.creator === this.props.userid) {}
+                });
+            }
+        }
+    }, {
         key: 'createMarkup',
         value: function createMarkup(slideText) {
             return { __html: slideText.replace(/\r\n/g, '<br/>') };

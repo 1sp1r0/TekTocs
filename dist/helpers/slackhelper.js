@@ -33,6 +33,10 @@ var _awsSdk = require('aws-sdk');
 
 var _awsSdk2 = _interopRequireDefault(_awsSdk);
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -83,7 +87,7 @@ function getImHistory(token, channel, oldest, latest, count) {
 function processMessage(message) {
     return new Promise(function (resolve, reject) {
         (0, _co2.default)(regeneratorRuntime.mark(function _callee() {
-            var slashCommand, team, botAccessToken, slideIndex, slide;
+            var slashCommand, team, botAccessToken, slideIndex, slide, name, coverSlide, mimeType;
             return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
@@ -92,7 +96,7 @@ function processMessage(message) {
                             _context.next = 3;
                             return Models.SlashCommand.findOne({ channel_id: message.channel,
                                 user_id: message.user, pending: true,
-                                commandType: 'start' }).sort({ createDate: -1 }).limit(1).select('team_id attachments.slideshow').exec();
+                                commandType: 'start' }).sort({ createDate: -1 }).limit(1).select('createDate team_id attachments.slideshow').exec();
 
                         case 3:
                             slashCommand = _context.sent;
@@ -103,7 +107,7 @@ function processMessage(message) {
                             }
 
                             reject('Slideshow has not been started yet.');
-                            _context.next = 24;
+                            _context.next = 28;
                             break;
 
                         case 8:
@@ -121,38 +125,51 @@ function processMessage(message) {
                             slide = _context.sent;
 
                             if (!slide) {
-                                _context.next = 23;
+                                _context.next = 27;
                                 break;
                             }
 
+                            name = slashCommand.attachments.slideshow.creator.real_name ? slashCommand.attachments.slideshow.creator.real_name : slashCommand.attachments.slideshow.creator.name ? slashCommand.attachments.slideshow.creator.name : '';
+                            coverSlide = {};
+                            mimeType = slide.slideMimeType;
+
+                            if (slide.slideAssetUrl != '' && slide.slideMode != 'snippet') {
+                                coverSlide = { isImage: true, src: slide.slideAssetUrl };
+                            } else {
+                                coverSlide = { isImage: false, text: slide.slideText };
+                            }
                             slashCommand.attachments.slideshow.slides.push(slide);
-                            _context.next = 20;
+                            _context.next = 24;
                             return slashCommand.attachments.slideshow.save();
 
-                        case 20:
-                            resolve(slide);
-                            _context.next = 24;
+                        case 24:
+                            resolve({ name: name, coverslide: coverSlide, mimeType: mimeType,
+                                createDateText: 'created ' + (0, _moment2.default)(slashCommand.createDate).fromNow(),
+                                slideshow: { title: slashCommand.attachments.slideshow.title,
+                                    slides: slashCommand.attachments.slideshow.slides,
+                                    creator: slashCommand.attachments.slideshow.creator } });
+                            _context.next = 28;
                             break;
 
-                        case 23:
+                        case 27:
                             reject("error getting slide data");
 
-                        case 24:
-                            _context.next = 29;
+                        case 28:
+                            _context.next = 33;
                             break;
 
-                        case 26:
-                            _context.prev = 26;
+                        case 30:
+                            _context.prev = 30;
                             _context.t0 = _context['catch'](0);
 
                             reject(_context.t0.stack);
 
-                        case 29:
+                        case 33:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 26]]);
+            }, _callee, this, [[0, 30]]);
         })).catch(function (err) {
             reject(err.stack);
         });

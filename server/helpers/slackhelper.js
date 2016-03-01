@@ -3,6 +3,7 @@ import * as Models from '../models/'
 import co from 'co'
 import winston from '../logger'
 import AWS from 'aws-sdk'
+import moment from 'moment'
 
 
 
@@ -58,7 +59,7 @@ export function processMessage(message){
             let slashCommand= yield Models.SlashCommand.findOne({ channel_id: message.channel, 
             user_id: message.user, pending:true,
             commandType:'start' }).sort({createDate: -1}).limit(1)
-            .select('team_id attachments.slideshow').exec();
+            .select('createDate team_id attachments.slideshow').exec();
             if(!slashCommand){
                 reject('Slideshow has not been started yet.');
             }else{
@@ -75,9 +76,24 @@ export function processMessage(message){
                 slideMode:''});*/
                 
                 if(slide){
+                    let name=(slashCommand.attachments.slideshow.creator.real_name?
+                                slashCommand.attachments.slideshow.creator.real_name:
+                                (slashCommand.attachments.slideshow.creator.name?
+                                slashCommand.attachments.slideshow.creator.name:''));
+                    let coverSlide={};
+                    let mimeType=slide.slideMimeType;
+                    if (slide.slideAssetUrl !='' && slide.slideMode != 'snippet'){
+                          coverSlide={isImage:true,src:slide.slideAssetUrl};
+                    }else{
+                         coverSlide={isImage:false,text:slide.slideText};
+                    }            
                             slashCommand.attachments.slideshow.slides.push(slide);
                             yield slashCommand.attachments.slideshow.save();
-                            resolve(slide)
+                            resolve({name:name,coverslide:coverSlide,mimeType:mimeType,
+                                        createDateText:'created ' + moment(slashCommand.createDate).fromNow(),
+                                        slideshow:{title:slashCommand.attachments.slideshow.title,
+                                        slides:slashCommand.attachments.slideshow.slides,
+                                        creator:slashCommand.attachments.slideshow.creator}})
                  }else{
                      reject("error getting slide data");
                  }

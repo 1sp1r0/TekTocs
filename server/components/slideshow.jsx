@@ -32,6 +32,16 @@ export default class Slideshow extends React.Component{
     });
    }
    
+   registerSocketIOListeners(){
+       if(socket){
+           socket.on('DisplaySlackMessage', function(msg){
+               if(msg.creator===this.props.userid){
+                   
+               }
+           });
+       }
+   }
+   
    createMarkup(slideText) { return {__html: slideText.replace(/\r\n/g,'<br/>')}; }
    
    render() {
