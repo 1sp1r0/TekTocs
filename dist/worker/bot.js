@@ -50,12 +50,12 @@ var Slackbot = function () {
 
         //this is the server-side socket client which emits SlackMessage events when there is a
         //message from Slack.
-        //this.clientio=socketclient(process.env.SOCKETIO_ADDRESS);
-        this.clientio = {};
+        this.clientio = (0, _socket2.default)(process.env.SOCKETIO_ADDRESS);
+
         //this is the socketio server bound to the same port as expressjs. Browser clients as well as the
         //server-side client, this.clientio, connect to this socket.
-        //this.socketioServer=io;
-        this.socketioServer = {};
+        this.socketioServer = io;
+
         this.slack = new _slackClient2.default('', true, true);
         //namespace for socket io
         this.socketioNamespace = {};
@@ -147,8 +147,8 @@ var Slackbot = function () {
                                         //});
                                     } else {
                                             //emit SlackMessage event to the server- socketioServer.
-                                            self.socketioNamespace.emit('DisplaySlackMessage', slide.slideText);
-                                            //self.clientio.emit('SlackMessage',slide.slideText);
+                                            //self.socketioServer.emit('DisplaySlackMessage',slide.slideText);
+                                            self.clientio.emit('SlackMessage', slide.slideText);
                                         }
                                     _context.next = 12;
                                     break;
@@ -172,19 +172,19 @@ var Slackbot = function () {
         }
     }, {
         key: 'registerSocketIoListeners',
-        value: function registerSocketIoListeners(httpserver, socketioNamespaceName) {
-            this.socketioServer = (0, _socket4.default)(httpserver);
-            this.socketioNamespace = this.socketioServer.of(socketioNamespaceName);
-            this.clientio = (0, _socket2.default)(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName);
+        value: function registerSocketIoListeners() {
+
+            //this.socketioNamespace=this.socketioServer.of(socketioNamespaceName); 
+            //this.clientio=socketclient(process.env.SOCKETIO_ADDRESS + '/' + socketioNamespaceName);
             var self = this;
-            this.socketioNamespace.on('connection', function (socket) {
+            this.socketioServer.on('connection', function (socket) {
 
                 socket.on('disconnect', function () {});
 
                 //listener for SlackMessage event emitted by handler of slack.on('message')
                 socket.on('SlackMessage', function (msg) {
                     //emit message to connected browser clients
-                    self.socketioNamespace.emit('DisplaySlackMessage', msg);
+                    self.socketioServer.emit('DisplaySlackMessage', msg);
                 });
             });
         }

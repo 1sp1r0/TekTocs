@@ -24,7 +24,7 @@ block content
                 
                
             });
-            var socket = io('https://tektocs.herokuapp.com/#{userid}');
+            var socket = io();
             socket.on('connect',function(){
                 alert('/#{userid}');
                 }

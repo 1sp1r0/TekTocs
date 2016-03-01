@@ -18,7 +18,7 @@
     const port = process.env.PORT || 8080;
     const app =  express();
     const httpServer=http.Server(app);
-    //const io=socketioserver(httpServer);
+    const io=socketioserver(httpServer);
     
     const FACEBOOK_APP_ID = "dummy";
     const FACEBOOK_APP_SECRET = "dummy";
@@ -68,9 +68,8 @@
   app.use(passport.session());
   
   //initilaize slack bot
-  //let slackbot= new Slackbot(io);
-  let slackbot= new Slackbot();
-  //slackbot.registerSocketIoListeners();
+  let slackbot= new Slackbot(io);
+ slackbot.registerSocketIoListeners();
   app.slackbot=slackbot;
   
  
@@ -113,7 +112,7 @@
     //connect to database
     DbConnection.connect();
     
-   app.server=httpServer.listen(port, function() {
+   httpServer.listen(port, function() {
         console.log('Tektocs is running on http://' + httpServer.address().address + ":" + port);
         
     });

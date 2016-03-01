@@ -71,7 +71,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var port = process.env.PORT || 8080;
 var app = (0, _express2.default)();
 var httpServer = _http2.default.Server(app);
-//const io=socketioserver(httpServer);
+var io = (0, _socket2.default)(httpServer);
 
 var FACEBOOK_APP_ID = "dummy";
 var FACEBOOK_APP_SECRET = "dummy";
@@ -117,9 +117,8 @@ app.use(_passport2.default.initialize());
 app.use(_passport2.default.session());
 
 //initilaize slack bot
-//let slackbot= new Slackbot(io);
-var slackbot = new _bot2.default();
-//slackbot.registerSocketIoListeners();
+var slackbot = new _bot2.default(io);
+slackbot.registerSocketIoListeners();
 app.slackbot = slackbot;
 
 app.use(function (err, req, res, next) {
@@ -161,7 +160,7 @@ app.use('/api', _api2.default);
 //connect to database
 _db2.default.connect();
 
-app.server = httpServer.listen(port, function () {
+httpServer.listen(port, function () {
     console.log('Tektocs is running on http://' + httpServer.address().address + ":" + port);
 });
 
