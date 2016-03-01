@@ -169,14 +169,7 @@ function getNextSlideindex(slides) {
 
 function getSlide(message, slideIndex, botAccessToken, slideshowId) {
     return new Promise(function (resolve, reject) {
-        resolve(new Models.Slide({ slideIndex: slideIndex,
-            slideText: message.text,
-            slideCaption: '',
-            slideAssetUrl: '',
-            slideTitle: '',
-            slideMimeType: '',
-            slideMode: '' }));
-        return;
+
         (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
             var slideCaption, slideText, slideAssetUrl, slideMode, body;
             return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -268,8 +261,8 @@ function getSlide(message, slideIndex, botAccessToken, slideshowId) {
                 }
             }, _callee2, this, [[0, 28]]);
         })).catch(function (err) {
-            _logger2.default.log('error', err.stack);
-            //reject(err.stack);
+            _logger2.default.log('error', err);
+            reject(err);
         });
     });
 }

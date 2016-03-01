@@ -100,14 +100,7 @@ function getNextSlideindex(slides){
 
 export function getSlide(message,slideIndex,botAccessToken,slideshowId){
     return new Promise((resolve, reject) => {
-        resolve(new Models.Slide({slideIndex:slideIndex,
-                slideText:message.text,
-                slideCaption:'',
-                slideAssetUrl:'',
-                slideTitle:'',
-                slideMimeType:'',
-                slideMode:''}));
-                return;
+        
      co(function* () {
         try {
             let slideCaption='';
@@ -153,8 +146,8 @@ export function getSlide(message,slideIndex,botAccessToken,slideshowId){
            
          }
         }).catch((err) => {
-            winston.log('error',err.stack);
-           //reject(err.stack);
+            winston.log('error',err);
+            reject(err);
           
         });
     });          
