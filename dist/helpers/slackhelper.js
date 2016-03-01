@@ -103,7 +103,7 @@ function processMessage(message) {
                             }
 
                             reject('Slideshow has not been started yet.');
-                            _context.next = 22;
+                            _context.next = 24;
                             break;
 
                         case 8:
@@ -114,49 +114,45 @@ function processMessage(message) {
                             team = _context.sent;
                             botAccessToken = team.bot.bot_access_token;
                             slideIndex = getNextSlideindex(slashCommand.attachments.slideshow.slides);
-                            //let slide=yield getSlide(message,slideIndex,botAccessToken,slashCommand.slideshow.short_id);
+                            _context.next = 15;
+                            return getSlide(message, slideIndex, botAccessToken, slashCommand.slideshow.short_id);
 
-                            slide = new Models.Slide({ slideIndex: slideIndex,
-                                slideText: message.text,
-                                slideCaption: '',
-                                slideAssetUrl: '',
-                                slideTitle: '',
-                                slideMimeType: '',
-                                slideMode: '' });
+                        case 15:
+                            slide = _context.sent;
 
                             if (!slide) {
-                                _context.next = 21;
+                                _context.next = 23;
                                 break;
                             }
 
                             slashCommand.attachments.slideshow.slides.push(slide);
-                            _context.next = 18;
+                            _context.next = 20;
                             return slashCommand.attachments.slideshow.save();
 
-                        case 18:
+                        case 20:
                             resolve(slide);
-                            _context.next = 22;
+                            _context.next = 24;
                             break;
 
-                        case 21:
+                        case 23:
                             reject("error getting slide data");
 
-                        case 22:
-                            _context.next = 27;
+                        case 24:
+                            _context.next = 29;
                             break;
 
-                        case 24:
-                            _context.prev = 24;
+                        case 26:
+                            _context.prev = 26;
                             _context.t0 = _context['catch'](0);
 
                             reject(_context.t0.stack);
 
-                        case 27:
+                        case 29:
                         case 'end':
                             return _context.stop();
                     }
                 }
-            }, _callee, this, [[0, 24]]);
+            }, _callee, this, [[0, 26]]);
         })).catch(function (err) {
             reject(err.stack);
         });
@@ -173,6 +169,14 @@ function getNextSlideindex(slides) {
 
 function getSlide(message, slideIndex, botAccessToken, slideshowId) {
     return new Promise(function (resolve, reject) {
+        resolve(new Models.Slide({ slideIndex: slideIndex,
+            slideText: message.text,
+            slideCaption: '',
+            slideAssetUrl: '',
+            slideTitle: '',
+            slideMimeType: '',
+            slideMode: '' }));
+        return;
         (0, _co2.default)(regeneratorRuntime.mark(function _callee2() {
             var slideCaption, slideText, slideAssetUrl, slideMode, body;
             return regeneratorRuntime.wrap(function _callee2$(_context2) {

@@ -65,14 +65,14 @@ export function processMessage(message){
                 let team = yield getSlackTeam(slashCommand.team_id);
                 let botAccessToken=team.bot.bot_access_token;
                 let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
-                //let slide=yield getSlide(message,slideIndex,botAccessToken,slashCommand.slideshow.short_id);
-                let slide=new Models.Slide({slideIndex:slideIndex,
+                let slide=yield getSlide(message,slideIndex,botAccessToken,slashCommand.slideshow.short_id);
+                /*let slide=new Models.Slide({slideIndex:slideIndex,
                 slideText:message.text,
                 slideCaption:'',
                 slideAssetUrl:'',
                 slideTitle:'',
                 slideMimeType:'',
-                slideMode:''});
+                slideMode:''});*/
                 
                 if(slide){
                             slashCommand.attachments.slideshow.slides.push(slide);
@@ -100,6 +100,14 @@ function getNextSlideindex(slides){
 
 export function getSlide(message,slideIndex,botAccessToken,slideshowId){
     return new Promise((resolve, reject) => {
+        resolve(new Models.Slide({slideIndex:slideIndex,
+                slideText:message.text,
+                slideCaption:'',
+                slideAssetUrl:'',
+                slideTitle:'',
+                slideMimeType:'',
+                slideMode:''}));
+                return;
      co(function* () {
         try {
             let slideCaption='';
