@@ -58,7 +58,7 @@ export function processMessage(message){
             //{ channel_id: 1, user_id: 1, commandType:1 }
             let slashCommand= yield Models.SlashCommand.findOne({ channel_id: message.channel, 
             user_id: message.user, pending:true,
-            commandType:'start' }).sort({createDate: -1}).limit(1)
+            commandType:'start' }).populate('attachments.slideshow.creator').sort({createDate: -1}).limit(1)
             .select('createDate team_id attachments.slideshow').exec();
             if(!slashCommand){
                 reject('Slideshow has not been started yet.');

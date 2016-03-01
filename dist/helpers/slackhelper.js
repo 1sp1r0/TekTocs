@@ -96,7 +96,7 @@ function processMessage(message) {
                             _context.next = 3;
                             return Models.SlashCommand.findOne({ channel_id: message.channel,
                                 user_id: message.user, pending: true,
-                                commandType: 'start' }).sort({ createDate: -1 }).limit(1).select('createDate team_id attachments.slideshow').exec();
+                                commandType: 'start' }).populate('attachments.slideshow.creator').sort({ createDate: -1 }).limit(1).select('createDate team_id attachments.slideshow').exec();
 
                         case 3:
                             slashCommand = _context.sent;

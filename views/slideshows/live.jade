@@ -33,7 +33,7 @@ block content
                 
                 });
                 socket.on('DisplaySlackMessage', function(msg){
-                if(msg.slideshow.creator==='#{userid}'){
+                if(msg.slideshow.creator._id==='#{userid}'){
                     renderedComponent.updateState(msg);
                     return;
                     $('.carousel  div.item').removeClass('active');
