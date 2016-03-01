@@ -33,14 +33,6 @@ block content
                     }
                 });
             });
-            var socket = io();
-            socket.on('DisplaySlackMessage', function(msg){
-                $('.carousel  div.item').removeClass('active');
-                 if(msg.isImage){
-                     $('.carousel-inner').append($(`<div class='item active'><img src='${msg.src}'/></div>`));
-                 }else{
-                     $('.carousel-inner').append($(`<div style="" class="item active slideContainer"><div class="slide">${msg}</div></div>`));
-                }
-            });
+           
     
             

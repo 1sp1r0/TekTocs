@@ -26,11 +26,11 @@ block content
             });
             var socket = io();
             socket.on('connect',function(){
-                alert('/#{userid}');
+                
                 }
                 );
             socket.on('connect_error',function(err){
-                alert(err);
+                
                 });
             socket.on('DisplaySlackMessage', function(msg){
                 if(msg.creator==='#{userid}'){
