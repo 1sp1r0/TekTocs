@@ -6,6 +6,7 @@ import * as Models from '../../models/'
 import "babel-polyfill"
 import Slack from 'slack-client'
 import * as slackhelper from '../../helpers/slackhelper'
+import tag from '../../helpers/tag'
 import shortid from 'shortid'
 
 
@@ -24,8 +25,8 @@ export function publish(req,res){
                         commandType:'start' },{channel_id:1,'attachments.slideshow':1},{sort:{createDate: -1}})
                         .exec();
                         if(!slashCommand){
-                            winston.log('error','Could not find any unpublished slideshows for:' + req.body.team_domain + ',' +  req.body.user_id);
-                            res.status(200).send('Could not find any unpublished slideshows.');
+                            winston.log('error',`${tag`noUnpublishedSlideshowsFound`}:${req.body.team_domain},${req.body.user_id}`);
+                            res.status(200).send(tag`noUnpublishedSlideshowsFound`);
                         }
                         else{
                             let response=yield slackhelper.getImHistory(slackTeam.bot.bot_access_token,
@@ -48,16 +49,16 @@ export function publish(req,res){
                             
                                     }
                                 });
-                                res.status(200).send('Slideshow has been published.');
+                                res.status(200).send(tag`slideshowHasBeenPublished`);
                             }
                             else{
                                 winston.log('error', response.error);
-                                res.status(500).send('Could not retrieve messages from the Slack channel.');
+                                res.status(500).send(tag`couldNotretrieveSlackmessage`);
                             }
                         }
                     }else{
-                         winston.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
-                        res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+                         winston.log('error',`${tag`didNotFindrecord`}:${req.body.team_id}(${req.body.team_domain})`);
+                        res.status(500).send(tag`somethingDoesntSeemToBeRight`);
                     }
                 }
                 catch (err) {
@@ -69,7 +70,7 @@ export function publish(req,res){
                 res.sendStatus(500);
             });
         }else{
-            winston.log('warn', 'unauthorized slash command access');
+            winston.log('warn', tag`unauthorizedSlashCommandAccess`);
         }
     }
     catch (err) {
@@ -174,7 +175,7 @@ export function startSlideshow(req, res,isLive) {
             try {
                 req.app.slackbot.slack=new Slack('', true, true);
                 if (req.body.text.trim()===''){
-                    res.status(200).send('Every slideshow needs a title. Enter the title after the command - "/tektocs-startlive titleOfYourSlideshow"');
+                    res.status(200).send(tag`slideshowRequiresTitle`);
                     return;
                 }
                 let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});

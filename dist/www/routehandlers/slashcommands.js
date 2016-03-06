@@ -1,5 +1,13 @@
 'use strict';
 
+var _templateObject = _taggedTemplateLiteral(['noUnpublishedSlideshowsFound'], ['noUnpublishedSlideshowsFound']),
+    _templateObject2 = _taggedTemplateLiteral(['slideshowHasBeenPublished'], ['slideshowHasBeenPublished']),
+    _templateObject3 = _taggedTemplateLiteral(['couldNotretrieveSlackmessage'], ['couldNotretrieveSlackmessage']),
+    _templateObject4 = _taggedTemplateLiteral(['didNotFindrecord'], ['didNotFindrecord']),
+    _templateObject5 = _taggedTemplateLiteral(['somethingDoesntSeemToBeRight'], ['somethingDoesntSeemToBeRight']),
+    _templateObject6 = _taggedTemplateLiteral(['unauthorizedSlashCommandAccess'], ['unauthorizedSlashCommandAccess']),
+    _templateObject7 = _taggedTemplateLiteral(['slideshowRequiresTitle'], ['slideshowRequiresTitle']);
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -39,6 +47,10 @@ var _slackhelper = require('../../helpers/slackhelper');
 
 var slackhelper = _interopRequireWildcard(_slackhelper);
 
+var _tag = require('../../helpers/tag');
+
+var _tag2 = _interopRequireDefault(_tag);
+
 var _shortid = require('shortid');
 
 var _shortid2 = _interopRequireDefault(_shortid);
@@ -46,6 +58,8 @@ var _shortid2 = _interopRequireDefault(_shortid);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 function publish(req, res) {
     try {
@@ -96,8 +110,8 @@ function publish(req, res) {
                                                                             break;
                                                                         }
 
-                                                                        _logger2.default.log('error', 'Could not find any unpublished slideshows for:' + req.body.team_domain + ',' + req.body.user_id);
-                                                                        res.status(200).send('Could not find any unpublished slideshows.');
+                                                                        _logger2.default.log('error', (0, _tag2.default)(_templateObject) + ':' + req.body.team_domain + ',' + req.body.user_id);
+                                                                        res.status(200).send((0, _tag2.default)(_templateObject));
                                                                         _context2.next = 13;
                                                                         break;
 
@@ -140,11 +154,11 @@ function publish(req, res) {
                                                                                         _logger2.default.log('error', err.stack);
                                                                                     }
                                                                                 });
-                                                                                res.status(200).send('Slideshow has been published.');
+                                                                                res.status(200).send((0, _tag2.default)(_templateObject2));
                                                                             })();
                                                                         } else {
                                                                             _logger2.default.log('error', response.error);
-                                                                            res.status(500).send('Could not retrieve messages from the Slack channel.');
+                                                                            res.status(500).send((0, _tag2.default)(_templateObject3));
                                                                         }
 
                                                                     case 13:
@@ -160,8 +174,8 @@ function publish(req, res) {
                                                     break;
 
                                                 case 7:
-                                                    _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
-                                                    res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+                                                    _logger2.default.log('error', (0, _tag2.default)(_templateObject4) + ':' + req.body.team_id + '(' + req.body.team_domain + ')');
+                                                    res.status(500).send((0, _tag2.default)(_templateObject5));
 
                                                 case 9:
                                                 case 'end':
@@ -193,7 +207,7 @@ function publish(req, res) {
                 res.sendStatus(500);
             });
         } else {
-            _logger2.default.log('warn', 'unauthorized slash command access');
+            _logger2.default.log('warn', (0, _tag2.default)(_templateObject6));
         }
     } catch (err) {
         _logger2.default.log('error', err.message);
@@ -353,7 +367,7 @@ function startSlideshow(req, res, isLive) {
                                     break;
                                 }
 
-                                res.status(200).send('Every slideshow needs a title. Enter the title after the command - "/tektocs-startlive titleOfYourSlideshow"');
+                                res.status(200).send((0, _tag2.default)(_templateObject7));
                                 return _context7.abrupt('return');
 
                             case 5:
