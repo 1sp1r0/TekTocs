@@ -30,13 +30,6 @@ export default class Slackbot{
                 
                 let slide=yield slackhelper.processMessage(message);
                 self.socketioServer.emit('DisplaySlackMessage',slide);
-                //check if the message is an image or snippet. 
-               /* if (slide.slideAssetUrl !='' && slide.slideMode!='snippet'){
-                            self.socketioServer.emit('DisplaySlackMessage',{creator:creator,src:slide.slideAssetUrl,isImage:true });
-                }
-                else{
-                    self.socketioServer.emit('DisplaySlackMessage',{creator:creator,text:slide.slideText});
-                }*/
                 }catch(err){
                     winston.log('error', err.stack);
                 }

@@ -6,16 +6,7 @@ block content
             div#react-root!= react
         div.col-md-5.hidden-xs.hidden-sm
             div#react-user-component!= react-user-component
-                //div.jumbotron
-                    div.jumbotron-contents#sidebar.bs-sidebar.affix
-                            div.avatar-container
-                                        a.avatar
-                                            img.avatar-image(src="https://secure.gravatar.com/avatar/4e314473c8fd3c8950a0649238e1297f.jpg?s=64&d=https%3A%2F%2Fslack.global.ssl.fastly.net%2F66f9%2Fimg%2Favatars%2Fava_0000-64.png")
-                            h3 murali narasimhan
-                            p(style="font-size:18px;line-height:35px;")
-                                |If email signup is enabled for your team, new members will be able to create an account on their own. Team Owners can manage this option under Team Sign Up Mode on the Team Settings page.
-                                |For security, only those with access to an email address at the domains specified by the team's Owner will be able to sign up. We'll send a validation link to each new team member's email address to verify their identity before they can create an account.     
-             
+                
     script(src="/socket.io/socket.io.js")
     script(src='/js/build/bundle.js')   
  block pagescripts 
@@ -24,9 +15,6 @@ block content
                 
                 ReactRenderers.renderSlideshowlist('react-root','#{userid}');
                 ReactRenderers.renderSlackUser('react-user-component','#{userid}');
-                //$('.carousel').carousel({
-                //    interval: false
-                //});
                 $('#sidebar').affix({
                     offset: {
                     top: 75 

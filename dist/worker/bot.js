@@ -78,13 +78,6 @@ var Slackbot = function () {
                                     slide = _context.sent;
 
                                     self.socketioServer.emit('DisplaySlackMessage', slide);
-                                    //check if the message is an image or snippet.
-                                    /* if (slide.slideAssetUrl !='' && slide.slideMode!='snippet'){
-                                                 self.socketioServer.emit('DisplaySlackMessage',{creator:creator,src:slide.slideAssetUrl,isImage:true });
-                                     }
-                                     else{
-                                         self.socketioServer.emit('DisplaySlackMessage',{creator:creator,text:slide.slideText});
-                                     }*/
                                     _context.next = 12;
                                     break;
 

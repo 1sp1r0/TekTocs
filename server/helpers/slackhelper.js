@@ -4,6 +4,7 @@ import co from 'co'
 import winston from '../logger'
 import AWS from 'aws-sdk'
 import moment from 'moment'
+import tag from './tag'
 
 
 
@@ -55,7 +56,6 @@ export function processMessage(message){
         co(function* () {
         try {
             //check to see if the user has a pending /tektocs-start or /tektocs-startlive command
-            //{ channel_id: 1, user_id: 1, commandType:1 }
             let slashCommand= yield Models.SlashCommand.findOne({ channel_id: message.channel, 
             user_id: message.user, pending:true,
             commandType:'start' }).populate('attachments.slideshow.creator').sort({createDate: -1}).limit(1)
@@ -67,14 +67,7 @@ export function processMessage(message){
                 let botAccessToken=team.bot.bot_access_token;
                 let slideIndex=getNextSlideindex(slashCommand.attachments.slideshow.slides);
                 let slide=yield getSlide(message,slideIndex,botAccessToken,slashCommand.attachments.slideshow.short_id);
-                /*let slide=new Models.Slide({slideIndex:slideIndex,
-                slideText:message.text,
-                slideCaption:'',
-                slideAssetUrl:'',
-                slideTitle:'',
-                slideMimeType:'',
-                slideMode:''});*/
-                
+         
                 if(slide){
                     let name=(slashCommand.attachments.slideshow.creator.real_name?
                                 slashCommand.attachments.slideshow.creator.real_name:
@@ -95,7 +88,7 @@ export function processMessage(message){
                                         slides:slashCommand.attachments.slideshow.slides,
                                         creator:slashCommand.attachments.slideshow.creator}})
                  }else{
-                     reject("error getting slide data");
+                     reject(tag`errorGettingSlideData`);
                  }
             }
         }
@@ -260,8 +253,8 @@ export function getCoverSlide(slide,teamId){
                          reject(error);
                      });
              }else{
-                  winston.log('error', 'Could not find a record for team_id:' + teamId );
-                  reject('Could not find a record for team_id:' + teamId);
+                  winston.log('error', tag`couldNotFindRecordForTeam${teamId}` );
+                  reject(tag`couldNotFindRecordForTeam${teamId}`);
              }
              
           }

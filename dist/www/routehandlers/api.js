@@ -1,5 +1,7 @@
 'use strict';
 
+var _templateObject = _taggedTemplateLiteral(['noData'], ['noData']);
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -29,9 +31,15 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
+var _tag = require('../../helpers/tag');
+
+var _tag2 = _interopRequireDefault(_tag);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 function getUserSlideshow(req, res) {
     try {
@@ -67,9 +75,6 @@ function getUserSlideshow(req, res) {
                                         coverSlide = { isImage: false, text: slide.slideText };
                                     }
 
-                                    // let coverSlide= yield slackhelper.getCoverSlide(
-                                    //    slashCommand.attachments.slideshow.slides[0],slashCommand.team_id);
-
                                     res.status(200).send({ name: name, coverslide: coverSlide, mimeType: mimeType,
                                         createDateText: 'created ' + (0, _moment2.default)(slashCommand.createDate).fromNow(),
                                         slideshow: { title: slashCommand.attachments.slideshow.title,
@@ -77,7 +82,7 @@ function getUserSlideshow(req, res) {
                                             creator: slashCommand.attachments.slideshow.creator } });
                                 }
                             } else {
-                                res.status(500).send('no data');
+                                res.status(500).send((0, _tag2.default)(_templateObject));
                             }
                             _context.next = 13;
                             break;

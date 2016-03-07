@@ -5,6 +5,7 @@ import * as slackhelper from '../../helpers/slackhelper'
 import * as Models from '../../models/'
 import "babel-polyfill"
 import moment from 'moment'
+import tag from '../../helpers/tag'
 
 export function getUserSlideshow (req,res){
     try{
@@ -35,9 +36,6 @@ export function getUserSlideshow (req,res){
                                       coverSlide={isImage:false,text:slide.slideText};
                                   }
                                   
-                                   // let coverSlide= yield slackhelper.getCoverSlide(
-                                    //    slashCommand.attachments.slideshow.slides[0],slashCommand.team_id);
-                                    
                                  res.status(200).send({name:name,coverslide:coverSlide,mimeType:mimeType,
                                         createDateText:'created ' + moment(slashCommand.createDate).fromNow(),
                                         slideshow:{title:slashCommand.attachments.slideshow.title,
@@ -46,7 +44,7 @@ export function getUserSlideshow (req,res){
                            }
                            
                         }else{
-                            res.status(500).send('no data');
+                            res.status(500).send(tag`noData`);
                             
                         }
              }catch (err) {

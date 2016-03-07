@@ -15,9 +15,6 @@ export function userSlideshows (req,res){
 
 export function userSlideshow (req,res){
     let SlideShowComponent = React.createFactory(Slideshow);
-    //res.render('slideshows/slideshow',{userid: req.params.userid,
-    //slideshowid:req.params.slideshowid});
-    
     res.render('slideshows/slideshow',
     {userid: req.params.userid,slideshowid:req.params.slideshowid,
     react: ReactDOM.renderToString(SlideShowComponent({userid: req.params.userid,
@@ -27,9 +24,6 @@ export function userSlideshow (req,res){
 
 export function userLiveSlideshow (req,res){
     let SlideShowComponent = React.createFactory(Slideshow);
-    //res.render('slideshows/slideshow',{userid: req.params.userid,
-    //slideshowid:req.params.slideshowid});
-    
     res.render('slideshows/live',
     {userid: req.params.userid,slideshowid:req.params.slideshowid,
     react: ReactDOM.renderToString(SlideShowComponent({userid: req.params.userid,

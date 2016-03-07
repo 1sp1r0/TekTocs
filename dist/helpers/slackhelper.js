@@ -1,5 +1,8 @@
 'use strict';
 
+var _templateObject = _taggedTemplateLiteral(['errorGettingSlideData'], ['errorGettingSlideData']),
+    _templateObject2 = _taggedTemplateLiteral(['couldNotFindRecordForTeam', ''], ['couldNotFindRecordForTeam', '']);
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -37,11 +40,17 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
+var _tag = require('./tag');
+
+var _tag2 = _interopRequireDefault(_tag);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 function postMessageToSlack(token, channel, msg) {
     return (0, _requestPromise2.default)({
@@ -152,7 +161,7 @@ function processMessage(message) {
                             break;
 
                         case 27:
-                            reject("error getting slide data");
+                            reject((0, _tag2.default)(_templateObject));
 
                         case 28:
                             _context.next = 33;
@@ -437,8 +446,8 @@ function getCoverSlide(slide, teamId) {
                                         reject(error);
                                     });
                                 } else {
-                                    _logger2.default.log('error', 'Could not find a record for team_id:' + teamId);
-                                    reject('Could not find a record for team_id:' + teamId);
+                                    _logger2.default.log('error', (0, _tag2.default)(_templateObject2, teamId));
+                                    reject((0, _tag2.default)(_templateObject2, teamId));
                                 }
 
                                 _context5.next = 9;

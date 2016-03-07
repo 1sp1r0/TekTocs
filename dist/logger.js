@@ -13,9 +13,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 require('winston-loggly');
 
 _winston2.default.add(_winston2.default.transports.Loggly, {
-   token: "e543bff0-e362-4527-9b8b-9b96cca8923a",
-   subdomain: "tektoks",
-   tags: ["Winston-NodeJS"],
+   token: process.env.LOGGLY_TOKEN,
+   subdomain: process.env.LOGGLY_SUBDOMAIN,
+   tags: [process.env.LOGGLY_TAGS],
    json: true
 });
 

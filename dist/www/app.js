@@ -72,31 +72,20 @@ var port = process.env.PORT || 8080;
 var app = (0, _express2.default)();
 var httpServer = _http2.default.Server(app);
 var io = (0, _socket2.default)(httpServer);
-
-var FACEBOOK_APP_ID = "dummy";
-var FACEBOOK_APP_SECRET = "dummy";
 var FacebookStrategy = facebook.Strategy;
 
 _passport2.default.serializeUser(function (user, done) {
     done(null, user.id);
 });
 
-_passport2.default.deserializeUser(function (id, done) {
-    //User.findById(id, function(err, user) {
-    //    done(err, user);
-    //});
-});
+_passport2.default.deserializeUser(function (id, done) {});
 
 _passport2.default.use(new FacebookStrategy({
-    clientID: FACEBOOK_APP_ID,
-    clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:8080/auth/facebook/callback",
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: process.env.FACEBOOK_OAUTH_CALLBACK_URL,
     enableProof: false
-}, function (accessToken, refreshToken, profile, done) {
-    //User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-    //    return done(err, user);
-    //});
-}));
+}, function (accessToken, refreshToken, profile, done) {}));
 
 app.set('views', 'views');
 app.set('view engine', 'jade');
@@ -108,8 +97,8 @@ app.use((0, _cookieParser2.default)());
 app.use((0, _csurf2.default)({ cookie: true }));
 app.set('trust proxy', 1); // trust first proxy
 app.use((0, _expressSession2.default)({
-    secret: 't3kt0cs1sn01',
-    name: 'tektocsSessionId'
+    secret: process.env.EXPRESS_SESSION_SECRET,
+    name: process.env.EXPRESS_SESSION_NAME
 }));
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions .
@@ -160,15 +149,10 @@ app.use('/api', _api2.default);
 //connect to database
 _db2.default.connect();
 
-httpServer.listen(port, function () {
-    console.log('Tektocs is running on http://' + httpServer.address().address + ":" + port);
-});
+httpServer.listen(port, function () {});
 
 process.on('exit', function (code) {
-
     if (io.connected) {
         io.disconnect();
     }
-
-    console.log('About to exit with code:', code);
 });

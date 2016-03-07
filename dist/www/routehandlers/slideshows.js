@@ -42,9 +42,6 @@ function userSlideshows(req, res) {
 
 function userSlideshow(req, res) {
     var SlideShowComponent = _react2.default.createFactory(_slideshow2.default);
-    //res.render('slideshows/slideshow',{userid: req.params.userid,
-    //slideshowid:req.params.slideshowid});
-
     res.render('slideshows/slideshow', { userid: req.params.userid, slideshowid: req.params.slideshowid,
         react: _server2.default.renderToString(SlideShowComponent({ userid: req.params.userid,
             slideshowid: req.params.slideshowid }))
@@ -53,9 +50,6 @@ function userSlideshow(req, res) {
 
 function userLiveSlideshow(req, res) {
     var SlideShowComponent = _react2.default.createFactory(_slideshow2.default);
-    //res.render('slideshows/slideshow',{userid: req.params.userid,
-    //slideshowid:req.params.slideshowid});
-
     res.render('slideshows/live', { userid: req.params.userid, slideshowid: req.params.slideshowid,
         react: _server2.default.renderToString(SlideShowComponent({ userid: req.params.userid,
             slideshowid: req.params.slideshowid }))

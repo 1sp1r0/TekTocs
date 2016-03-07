@@ -7,10 +7,10 @@ pm2.connect(function() {
   pm2.start({
     script    : 'dist/www/app.js',
     name      : 'tektocs',     
-    exec_mode : 'cluster',            // ----> https://github.com/Unitech/PM2/blob/master/ADVANCED_README.md#schema
+    exec_mode : 'cluster',            
     instances : instances,
-    max_memory_restart : maxMemory + 'M',   // Auto restart if process taking more than XXmo
-    env: {                            // If needed declare some environment variables
+    max_memory_restart : maxMemory + 'M',   
+    env: {                            
       "NODE_ENV": "production",
       "SOCKETIO_ADDRESS": "https://tektocs.herokuapp.com",
       "SLASH_COMMAND_VERIFICATION_TOKEN": "fjWWmrZt2kqSCrpkFYrVE5iU",
@@ -22,7 +22,14 @@ pm2.connect(function() {
       "AWS_ACCESS_KEY_ID": 'AKIAI5OLC46GOPIPC3ZQ',
       "AWS_SECRET_ACCESS_KEY":'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',
       "AWS_BUCKET_NAME":'tektocs',
-      "AWS_S3_URL":'https://s3.amazonaws.com'
+      "AWS_S3_URL":'https://s3.amazonaws.com',
+      "LOGGLY_TOKEN":'e543bff0-e362-4527-9b8b-9b96cca8923a',
+      "LOGGLY_SUBDOMAIN":'tektoks',
+      "LOGGLY_TAGS":'Winston-NodeJS',
+      "EXPRESS_SESSION_SECRET":'t3kt0cs1sn01',
+      "EXPRESS_SESSION_NAME":'tektocsSessionId',
+      "FACEBOOK_OAUTH_CALLBACK_URL":'http://localhost:8080/auth/facebook/callback'
+      
     },
   }, function(err) {
     if (err) return console.error('Error while launching applications', err.stack || err);

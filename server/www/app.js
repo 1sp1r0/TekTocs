@@ -19,9 +19,6 @@
     const app =  express();
     const httpServer=http.Server(app);
     const io=socketioserver(httpServer);
-    
-    const FACEBOOK_APP_ID = "dummy";
-    const FACEBOOK_APP_SECRET = "dummy";
     const FacebookStrategy=facebook.Strategy;
 
     passport.serializeUser(function(user, done) {
@@ -29,21 +26,17 @@
     });
 
     passport.deserializeUser(function(id, done) {
-            //User.findById(id, function(err, user) {
-            //    done(err, user);
-            //});
+           
     });
     
     passport.use(new FacebookStrategy({
-        clientID: FACEBOOK_APP_ID,
-        clientSecret: FACEBOOK_APP_SECRET,
-        callbackURL: "http://localhost:8080/auth/facebook/callback",
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_APP_SECRET,
+        callbackURL: process.env.FACEBOOK_OAUTH_CALLBACK_URL,
         enableProof: false
     },
         function(accessToken, refreshToken, profile, done) {
-            //User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-            //    return done(err, user);
-            //});
+            
         }
     ));
 
@@ -58,8 +51,8 @@
     app.use(csrf({ cookie: true }));
     app.set('trust proxy', 1) // trust first proxy
     app.use( session({
-        secret : 't3kt0cs1sn01',
-        name : 'tektocsSessionId',
+        secret : process.env.EXPRESS_SESSION_SECRET,
+        name : process.env.EXPRESS_SESSION_NAME,
         })
     );
   // Initialize Passport!  Also use passport.session() middleware, to support
@@ -112,16 +105,10 @@
     //connect to database
     DbConnection.connect();
     
-   httpServer.listen(port, function() {
-        console.log('Tektocs is running on http://' + httpServer.address().address + ":" + port);
-        
-    });
+   httpServer.listen(port, function() {});
    
     process.on('exit', (code) => {
-     
      if(io.connected){
          io.disconnect();
      }
-     
-     console.log('About to exit with code:', code);
  });
