@@ -94,8 +94,8 @@ function processMessages(messages, slashCommand, botAcessToken) {
                             slashCommand.attachments.slideshow.slides.push(slide);
                             resolve(true);
                         }else{
-                            reject('Could not process message as slide');
-                            winston.log('error', 'Could not process message as slide');
+                            reject(tag`couldNotProcessMessageAsSlide`);
+                            winston.log('error', tag`couldNotProcessMessageAsSlide`);
                         }
                         
                     } catch (err) {
@@ -125,7 +125,7 @@ export function end(req, res) {
                 try {
                     let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
                     if(slackTeam){
-                        let endingTs=yield slackhelper.getSlideshowEndingTimestamp('Your slideshow is now marked as complete. The next step is to publish it using the command /tektocs-publish.',
+                        let endingTs=yield slackhelper.getSlideshowEndingTimestamp(tag`slideshowMarkedAsComplete`,
                         req.body.user_id,slackTeam.bot.bot_access_token);
                         yield Models.SlashCommand.findOneAndUpdate({ 
                         team_domain: req.body.team_domain, 
@@ -134,8 +134,8 @@ export function end(req, res) {
                        .exec();
                        res.sendStatus(200);
                     }else{
-                       winston.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
-                        res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+                       winston.log('error',`${tag`didNotFindrecord`}:${req.body.team_id}(${req.body.team_domain})`);
+                       res.status(500).send(tag`somethingDoesntSeemToBeRight`);
                     }
                     
 
@@ -150,7 +150,7 @@ export function end(req, res) {
             });
         }
         else {
-            winston.log('warn', 'unauthorized slash command access');
+            winston.log('warn', tag`unauthorizedSlashCommandAccess`);
         }
     }
     catch (err) {
@@ -180,11 +180,6 @@ export function startSlideshow(req, res,isLive) {
                 }
                 let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
                 if(slackTeam){
-                    /*if(isLive && req.app.slackbot.slack.token !=slackTeam.bot.bot_access_token){
-                        req.app.slackbot.slack = new Slack(slackTeam.bot.bot_access_token, true, true);
-                        //req.app.slackbot.registerSocketIoListeners(req.app.server,req.body.user_id);
-                        req.app.slackbot.registerSlackListeners(req.body.user_id);
-                    }*/
                     let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
                     let im=JSON.parse(imResponse);
                     if(im.ok){
@@ -201,15 +196,15 @@ export function startSlideshow(req, res,isLive) {
                             }
                             else{
                                 winston.log('error', userInfo.error);
-                                res.status(500).send('Could not retrieve user info.');
+                                res.status(500).send(tag`couldNotRetriveUserInfo`);
                                 return;
                             }
                         }else{
                             userDbId=user._id;
                         }
                         if(userDbId !=''){
-                            let msg='Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.';
-                            let liveMsg='Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide.';
+                            let msg=tag`letsGetStartedWithTheSlideshow`;
+                            let liveMsg=tag`letsGetStartedWithTheLiveSlideshow`;
                             let postMessageResponse=yield slackhelper.postMessageToSlack(slackTeam.bot.bot_access_token,im.channel.id,isLive?liveMsg:msg);
                             let postMessage=JSON.parse(postMessageResponse);
                             if(postMessage.ok){
@@ -223,26 +218,26 @@ export function startSlideshow(req, res,isLive) {
                                     }
                                 }
                                 req.app.slackbot.slack.login();
-                                res.status(200).send('You are now ready to add slides to your slideshow. First, change over to our bot, Tektocs\', direct messaging channel. Every message you post in that channel will be a single slide.  Happy creating!');
+                                res.status(200).send(tag`readyToAddSlides`);
                             }else{
                                 winston.log('error', postMessage.error);
-                                res.status(500).send('Sorry, we had trouble waking up our bot, Tektocs.');
+                                res.status(500).send(tag`troubleWakingUpBot`);
                               
                             }
                             
                         }else{
-                            winston.log('error', 'Could not retrieve user info.');
-                            res.status(500).send('Could not retrieve user info.');
+                            winston.log('error', tag`couldNotRetriveUserInfo`);
+                            res.status(500).send(tag`couldNotRetriveUserInfo`);
                         }
                     }else{
                         winston.log('error', im.error);
-                        res.status(500).send('Could not open direct message channel with our bot, tektocs');
+                        res.status(500).send(tag`couldNotOpenDMChannelWithBot`);
                     }
                     
                 }
                 else{
-                    winston.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
-                    res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+                     winston.log('error',`${tag`didNotFindrecord`}:${req.body.team_id}(${req.body.team_domain})`);
+                     res.status(500).send(tag`somethingDoesntSeemToBeRight`);
                 }
                 
                 
@@ -257,7 +252,7 @@ export function startSlideshow(req, res,isLive) {
         });
 
     } else {
-        winston.log('warn', 'unauthorized slash command access');
+        winston.log('warn', tag`unauthorizedSlashCommandAccess`);
     }
 }catch (err) {
         winston.log('error',err.message);

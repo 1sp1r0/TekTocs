@@ -6,7 +6,15 @@ var _templateObject = _taggedTemplateLiteral(['noUnpublishedSlideshowsFound'], [
     _templateObject4 = _taggedTemplateLiteral(['didNotFindrecord'], ['didNotFindrecord']),
     _templateObject5 = _taggedTemplateLiteral(['somethingDoesntSeemToBeRight'], ['somethingDoesntSeemToBeRight']),
     _templateObject6 = _taggedTemplateLiteral(['unauthorizedSlashCommandAccess'], ['unauthorizedSlashCommandAccess']),
-    _templateObject7 = _taggedTemplateLiteral(['slideshowRequiresTitle'], ['slideshowRequiresTitle']);
+    _templateObject7 = _taggedTemplateLiteral(['couldNotProcessMessageAsSlide'], ['couldNotProcessMessageAsSlide']),
+    _templateObject8 = _taggedTemplateLiteral(['slideshowMarkedAsComplete'], ['slideshowMarkedAsComplete']),
+    _templateObject9 = _taggedTemplateLiteral(['slideshowRequiresTitle'], ['slideshowRequiresTitle']),
+    _templateObject10 = _taggedTemplateLiteral(['couldNotRetriveUserInfo'], ['couldNotRetriveUserInfo']),
+    _templateObject11 = _taggedTemplateLiteral(['letsGetStartedWithTheSlideshow'], ['letsGetStartedWithTheSlideshow']),
+    _templateObject12 = _taggedTemplateLiteral(['letsGetStartedWithTheLiveSlideshow'], ['letsGetStartedWithTheLiveSlideshow']),
+    _templateObject13 = _taggedTemplateLiteral(['readyToAddSlides'], ['readyToAddSlides']),
+    _templateObject14 = _taggedTemplateLiteral(['troubleWakingUpBot'], ['troubleWakingUpBot']),
+    _templateObject15 = _taggedTemplateLiteral(['couldNotOpenDMChannelWithBot'], ['couldNotOpenDMChannelWithBot']);
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -238,8 +246,8 @@ function processMessages(messages, slashCommand, botAcessToken) {
                                         slashCommand.attachments.slideshow.slides.push(slide);
                                         resolve(true);
                                     } else {
-                                        reject('Could not process message as slide');
-                                        _logger2.default.log('error', 'Could not process message as slide');
+                                        reject((0, _tag2.default)(_templateObject7));
+                                        _logger2.default.log('error', (0, _tag2.default)(_templateObject7));
                                     }
 
                                     _context5.next = 11;
@@ -291,7 +299,7 @@ function end(req, res) {
                                 }
 
                                 _context6.next = 7;
-                                return slackhelper.getSlideshowEndingTimestamp('Your slideshow is now marked as complete. The next step is to publish it using the command /tektocs-publish.', req.body.user_id, slackTeam.bot.bot_access_token);
+                                return slackhelper.getSlideshowEndingTimestamp((0, _tag2.default)(_templateObject8), req.body.user_id, slackTeam.bot.bot_access_token);
 
                             case 7:
                                 endingTs = _context6.sent;
@@ -307,8 +315,8 @@ function end(req, res) {
                                 break;
 
                             case 13:
-                                _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
-                                res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+                                _logger2.default.log('error', (0, _tag2.default)(_templateObject4) + ':' + req.body.team_id + '(' + req.body.team_domain + ')');
+                                res.status(500).send((0, _tag2.default)(_templateObject5));
 
                             case 15:
                                 _context6.next = 21;
@@ -332,7 +340,7 @@ function end(req, res) {
                 res.sendStatus(500);
             });
         } else {
-            _logger2.default.log('warn', 'unauthorized slash command access');
+            _logger2.default.log('warn', (0, _tag2.default)(_templateObject6));
         }
     } catch (err) {
         _logger2.default.log('error', err.message);
@@ -367,7 +375,7 @@ function startSlideshow(req, res, isLive) {
                                     break;
                                 }
 
-                                res.status(200).send((0, _tag2.default)(_templateObject7));
+                                res.status(200).send((0, _tag2.default)(_templateObject9));
                                 return _context7.abrupt('return');
 
                             case 5:
@@ -430,7 +438,7 @@ function startSlideshow(req, res, isLive) {
 
                             case 30:
                                 _logger2.default.log('error', userInfo.error);
-                                res.status(500).send('Could not retrieve user info.');
+                                res.status(500).send((0, _tag2.default)(_templateObject10));
                                 return _context7.abrupt('return');
 
                             case 33:
@@ -446,8 +454,8 @@ function startSlideshow(req, res, isLive) {
                                     break;
                                 }
 
-                                msg = 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide. To end the slideshow, use the slash command /tektocs-end. To publish the slideshow use the command /tektocs-publish.';
-                                liveMsg = 'Hey there! Let\'s get started with your slideshow. Every message you post in this channel will be a single slide.';
+                                msg = (0, _tag2.default)(_templateObject11);
+                                liveMsg = (0, _tag2.default)(_templateObject12);
                                 _context7.next = 41;
                                 return slackhelper.postMessageToSlack(_slackTeam.bot.bot_access_token, im.channel.id, isLive ? liveMsg : msg);
 
@@ -483,21 +491,21 @@ function startSlideshow(req, res, isLive) {
 
                             case 51:
                                 req.app.slackbot.slack.login();
-                                res.status(200).send('You are now ready to add slides to your slideshow. First, change over to our bot, Tektocs\', direct messaging channel. Every message you post in that channel will be a single slide.  Happy creating!');
+                                res.status(200).send((0, _tag2.default)(_templateObject13));
                                 _context7.next = 57;
                                 break;
 
                             case 55:
                                 _logger2.default.log('error', postMessage.error);
-                                res.status(500).send('Sorry, we had trouble waking up our bot, Tektocs.');
+                                res.status(500).send((0, _tag2.default)(_templateObject14));
 
                             case 57:
                                 _context7.next = 61;
                                 break;
 
                             case 59:
-                                _logger2.default.log('error', 'Could not retrieve user info.');
-                                res.status(500).send('Could not retrieve user info.');
+                                _logger2.default.log('error', (0, _tag2.default)(_templateObject10));
+                                res.status(500).send((0, _tag2.default)(_templateObject10));
 
                             case 61:
                                 _context7.next = 65;
@@ -505,15 +513,15 @@ function startSlideshow(req, res, isLive) {
 
                             case 63:
                                 _logger2.default.log('error', im.error);
-                                res.status(500).send('Could not open direct message channel with our bot, tektocs');
+                                res.status(500).send((0, _tag2.default)(_templateObject15));
 
                             case 65:
                                 _context7.next = 69;
                                 break;
 
                             case 67:
-                                _logger2.default.log('error', 'Models.SlackTeam.findOne did not find a record for team_id:' + req.body.team_id + '(' + req.body.team_domain + ')');
-                                res.status(500).send('Hmm, something doesn\'t seem to be right. We are looking into this.');
+                                _logger2.default.log('error', (0, _tag2.default)(_templateObject4) + ':' + req.body.team_id + '(' + req.body.team_domain + ')');
+                                res.status(500).send((0, _tag2.default)(_templateObject5));
 
                             case 69:
                                 _context7.next = 75;
@@ -537,7 +545,7 @@ function startSlideshow(req, res, isLive) {
                 res.sendStatus(500);
             });
         } else {
-            _logger2.default.log('warn', 'unauthorized slash command access');
+            _logger2.default.log('warn', (0, _tag2.default)(_templateObject6));
         }
     } catch (err) {
         _logger2.default.log('error', err.message);
