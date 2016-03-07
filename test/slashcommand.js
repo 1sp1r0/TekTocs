@@ -5,6 +5,8 @@ import * as slashcommands from '../server/www/routehandlers/slashcommands'
 import winston from '../server/logger'
 import tag from '../server/helpers/tag'
 import config from '../server/config'
+import * as Models from '../server/models/'
+import * as slackhelper from '../server/helpers/slackhelper'
 
 chai.should();
 chai.use(sinonChai);
@@ -18,33 +20,53 @@ sinon.config = {
 
 describe('SlashCommands', () =>{
     describe('start', ()=>{
-        
+        let req,res,send,status,log,findSlackTeamStub;
         beforeEach(function () {
-            
+            log=sinon.stub(winston,'log');
+            res={};
+            send=res.send=sinon.stub();
+            status=res.status=sinon.stub().returns(res);
+            findSlackTeamStub=sinon.stub(Models.SlackTeam,'findOne')
+                              .returns(Promise.resolve(new Models.SlackTeam()));
+           req ={
+                 app:{
+                        slackbot:{
+                            slack:{}
+                        }
+                 },
+                 body: {
+                            token:process.env.SLASH_COMMAND_VERIFICATION_TOKEN,
+                            text:'slideShowTitle'
+                        }
+                };
         });
 
         afterEach(function () {
-            
+            log.restore();
+            Models.SlackTeam.findOne.restore();
         });
         
         it('should not execute for invalid slash command verification token', sinon.test(function(){
-            let res={}, req ={body: {token:'some dummy token'}};
-            let log=this.stub(winston,'log');
+            req ={body: {token:'some dummy token'}};
             slashcommands.start(req,res);
             log.restore();
             log.should.have.been.calledWith('warn', tag`unauthorizedSlashCommandAccess`);
         }));
         
         it('should prompt for slideshow title when not supplied', sinon.test(function(){
-            //console.log(tag`noUnpublishedSlideshowsFound${'muraliteam'}${'murali'}` );
-            let stubforSend=this.stub();
-            let res={send:stubforSend}, req ={app:{
-                                slackbot:{
-                                    slack:{}
-                             }},body: {token:process.env.SLASH_COMMAND_VERIFICATION_TOKEN,text:''}};
-            let status=res.status=this.stub().returns(res);
+            req.body.text='';
             slashcommands.start(req,res);
-            stubforSend.should.have.been.calledWith(tag`slideshowRequiresTitle`);
+            send.should.have.been.calledWith(tag`slideshowRequiresTitle`);
         }));
+        
+        it('should stop executing if Slackteam for the given team id cannot be found', 
+        sinon.test(function(done){
+            findSlackTeamStub.returns(Promise.resolve(null));
+            slashcommands.start(req,res);
+            done();
+            send.should.have.been.calledWith(tag`somethingDoesntSeemToBeRight`);
+            
+        }));
+        
     });
 });
