@@ -28,8 +28,9 @@ pm2.connect(function() {
       "LOGGLY_TAGS":'Winston-NodeJS',
       "EXPRESS_SESSION_SECRET":'t3kt0cs1sn01',
       "EXPRESS_SESSION_NAME":'tektocsSessionId',
-      "FACEBOOK_OAUTH_CALLBACK_URL":'http://localhost:8080/auth/facebook/callback'
-      
+      "FACEBOOK_OAUTH_CALLBACK_URL":'http://localhost:8080/auth/facebook/callback',
+      "FACEBOOK_APP_ID":'',
+      "FACEBOOK_APP_SECRET":''
     },
   }, function(err) {
     if (err) return console.error('Error while launching applications', err.stack || err);
