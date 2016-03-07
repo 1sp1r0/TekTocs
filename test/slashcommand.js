@@ -32,7 +32,7 @@ describe('SlashCommands', () =>{
             let log=this.stub(winston,'log');
             slashcommands.start(req,res);
             log.restore();
-            log.should.have.been.calledWith('warn', 'unauthorized slash command access');
+            log.should.have.been.calledWith('warn', tag`unauthorizedSlashCommandAccess`);
         }));
         
         it('should prompt for slideshow title when not supplied', sinon.test(function(){
