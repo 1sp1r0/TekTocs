@@ -124,14 +124,14 @@ describe('SlashCommand', () =>{
                 });
         }));
         
-      /*   it('should send a response indicating that slides can now be added to the slideshow.', 
+         it('should send a response indicating that slides can now be added to the slideshow.', 
         sinon.test(
             function(){
                 return co(function * () {  
                     yield Promise.resolve(slashcommands.start(req,res));
                     send.should.have.been.calledWith(tag`readyToAddSlides`);
                 });
-        }));*/
+        }));
         
     });
 });

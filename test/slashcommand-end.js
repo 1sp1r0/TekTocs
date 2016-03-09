@@ -101,47 +101,7 @@ describe('SlashCommand', () =>{
                 });
         }));
       
-     /* it('should stop executing if a Slack DM Channel with tektocs cannot be opened.', 
-        sinon.test(
-            function(){
-                openImStub.returns(Promise.resolve("{\"ok\":false}"));
-                return co(function * () {
-                    yield Promise.resolve(slashcommands.start(req,res));
-                    status.should.have.been.calledWith(500);
-                    send.should.have.been.calledWith(tag`couldNotOpenDMChannelWithBot`);
-               });
-        }));
-        
-        it('should stop executing if the slack user info cannot be retrieved.', 
-        sinon.test(
-            function(){
-                findSlackUserStub.returns(Promise.resolve(null));
-                findUserInfoStub.returns(Promise.resolve("{\"ok\":false}")); 
-                return co(function * () {                   
-                    yield Promise.resolve(slashcommands.start(req,res));
-                    send.should.have.been.calledWith(tag`couldNotRetriveUserInfo`);
-                });
-        }));
-        
-        it('should stop executing if there is an error posting message to slack.', 
-        sinon.test(
-            function(){
-                postMessageToSlackStub.returns(Promise.resolve("{\"ok\":false}"));  
-                return co(function * () {                       
-                    yield Promise.resolve(slashcommands.start(req,res));
-                    status.should.have.been.calledWith(500);
-                    send.should.have.been.calledWith(tag`troubleWakingUpBot`);
-                });
-        }));*/
-        
-      /*   it('should send a response indicating that slides can now be added to the slideshow.', 
-        sinon.test(
-            function(){
-                return co(function * () {  
-                    yield Promise.resolve(slashcommands.start(req,res));
-                    send.should.have.been.calledWith(tag`readyToAddSlides`);
-                });
-        }));*/
+     
         
     });
 });
