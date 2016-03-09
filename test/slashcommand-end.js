@@ -1,8 +1,6 @@
 import chai from 'chai'
 import sinonChai from 'sinon-chai'
 import sinon from 'sinon'
-import mockery from 'mockery'
-import proxyquire from 'proxyquire'
 import co from 'co'
 import * as slashcommands from '../server/www/routehandlers/slashcommands'
 import winston from '../server/logger'
@@ -10,8 +8,7 @@ import tag from '../server/helpers/tag'
 import config from '../server/config'
 import * as Models from '../server/models/'
 import * as slackhelper from '../server/helpers/slackhelper'
-import slashCommandMock from './mocks/slashcommandmock'
-import slackTeamMock from './mocks/slackteammock'
+
 
 chai.should();
 chai.use(sinonChai);
@@ -23,34 +20,34 @@ sinon.config = {
   useFakeTimers: false
 };
 
-describe('SlashCommands', () =>{
-    describe('start', ()=>{
+describe('SlashCommand', () =>{
+    describe('end', ()=>{
         
-        let req,res,send,status,log,
-        findSlackTeamStub,openImStub,findSlackUserStub,
+        let req,res,query,send,status,sendStatus,log,
+        findSlackTeamStub,getSlideshowEndingTimestampStub,findOneAndUpdateStub,
         findUserInfoStub,updateUserStub,postMessageToSlackStub;
         beforeEach(function () {
+            query={exec:function(){return Promise.resolve(true);}};
             res={};
             send=res.send=sinon.stub();
             status=res.status=sinon.stub().returns(res);
+            sendStatus=res.sendStatus=sinon.stub();
             log=sinon.stub(winston,'log');
-            //slashcommands = proxyquire('../server/www/routehandlers/slashcommands', { '../../models/': {}});
-                //.returns({findOne:function(){return Promise.resolve(new Models.SlackTeam())}});
-            //mockery.enable({useCleanCache: true});
-            //mockery.registerMock('../server/models/', slashCommandMock);
-            //mockery.registerMock('../server/models/slackteam', slackTeamMock);
             findSlackTeamStub=sinon.stub(Models.SlackTeam,'findOne')
                               .returns(Promise.resolve(new Models.SlackTeam()));
-            openImStub=sinon.stub(slackhelper, 'openIm')
-                              .returns(Promise.resolve("{\"ok\":true}"));   
+                              
+            getSlideshowEndingTimestampStub=sinon.stub(slackhelper, 'getSlideshowEndingTimestamp')
+                              .returns(Promise.resolve("some timestamp"));   
             findUserInfoStub=sinon.stub(slackhelper,'getUserinfo')
-                                .returns(Promise.resolve({ok:true,user:{upserted:[{_id:1}]}}));    
-            findSlackUserStub=sinon.stub(Models.SlackUser,'findOne')
-                              .returns(Promise.resolve({_id:1}));     
+                                .returns(Promise.resolve("{\"ok\":true,\"user\":{\"upserted\":[{\"_id\":1}]}}"));    
+            findOneAndUpdateStub=sinon.stub(Models.SlashCommand,'findOneAndUpdate')
+                              .returns(query);     
             updateUserStub=  sinon.stub(Models.SlackUser,'update')
                                 .returns(Promise.resolve({ok:true,user:{upserted:[{_id:1}]}})); 
             postMessageToSlackStub=sinon.stub(slackhelper,'postMessageToSlack')
-                                .returns(Promise.resolve({ok:true}));                                                              
+                                .returns(Promise.resolve("{\"ok\":true,\"ts\":\"some time stamp\"}"));                                                              
+           
+           
            req ={
                  app:{
                         slackbot:{
@@ -67,41 +64,44 @@ describe('SlashCommands', () =>{
 
         afterEach(function () {
             log.restore();
-            //mockery.deregisterAll();
-            //mockery.disable();
             findSlackTeamStub.restore();
-            openImStub.restore();
+            getSlideshowEndingTimestampStub.restore();
             findUserInfoStub.restore();
-            findSlackUserStub.restore();
+            findOneAndUpdateStub.restore();
             updateUserStub.restore();
             postMessageToSlackStub.restore();
         });
         
         it('should not execute for invalid slash command verification token.', sinon.test(function(){
             req ={body: {token:'some dummy token'}};
-            slashcommands.start(req,res);
+            slashcommands.end(req,res);
             log.restore();
             log.should.have.been.calledWith('warn', tag`unauthorizedSlashCommandAccess`);
         }));
         
-        it('should prompt for slideshow title when not supplied.', sinon.test(function(){
-            req.body.text='';
-            slashcommands.start(req,res);
-            send.should.have.been.calledWith(tag`slideshowRequiresTitle`);
-        }));
+       
         
        it('should stop executing if Slackteam for the given team id cannot be found.', 
         sinon.test(
             function (){
                 findSlackTeamStub.returns(Promise.resolve(null));
                 return co(function * () {
-                    yield Promise.resolve(slashcommands.start(req,res));
+                    yield Promise.resolve(slashcommands.end(req,res));
                     status.should.have.been.calledWith(500);
                     send.should.have.been.calledWith(tag`somethingDoesntSeemToBeRight`);
              });
         }));
+        
+        it('should send a 200 OK response.', 
+        sinon.test(
+            function(){
+                return co(function * () {  
+                    yield Promise.resolve(slashcommands.end(req,res));
+                    sendStatus.should.have.been.calledWith(200);
+                });
+        }));
       
-      it('should stop executing if a Slack DM Channel with tektocs cannot be opened.', 
+     /* it('should stop executing if a Slack DM Channel with tektocs cannot be opened.', 
         sinon.test(
             function(){
                 openImStub.returns(Promise.resolve("{\"ok\":false}"));
@@ -111,30 +111,36 @@ describe('SlashCommands', () =>{
                     send.should.have.been.calledWith(tag`couldNotOpenDMChannelWithBot`);
                });
         }));
-        /*
+        
         it('should stop executing if the slack user info cannot be retrieved.', 
-        sinon.test(function(done){
-            findSlackUserStub.returns(Promise.resolve(null));
-            findUserInfoStub.returns(Promise.resolve({ok:false}));                    
-            slashcommands.start(req,res);
-            done();
-            send.should.have.been.calledWith(tag`couldNotRetriveUserInfo`);
-            
+        sinon.test(
+            function(){
+                findSlackUserStub.returns(Promise.resolve(null));
+                findUserInfoStub.returns(Promise.resolve("{\"ok\":false}")); 
+                return co(function * () {                   
+                    yield Promise.resolve(slashcommands.start(req,res));
+                    send.should.have.been.calledWith(tag`couldNotRetriveUserInfo`);
+                });
         }));
         
         it('should stop executing if there is an error posting message to slack.', 
-        sinon.test(function(done){
-            postMessageToSlackStub.returns(Promise.resolve({ok:false}));                    
-            slashcommands.start(req,res);
-            done();
-            send.should.have.been.calledWith(tag`troubleWakingUpBot`);
-        }));
+        sinon.test(
+            function(){
+                postMessageToSlackStub.returns(Promise.resolve("{\"ok\":false}"));  
+                return co(function * () {                       
+                    yield Promise.resolve(slashcommands.start(req,res));
+                    status.should.have.been.calledWith(500);
+                    send.should.have.been.calledWith(tag`troubleWakingUpBot`);
+                });
+        }));*/
         
-         it('should send a response indicating that slides can now be added to the slideshow.', 
-        sinon.test(function(done){
-            slashcommands.start(req,res);
-            done();
-            send.should.have.been.calledWith(tag`readyToAddSlides`);
+      /*   it('should send a response indicating that slides can now be added to the slideshow.', 
+        sinon.test(
+            function(){
+                return co(function * () {  
+                    yield Promise.resolve(slashcommands.start(req,res));
+                    send.should.have.been.calledWith(tag`readyToAddSlides`);
+                });
         }));*/
         
     });
