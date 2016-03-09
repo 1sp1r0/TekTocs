@@ -512,6 +512,7 @@ function startSlideshow(req, res, isLive) {
                                 break;
 
                             case 63:
+
                                 _logger2.default.log('error', im.error);
                                 res.status(500).send((0, _tag2.default)(_templateObject15));
 

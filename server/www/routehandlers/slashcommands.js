@@ -178,6 +178,7 @@ export function startSlideshow(req, res,isLive) {
                     res.status(200).send(tag`slideshowRequiresTitle`);
                     return;
                 }
+                
                 let slackTeam=yield Models.SlackTeam.findOne({team_id:req.body.team_id});
                 if(slackTeam){
                     let imResponse=yield slackhelper.openIm(slackTeam.bot.bot_access_token,req.body.user_id);
@@ -185,9 +186,7 @@ export function startSlideshow(req, res,isLive) {
                     if(im.ok){
                         let userDbId='';
                         let user=yield Models.SlackUser.findOne({user_id:req.body.user_id});
-                        
                         if(!user){
-                            
                             let userInfoResponse=yield slackhelper.getUserinfo(slackTeam.bot.bot_access_token,req.body.user_id);
                             let userInfo=JSON.parse(userInfoResponse);
                             if(userInfo.ok){
@@ -230,13 +229,14 @@ export function startSlideshow(req, res,isLive) {
                             res.status(500).send(tag`couldNotRetriveUserInfo`);
                         }
                     }else{
+                        
                         winston.log('error', im.error);
                         res.status(500).send(tag`couldNotOpenDMChannelWithBot`);
                     }
                     
                 }
                 else{
-                     winston.log('error',`${tag`didNotFindrecord`}:${req.body.team_id}(${req.body.team_domain})`);
+                    winston.log('error',`${tag`didNotFindrecord`}:${req.body.team_id}(${req.body.team_domain})`);
                      res.status(500).send(tag`somethingDoesntSeemToBeRight`);
                 }
                 
