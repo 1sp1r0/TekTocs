@@ -40,9 +40,9 @@ describe('SlashCommands', () =>{
             //mockery.registerMock('../server/models/', slashCommandMock);
             //mockery.registerMock('../server/models/slackteam', slackTeamMock);
             findSlackTeamStub=sinon.stub(Models.SlackTeam,'findOne')
-                              .returns(new Promise((resolve,reject) => {resolve(new Models.SlackTeam());}));
+                              .returns(Promise.resolve(new Models.SlackTeam()));
             openImStub=sinon.stub(slackhelper, 'openIm')
-                              .returns(new Promise((resolve,reject) => {resolve("{\"ok\":true}");}));   
+                              .returns(Promise.resolve("{\"ok\":true}"));   
             findUserInfoStub=sinon.stub(slackhelper,'getUserinfo')
                                 .returns(Promise.resolve({ok:true,user:{upserted:[{_id:1}]}}));    
             findSlackUserStub=sinon.stub(Models.SlackUser,'findOne')
