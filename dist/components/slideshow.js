@@ -47,7 +47,7 @@ var Slideshow = function (_React$Component) {
 
             var self = this;
             $.ajax({
-                url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows/' + self.props.slideshowid, //this.props.url,
+                url: process.env.TEKTOCS_API_BASE_URL + '/users/' + self.props.userid + '/slideshows/' + self.props.slideshowid,
                 dataType: 'json',
                 cache: false,
                 success: function success(data) {

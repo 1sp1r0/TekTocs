@@ -19715,7 +19715,7 @@ var ReactRenderers =
 /* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -19764,7 +19764,7 @@ var ReactRenderers =
 
 	            var self = this;
 	            $.ajax({
-	                url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows/' + self.props.slideshowid, //this.props.url,
+	                url: process.env.TEKTOCS_API_BASE_URL + '/users/' + self.props.userid + '/slideshows/' + self.props.slideshowid,
 	                dataType: 'json',
 	                cache: false,
 	                success: function success(data) {
@@ -20052,12 +20052,13 @@ var ReactRenderers =
 
 	exports.default = Slideshow;
 	;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -20121,7 +20122,7 @@ var ReactRenderers =
 	            var self = this;
 
 	            $.ajax({
-	                url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows?skip=' + self.state.skip, //this.props.url,
+	                url: process.env.TEKTOCS_API_BASE_URL + '/users/' + self.props.userid + '/slideshows?skip=' + self.state.skip,
 	                dataType: 'json',
 	                cache: false,
 	                success: function success(data) {
@@ -20273,6 +20274,7 @@ var ReactRenderers =
 
 	    return SlideshowLead;
 	}(_react2.default.Component);
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 161 */
@@ -20562,7 +20564,7 @@ var ReactRenderers =
 /* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -20605,7 +20607,7 @@ var ReactRenderers =
 	            var self = this;
 
 	            $.ajax({
-	                url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid,
+	                url: process.env.TEKTOCS_API_BASE_URL + '/users/' + self.props.userid,
 	                dataType: 'json',
 	                cache: false,
 	                success: function success(data) {
@@ -20654,6 +20656,7 @@ var ReactRenderers =
 	}(_react2.default.Component);
 
 	exports.default = SlackUser;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }
 /******/ ]);

@@ -133,7 +133,7 @@ describe('SlashCommand', () =>{
                 return co(function * () {  
                     yield Promise.resolve(slashcommands.startLive(req,res));
                     status.should.have.been.calledWith(200);
-                    //send.should.have.been.calledWith(tag`readyToAddSlides`);
+                    send.should.have.been.calledWith(tag`readyToAddSlides`);
                 });
         }));
         

@@ -39,7 +39,7 @@ export  class SlideshowList extends React.Component{
        let self=this;
        
        $.ajax({
-      url: 'https://tektocs.herokuapp.com/api/users/' + self.props.userid + '/slideshows?skip=' + self.state.skip , //this.props.url,
+      url: `${process.env.TEKTOCS_API_BASE_URL}/users/${self.props.userid}/slideshows?skip=${self.state.skip}`,
       dataType: 'json',
       cache: false,
       success: function(data) {

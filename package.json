@@ -4,15 +4,15 @@
   "description": "tektocs",
   "scripts": {
     "worker": "babel-node ./server/worker/bot.js",
-    "start": "LOGGLY_TAGS=Winston-NodeJS LOGGLY_TOKEN=e543bff0-e362-4527-9b8b-9b96cca8923a LOGGLY_SUBDOMAIN=tektoks NODE_ENV=development SLACK_TEAM_ACCESS_TOKEN='xoxp-2605154976-2605154980-20366174116-297e0ed68c' SLACK_BOT_ACCESS_TOKEN='xoxb-20370276500-oiYPAV9nGQA3ic4AKrlJanlS' SOCKETIO_ADDRESS=http://localhost:8080 MONGOLAB_URI=mongodb://heroku_pxgrqk35:u45fmu7pharj20eiemaet23mj7@ds059205.mongolab.com:59205/heroku_pxgrqk35 nodemon server/www/app.js --exec babel-node",
+    "start": "NODE_ENV=development SOCKETIO_ADDRESS=http://localhost:8080 nodemon server/www/app.js --exec babel-node",
     "build": "npm run build-babel && npm run build-webpack",
     "build-babel": "babel server -d dist",
     "build-webpack": "webpack",
     "serve": "node dist/worker/bot.js && node dist/www/app.js",
-    "test": "LOGGLY_TAGS=Winston-NodeJS LOGGLY_TOKEN=e543bff0-e362-4527-9b8b-9b96cca8923a LOGGLY_SUBDOMAIN=tektoks SLASH_COMMAND_VERIFICATION_TOKEN=fjWWmrZt2kqSCrpkFYrVE5iU nodemon -e js,json node_modules/mocha/bin/mocha  test/  --compilers js:babel-register --require co-mocha"
+    "test": "nodemon -e js,json node_modules/mocha/bin/mocha  test/  --compilers js:babel-register"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Murali Narasimhan",
+  "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.2.37",
     "babel-polyfill": "^6.3.14",
@@ -54,12 +54,10 @@
     "babel-preset-react": "^6.3.13",
     "babel-register": "^6.4.3",
     "chai": "^3.4.1",
-    "co-mocha": "^1.1.2",
     "mocha": "^2.3.4",
     "mockery": "^1.4.1",
     "node-loader": "^0.5.0",
     "nodemon": "^1.8.1",
-    "proxyquire": "^1.7.4",
     "sinon": "^1.17.2",
     "sinon-as-promised": "^4.0.0",
     "sinon-chai": "^2.8.0",
